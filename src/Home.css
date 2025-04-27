@@ -1,0 +1,11 @@
+.navLinkColor {
+    text-decoration: none;  
+    color: black
+}
+.colDivider {
+    border-left: 1px solid;
+    color: #ccc
+}
+.titleDesign {
+    font-weight: bold;
+}

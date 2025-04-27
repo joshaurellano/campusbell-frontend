@@ -1,0 +1,17 @@
+*******************************************************
+THIS IS THE CLIENTSIDE OF CAMPUS BELL
+*******************************************************
+This contains that features added into the frontend 
+This serves as a tracker of current progress of campus BELL
+
+*******************************************************
+
+As of
+*******************************************************
+04/27/2025
+- Added comment function
+- Add Post page, page to display individual post
+- Displaying comment and replies
+- Fetching all post
+- Fetching Topics from backend
+- User login 
