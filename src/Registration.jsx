@@ -9,36 +9,17 @@ import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
 
-function Login () {
+function Registration () {
     const navigate = useNavigate();
     const [user,setUser] = useState(null);
     const [username,setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false)
-
-
-    //check first if user is already logged in
-    useEffect(() =>{
-        const fetchUser = async () => {
-            try {
-                //check token inside local storage if any
-                // const check_token_if_any = JSON.parse(localStorage.getItem('token'))
-                const check_token_if_any = Cookies.get('token')
-                //pass result to data
-                setUser(check_token_if_any.data);
-                console.log(check_token_if_any)
-                //if token is available proceed to homepage
-                navigate('/');
-            } catch (error) {
-                //remove token incase of error to prevent further problem
-                localStorage.removeItem('token');
-                //go back to login page
-                navigate('/login');
-            }
-        };
-        fetchUser();
-    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -47,10 +28,15 @@ function Login () {
         // console.log(API_ENDPOINT);
         try{
             //send to backend the username and password given to check eligibility
-            const response = await axios.post(`${API_ENDPOINT}auth/login`,{
+            const response = await axios.post(`${API_ENDPOINT}auth/register`,{
                 username,
-                password
+                password,
+                email,
+                first_name:firstName,
+                last_name:lastName,
+                phone_number:phoneNumber
             });
+            console.log(firstName);
             console.log(response)
             // set loading state to false after operation
             setLoading(false)
@@ -58,7 +44,7 @@ function Login () {
             // localStorage.setItem('token', JSON.stringify(response));
             setError('');
             //if no error, proceed to homepage
-            navigate('/home');
+            // navigate('/home');
         } catch(error) {
             console.error(error)
             setLoading(false)
@@ -90,7 +76,7 @@ function Login () {
                                 <Form.Group controlId = 'formUsername'>
                                     <Form.Label>Username:</Form.Label>
                                     <Form.Control className='form-control-sm rounded-0' 
-                                        type='username'
+                                        type='text'
                                         placeholder='Enter username'
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)} required />
@@ -104,13 +90,42 @@ function Login () {
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)} required/>
                             </Form.Group> <br/>
-                            
-                            <Form.Group>
-                                <Link to ='/register'>
-                                    <span style={{fontSize:'15px'}}>Sign Up for an Account?</span>
-                                </Link>
-                            </Form.Group>
-                            <br />
+
+                            <Form.Group controlId = 'formFirstName'>
+                                    <Form.Label>First Name:</Form.Label>
+                                    <Form.Control className='form-control-sm rounded-0' 
+                                        type='text'
+                                        placeholder='Enter First Name'
+                                        value={firstName}
+                                        onChange={(e) => setFirstName(e.target.value)} required />
+                                </Form.Group> <br/>
+
+                            <Form.Group controlId = 'formLastName'>
+                                    <Form.Label>Last Name:</Form.Label>
+                                    <Form.Control className='form-control-sm rounded-0' 
+                                        type='text'
+                                        placeholder='Enter Last Name'
+                                        value={lastName}
+                                        onChange={(e) => setLastName(e.target.value)} required />
+                                </Form.Group> <br/>
+
+                            <Form.Group controlId = 'formEmail'>
+                                    <Form.Label>Email:</Form.Label>
+                                    <Form.Control className='form-control-sm rounded-0' 
+                                        type='email'
+                                        placeholder='Enter email'
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)} required />
+                                </Form.Group> <br/>
+
+                            <Form.Group controlId = 'formPhoneNumber'>
+                                    <Form.Label>Phone Number:</Form.Label>
+                                    <Form.Control className='form-control-sm rounded-0' 
+                                        type='text'
+                                        placeholder='Enter phone number'
+                                        value={phoneNumber}
+                                        onChange={(e) => setPhoneNumber(e.target.value)} required />
+                                </Form.Group> <br/>
 
                             <Form.Group controlId='formButton'>
                                 {error && <p style={{color:'red'}}>{error}</p>}
@@ -125,7 +140,7 @@ function Login () {
                                             size="sm"
                                             role="status"
                                             aria-hidden="true"
-                                            /> <span>Loading</span>
+                                            /> <span>Register</span>
                                         </> 
                                     ) : ('Login')}
                                 </Button>
@@ -144,4 +159,4 @@ function Login () {
         </>
     )
 }
-export default Login;
+export default Registration;
