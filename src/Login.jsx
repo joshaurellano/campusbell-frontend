@@ -14,7 +14,10 @@ function Login () {
     const [user,setUser] = useState(null);
     const [username,setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [validated, setValidated] = useState(false);
     const [error, setError] = useState('');
+    const [usernameError, setUsernameError] = useState('');
+    const[passwordError, setPasswordError] = useState('');
     const [loading, setLoading] = useState(false)
 
 
@@ -23,7 +26,6 @@ function Login () {
         const fetchUser = async () => {
             try {
                 //check token inside local storage if any
-                // const check_token_if_any = JSON.parse(localStorage.getItem('token'))
                 const check_token_if_any = Cookies.get('token')
                 //pass result to data
                 setUser(check_token_if_any.data);
@@ -42,9 +44,11 @@ function Login () {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+        setUsernameError('');
+        setPasswordError('');
         //set loading state to true to trigger spinner to show
         setLoading(true);
-        // console.log(API_ENDPOINT);
         try{
             //send to backend the username and password given to check eligibility
             const response = await axios.post(`${API_ENDPOINT}auth/login`,{
@@ -54,15 +58,20 @@ function Login () {
             console.log(response)
             // set loading state to false after operation
             setLoading(false)
-            //set token to local storage
-            // localStorage.setItem('token', JSON.stringify(response));
             setError('');
             //if no error, proceed to homepage
             navigate('/home');
         } catch(error) {
             console.error(error)
+            if(error.response.data.message.includes("Username")){
+                console.log('username')
+                setUsernameError(error.response.data.message);
+            }else if(error.response.data.message.includes("Password")){
+                console.log('password')
+                setPasswordError(error.response.data.message);
+            }
             setLoading(false)
-            setError(error.response.data.message);
+            // setError(error.response.data.message);
         }
     };
 
@@ -86,14 +95,15 @@ function Login () {
                                 <Card.Body>
                                 <span style={{display:'flex',justifyContent:'center',fontSize:'24px'}}>Login to</span>
                                 <span style={{display:'flex',justifyContent:'center',fontWeight:'bold',fontSize:'30px'}}>Campus Bell</span> <br/>
-                                <Form onSubmit = {handleSubmit}>
+                                <Form noValidate validated={validated}onSubmit={handleSubmit}>
                                 <Form.Group controlId = 'formUsername'>
                                     <Form.Label>Username:</Form.Label>
                                     <Form.Control className='form-control-sm rounded-0' 
                                         type='text'
                                         placeholder='Enter username'
                                         value={username}
-                                        onChange={(e) => setUsername(e.target.value)} required />
+                                        onChange={(e) => setUsername(e.target.value)}isInvalid={!!usernameError} required />
+                                    <Form.Control.Feedback type='invalid'>{usernameError}</Form.Control.Feedback>
                                 </Form.Group> <br/>
 
                             <Form.Group controlId='formPassword'>
@@ -102,7 +112,8 @@ function Login () {
                                         type='password'
                                         placeholder='Enter your password'
                                         value={password}
-                                        onChange={(e) => setPassword(e.target.value)} required/>
+                                        onChange={(e) => setPassword(e.target.value)}isInvalid={!!passwordError} required/>
+                                        <Form.Control.Feedback type='invalid'>{passwordError}</Form.Control.Feedback>
                             </Form.Group> <br/>
                             
                             <Form.Group>
