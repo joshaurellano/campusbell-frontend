@@ -4,16 +4,15 @@ import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 import Cookies from 'js-cookie';
 
-import {Navbar,Container,Button,Form,Row,Col,Spinner,Card} from 'react-bootstrap';
+import {Navbar,Nav,Container,Button,Form,Row,Col,Spinner,Card} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
 
 function Registration () {
     const navigate = useNavigate();
-    const [user,setUser] = useState(null);
-    const [username,setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [userName,setUserName] = useState('');
+    const [passWord, setPassWord] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -25,52 +24,62 @@ function Registration () {
         e.preventDefault();
         //set loading state to true to trigger spinner to show
         setLoading(true);
-        // console.log(API_ENDPOINT);
         try{
-            //send to backend the username and password given to check eligibility
+            // send to backend the given registration details
             const response = await axios.post(`${API_ENDPOINT}auth/register`,{
-                username,
-                password,
+                username:userName,
+                password:passWord,
                 email,
                 first_name:firstName,
                 last_name:lastName,
                 phone_number:phoneNumber
             });
-            console.log(firstName);
-            console.log(response)
             // set loading state to false after operation
             setLoading(false)
-            //set token to local storage
-            // localStorage.setItem('token', JSON.stringify(response));
             setError('');
-            //if no error, proceed to homepage
-            // navigate('/home');
+            //if no error, go back to login page
+            navigate('/login');
         } catch(error) {
-            console.error(error)
+            console.error(error.response.data.message)
             setLoading(false)
-            setError(error.message);
+            setError(error.response.data.message);
         }
     };
+    const clearField = () => {
+        setUserName('');
+        setPassWord('');
+        setEmail('');
+        setPhoneNumber('');
+        setFirstName('');
+        setLastName('');
+        setError('');
+    }
+    useEffect (() =>{
+        clearField();
+    },[])
 
     return (
-        <> 
+        <>
         <Navbar bg='success' data-bs-theme='dark'>
             <Container>
-                <Navbar.Brand href='#home'> Campus Bell</Navbar.Brand>
+                <Navbar.Brand>
+                    <Nav.Link as={Link} to='/login'>
+                        Campus Bell
+                    </Nav.Link>
+                </Navbar.Brand>
             </Container>
         </Navbar>
 
         <Container>
             <Row className = 'justify-content-md-center'>
-                
                 <Col md={6} sm={12}>
-                <div className = 'login-form'>
-                    <div className = 'container'>
-                        <div className = 'card-body login-card-body'>
+                <div>
+                    <div className='container'>
+                        <div>
                             <br />
                             <Card>
                                 <Card.Body>
-                                <span style={{display:'flex',justifyContent:'center',fontSize:'24px'}}>Login to</span>
+                                <span style={{display:'flex',justifyContent:'center',fontSize:'24px'}}>Register</span>
                                 <span style={{display:'flex',justifyContent:'center',fontWeight:'bold',fontSize:'30px'}}>Campus Bell</span> <br/>
                                 <Form onSubmit = {handleSubmit}>
                                 <Form.Group controlId = 'formUsername'>
@@ -78,8 +87,8 @@ function Registration () {
                                     <Form.Control className='form-control-sm rounded-0' 
                                         type='text'
                                         placeholder='Enter username'
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)} required />
+                                        value={userName}
+                                        onChange={(e) => setUserName(e.target.value)} required />
                                 </Form.Group> <br/>
 
                             <Form.Group controlId='formPassword'>
@@ -87,8 +96,8 @@ function Registration () {
                                 <Form.Control className='form-control-sm-rounded-0'
                                         type='password'
                                         placeholder='Enter your password'
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)} required/>
+                                        value={passWord}
+                                        onChange={(e) => setPassWord(e.target.value)} required/>
                             </Form.Group> <br/>
 
                             <Form.Group controlId = 'formFirstName'>
@@ -140,9 +149,9 @@ function Registration () {
                                             size="sm"
                                             role="status"
                                             aria-hidden="true"
-                                            /> <span>Register</span>
+                                            /> <span>Please Wait</span>
                                         </> 
-                                    ) : ('Login')}
+                                    ) : ('Register')}
                                 </Button>
                             </Form.Group>
                             </Form>

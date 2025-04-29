@@ -62,7 +62,7 @@ function Login () {
         } catch(error) {
             console.error(error)
             setLoading(false)
-            setError(error.message);
+            setError(error.response.data.message);
         }
     };
 
@@ -90,7 +90,7 @@ function Login () {
                                 <Form.Group controlId = 'formUsername'>
                                     <Form.Label>Username:</Form.Label>
                                     <Form.Control className='form-control-sm rounded-0' 
-                                        type='username'
+                                        type='text'
                                         placeholder='Enter username'
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)} required />
@@ -106,7 +106,9 @@ function Login () {
                             </Form.Group> <br/>
                             
                             <Form.Group>
-                                <Link to ='/register'>
+                                <Link to ='/register' onClick={() => {
+                                    setUsername('');
+                                    setPassword('')}}>
                                     <span style={{fontSize:'15px'}}>Sign Up for an Account?</span>
                                 </Link>
                             </Form.Group>
