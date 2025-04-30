@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Stack,Card } from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Stack,Card,Modal,ListGroup } from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
@@ -18,7 +18,11 @@ function Home () {
     const [topics, setTopics] = useState([]);
     // for post
     const [post, setPost] = useState([]);
-    
+    const [showModal, setShowModal] = useState(false);
+
+    const handleClose = () => setShowModal(false);
+    const handleShow = () => setShowModal(true);
+
     const navigate = useNavigate();
     //Check if user has session
     useEffect(() =>{
@@ -69,7 +73,7 @@ function Home () {
         // console.log(postID);
         navigate('/post',{state:{postID}});
     }
-   
+    
     return (
     <>
     <Navbar bg='success' data-bs-theme='dark'>
@@ -113,7 +117,87 @@ function Home () {
             </Col>
             <Col lg={6} className='colDivider'>
             <br />
-                <Container>
+                <Container style={{color:'black'}}>
+                    <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+                        <span>
+                            <h3>Welcome to Campus Bell</h3>
+                        </span>
+                    </div>
+                    <br />
+                    <span style={{fontWeight:'bold', opacity:'0.8'}}>
+                        <img src="https://res.cloudinary.com/dv7ai6yrb/image/upload/v1746011634/giphy_lkeedr.gif" 
+                        alt='emote' 
+                        height="20px"
+                        width="20px" />
+                        <img src="https://res.cloudinary.com/dv7ai6yrb/image/upload/v1746011634/giphy_lkeedr.gif" 
+                        alt='emote' 
+                        height="20px"
+                        width="20px" />
+                        shoutbox
+                        <img src="https://res.cloudinary.com/dv7ai6yrb/image/upload/v1746011634/giphy_lkeedr.gif" 
+                        alt='emote' 
+                        height="20px"
+                        width="20px" />
+                        <img src="https://res.cloudinary.com/dv7ai6yrb/image/upload/v1746011634/giphy_lkeedr.gif" 
+                        alt='emote' 
+                        height="20px"
+                        width="20px" />
+                        </span>
+                    <div>
+                        <Card style={{height:'10rem',display:'flex',flexDirection:'column'}}>
+                            <Row style={{height:'4rem'}}>
+                                <span>
+                                    This is a sample text
+                                </span>
+                            </Row>
+                            <Row style={{display:'flex', flex:'1'}}>
+                            
+                            <Form style={{display:'flex', flex:'1',flexDirection:'column'}}>
+                                <Form.Group style={{width:'100%', height:'100%'}}>
+                                    <Form.Control style={{flex:'1',width:'100%',height:'100%'}}>
+                                        
+                                    </Form.Control>
+                                </Form.Group>
+
+                                <Button className="p-2 ms-auto"style={{width:'5rem'}}>Post</Button>
+                            </Form>
+                            </Row>
+                        </Card>
+                    </div>
+                    <br />
+                    <Button onClick={handleShow}>
+                        Ask Question
+                    </Button>
+                    
+                    <Modal
+                    show={showModal}
+                    onHide={handleClose}
+                    backdrop="static"
+                    keyboard={false}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Select a Topic</Modal.Title>
+                        </Modal.Header>
+                            <ListGroup>
+                            {
+                            topics.length > 0 && (
+                                topics.map((t)=>(
+                                        <ListGroup.Item key={t.topic_id}>
+                                            {t.topic_name}
+                                        </ListGroup.Item>
+                                    ))
+                                )
+                            }
+                            </ListGroup>
+                    <Modal.Body>
+                       
+                        </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                            </Button>
+                        <Button variant="primary">Understood</Button>
+                            </Modal.Footer>
+                    </Modal>
                 {
                     post.length > 0 && (
                         post.map((p)=>(

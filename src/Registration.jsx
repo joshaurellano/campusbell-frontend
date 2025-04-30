@@ -18,10 +18,18 @@ function Registration () {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false)
-
+    const [loading, setLoading] = useState(false);
+    const [validated, setValidated] = useState(false);
+    const [userNameError,setUserNameError] = useState('');
+    const [passWordError, setPassWordError] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [phoneNumberError, setPhoneNumberError] = useState('');
+    const [firstNameError, setFirstNameError] = useState('');
+    const [lastNameError, setLastNameError] = useState('');    
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setValidated(true);
+
         //set loading state to true to trigger spinner to show
         setLoading(true);
         try{
@@ -41,22 +49,42 @@ function Registration () {
             navigate('/login');
         } catch(error) {
             console.error(error.response.data.message)
-            setLoading(false)
-            setError(error.response.data.message);
+            if(error.response.data.message.includes("Username")){
+                setUserNameError(error.response.data.message)
+            }
+            else if(error.response.data.message.includes("Password")){
+                setPassWordError(error.response.data.message)
+            }
+            else if(error.response.data.message.includes("Email")){
+                setEmailError(error.response.data.message)
+            }
+            else if(error.response.data.message.includes("Phone Number")){
+                setPhoneNumberError(error.response.data.message)
+            }
+            else if(error.response.data.message.includes("First Name")){
+                setFirstNameError(error.response.data.message)
+            }
+            else if(error.response.data.message.includes("Last Name")){
+                setLastNameError(error.response.data.message)
+            }
+            
+            setLoading(false);
+
+            // setError(error.response.data.message);
         }
     };
-    const clearField = () => {
-        setUserName('');
-        setPassWord('');
-        setEmail('');
-        setPhoneNumber('');
-        setFirstName('');
-        setLastName('');
-        setError('');
-    }
-    useEffect (() =>{
-        clearField();
-    },[])
+    // const clearField = () => {
+    //     setUserName('');
+    //     setPassWord('');
+    //     setEmail('');
+    //     setPhoneNumber('');
+    //     setFirstName('');
+    //     setLastName('');
+    //     setError('');
+    // }
+    // useEffect (() =>{
+    //     clearField();
+    // },[])
 
     return (
         <>
@@ -81,14 +109,15 @@ function Registration () {
                                 <Card.Body>
                                 <span style={{display:'flex',justifyContent:'center',fontSize:'24px'}}>Register</span>
                                 <span style={{display:'flex',justifyContent:'center',fontWeight:'bold',fontSize:'30px'}}>Campus Bell</span> <br/>
-                                <Form onSubmit = {handleSubmit}>
+                                <Form noValidate validated={validated}onSubmit={handleSubmit}>
                                 <Form.Group controlId = 'formUsername'>
                                     <Form.Label>Username:</Form.Label>
                                     <Form.Control className='form-control-sm rounded-0' 
                                         type='text'
                                         placeholder='Enter username'
                                         value={userName}
-                                        onChange={(e) => setUserName(e.target.value)} required />
+                                        onChange={(e) => setUserName(e.target.value)}isInvalid={!!userNameError} required />
+                                    <Form.Control.Feedback type='invalid'>{userNameError}</Form.Control.Feedback>
                                 </Form.Group> <br/>
 
                             <Form.Group controlId='formPassword'>
@@ -97,7 +126,8 @@ function Registration () {
                                         type='password'
                                         placeholder='Enter your password'
                                         value={passWord}
-                                        onChange={(e) => setPassWord(e.target.value)} required/>
+                                        onChange={(e) => setPassWord(e.target.value)}isInvalid={!!passWordError} required/>
+                                <Form.Control.Feedback type='invalid'>{passWordError}</Form.Control.Feedback>
                             </Form.Group> <br/>
 
                             <Form.Group controlId = 'formFirstName'>
@@ -106,7 +136,8 @@ function Registration () {
                                         type='text'
                                         placeholder='Enter First Name'
                                         value={firstName}
-                                        onChange={(e) => setFirstName(e.target.value)} required />
+                                        onChange={(e) => setFirstName(e.target.value)}isInvalid={!!firstNameError} required />
+                                    <Form.Control.Feedback type='invalid'>{firstNameError}</Form.Control.Feedback>
                                 </Form.Group> <br/>
 
                             <Form.Group controlId = 'formLastName'>
@@ -115,7 +146,8 @@ function Registration () {
                                         type='text'
                                         placeholder='Enter Last Name'
                                         value={lastName}
-                                        onChange={(e) => setLastName(e.target.value)} required />
+                                        onChange={(e) => setLastName(e.target.value)}isInvalid={!!lastNameError} required />
+                                    <Form.Control.Feedback type='invalid'>{lastNameError}</Form.Control.Feedback>
                                 </Form.Group> <br/>
 
                             <Form.Group controlId = 'formEmail'>
@@ -124,7 +156,8 @@ function Registration () {
                                         type='email'
                                         placeholder='Enter email'
                                         value={email}
-                                        onChange={(e) => setEmail(e.target.value)} required />
+                                        onChange={(e) => setEmail(e.target.value)}isInvalid={!!emailError} required />
+                                    <Form.Control.Feedback type='invalid'>{emailError}</Form.Control.Feedback>
                                 </Form.Group> <br/>
 
                             <Form.Group controlId = 'formPhoneNumber'>
@@ -133,7 +166,8 @@ function Registration () {
                                         type='text'
                                         placeholder='Enter phone number'
                                         value={phoneNumber}
-                                        onChange={(e) => setPhoneNumber(e.target.value)} required />
+                                        onChange={(e) => setPhoneNumber(e.target.value)}isInvalid={!!phoneNumberError} required />
+                                    <Form.Control.Feedback type='invalid'>{phoneNumberError}</Form.Control.Feedback>
                                 </Form.Group> <br/>
 
                             <Form.Group controlId='formButton'>
