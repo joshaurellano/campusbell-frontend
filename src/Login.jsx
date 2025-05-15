@@ -7,6 +7,9 @@ import Cookies from 'js-cookie';
 import {Navbar,Container,Button,Form,Row,Col,Spinner,Card} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
+import { FaUserAlt } from "react-icons/fa";
+import { FaLock } from "react-icons/fa";
+
 import {API_ENDPOINT} from './Api';
 
 function Login () {
@@ -77,60 +80,69 @@ function Login () {
     };
 
     return (
-        <> 
-        <Navbar bg='success' data-bs-theme='dark'>
+        <div style={{
+        backgroundImage: "url('https://res.cloudinary.com/dv7ai6yrb/image/upload/v1747197271/students_wccpdv.jpg')" ,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        minHeight:'100vh',
+        width: "100vw",
+        position:"relative",
+        fontFamily: 'Tahoma, sans-serif'
+    }}> 
             <Container>
-                <Navbar.Brand href='#home'> Campus Bell</Navbar.Brand>
-            </Container>
-        </Navbar>
+                <h3 style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>Campus Bell</h3>
+            </Container>  
 
-        <Container>
-            <Row className = 'justify-content-md-center'>
-                
+        <Container fluid style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+            <Row>
                 <Col md={6} sm={12}>
-                <div className = 'login-form'>
-                    <div className = 'container'>
-                        <div className = 'card-body login-card-body'>
-                            <br />
-                            <Card>
-                                <Card.Body>
-                                <span style={{display:'flex',justifyContent:'center',fontSize:'24px'}}>Login to</span>
-                                <span style={{display:'flex',justifyContent:'center',fontWeight:'bold',fontSize:'30px'}}>Campus Bell</span> <br/>
-                                <Form noValidate validated={validated}onSubmit={handleSubmit}>
-                                <Form.Group controlId = 'formUsername'>
-                                    <Form.Label>Username:</Form.Label>
-                                    <Form.Control className='form-control-sm rounded-0' 
+                    <div>
+                        <br />
+                        <Card style={{
+                            backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                            border:'1px solid', 
+                            borderRadius:'25px',
+                            zIndex:'1',
+                            minWidth:'320px',
+                            maxWidth:'400px',
+                            backdropFilter: 'blur(3px)'}}>
+                            <Card.Body> 
+                            <span style={{fontSize:'24px',fontWeight:'bold', display:'flex', justifyContent:'center'}}>Login</span>
+                            <span className='mt-3'style={{fontSize:'14px', fontWeight:'bold', display:'flex', justifyContent:'center', opacity:'0.9'}}>Connecting students across campus</span>
+                            <Form noValidate validated={validated}onSubmit={handleSubmit} style={{width:'100%'}}>
+                            
+                            <Form.Group controlId = 'formUsername' className='mt-3'> 
+                                <Form.Label><FaUserAlt /> Username:</Form.Label>
+                                <Form.Control 
                                         type='text'
                                         placeholder='Enter username'
                                         value={username}
-                                        onChange={(e) => setUsername(e.target.value)}isInvalid={!!usernameError} required />
-                                    <Form.Control.Feedback type='invalid'>{usernameError}</Form.Control.Feedback>
-                                </Form.Group> <br/>
+                                        onChange={(e) => setUsername(e.target.value)}isInvalid={!!usernameError}
+                                        style={{borderRadius:'25px'}}
+                                        required />
+                                <Form.Control.Feedback type='invalid'>{usernameError}</Form.Control.Feedback>
+                            </Form.Group> <br/>
 
                             <Form.Group controlId='formPassword'>
-                                <Form.Label>Password:</Form.Label>
-                                <Form.Control className='form-control-sm-rounded-0'
+                                <Form.Label>🔒 Password:</Form.Label>
+                                <Form.Control
                                         type='password'
                                         placeholder='Enter your password'
                                         value={password}
-                                        onChange={(e) => setPassword(e.target.value)}isInvalid={!!passwordError} required/>
+                                        onChange={(e) => setPassword(e.target.value)}isInvalid={!!passwordError} 
+                                        style={{borderRadius:'25px'}}
+                                        required/>
                                         <Form.Control.Feedback type='invalid'>{passwordError}</Form.Control.Feedback>
                             </Form.Group> <br/>
-                            
-                            <Form.Group>
-                                <Link to ='/register' onClick={() => {
-                                    setUsername('');
-                                    setPassword('')}}>
-                                    <span style={{fontSize:'15px'}}>Sign Up for an Account?</span>
-                                </Link>
-                            </Form.Group>
-                            <br />
-
-                            <Form.Group controlId='formButton'>
+   
+                            <Form.Group controlId='formButton'style={{display:'flex', justifyContent:'center'}}>
                                 {error && <p style={{color:'red'}}>{error}</p>}
 
-                                <Button variant='success' className='btn btn-block bg-customer btn-flat rounded-0' 
-                                size='sm' block='block' type='submit' disabled={loading}>
+                                <Button  
+                                type='submit'
+                                style={{maxWidth:'250px', borderRadius:'25px', backgroundColor:'#008000'}}
+                                disabled={loading} >
                                     {loading ? (
                                         <>
                                             <Spinner
@@ -144,18 +156,25 @@ function Login () {
                                     ) : ('Login')}
                                 </Button>
                             </Form.Group>
+                             <br />
+                             <Form.Group style={{display:'flex', justifyContent:'center'}}>
+                                <Link to ='/register' onClick={() => {
+                                    setUsername('');
+                                    setPassword('')}}>
+                                    <span style={{fontSize:'15px'}}>Sign Up for an Account?</span>
+                                </Link>
+                            </Form.Group>
+                            <br />
                             </Form>
                                 </Card.Body>
                             </Card>
                         </div>
-                    </div>
-                </div>
             </Col>
 
             
             </Row>
         </Container>
-        </>
+        </div>
     )
 }
 export default Login;

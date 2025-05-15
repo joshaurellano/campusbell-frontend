@@ -66,7 +66,13 @@ function Post () {
             // console.log(data.result)
         })
     }
-    
+const createPost = async () => {
+        console.log(id);
+        await axios.post(`${API_ENDPOINT}post`,{withCredentials: true}).then(({data})=>{
+            setPost(data.result)
+            console.log(data.result)
+        })
+    }
     const getPost = async () => {
         console.log(id);
         await axios.get(`${API_ENDPOINT}post/${id}`,{withCredentials: true}).then(({data})=>{

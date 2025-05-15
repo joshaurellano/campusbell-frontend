@@ -63,6 +63,7 @@ function Home () {
             // console.log(data.result)
         })
     }
+  
     const getPosts = async () => {
         await axios.get(`${API_ENDPOINT}post`,{withCredentials: true}).then(({data})=>{
             setPost(data.result)
@@ -76,10 +77,9 @@ function Home () {
     
     return (
     <>
-    <Navbar bg='success' data-bs-theme='dark'>
+    {/* <Navbar bg='success' data-bs-theme='dark'>
         <Container fluid>
             <Navbar.Brand>Campus Bell</Navbar.Brand>
-            {/* Search bar */}
             <Nav>
             <Stack direction='horizontal' gap={3}>
                     <Form.Control className='me-auto' placeholder='Search' />
@@ -94,11 +94,12 @@ function Home () {
                 </NavDropdown>
             </Nav>
         </Container>
-    </Navbar>
+    </Navbar> */}
 
     <Container fluid> 
         <Row>
-            <Col lg={3} gap='0'>
+
+            <Col lg={2} gap='0' >
             <Nav className='ms-auto flex-column'>
                 <Nav.Link className='navLinkColor'>Home</Nav.Link>
                 <Nav.Link className='navLinkColor'>Featured</Nav.Link> 
@@ -116,133 +117,13 @@ function Home () {
                 </Nav>
             </Col>
             <Col lg={6} className='colDivider'>
-            <br />
-                <Container style={{color:'black'}}>
-                    <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-                        <span>
-                            <h3>Welcome to Campus Bell</h3>
-                        </span>
-                    </div>
-                    <br />
-                    <span style={{fontWeight:'bold', opacity:'0.8'}}>
-                        <img src="https://res.cloudinary.com/dv7ai6yrb/image/upload/v1746011634/giphy_lkeedr.gif" 
-                        alt='emote' 
-                        height="20px"
-                        width="20px" />
-                        <img src="https://res.cloudinary.com/dv7ai6yrb/image/upload/v1746011634/giphy_lkeedr.gif" 
-                        alt='emote' 
-                        height="20px"
-                        width="20px" />
-                        shoutbox
-                        <img src="https://res.cloudinary.com/dv7ai6yrb/image/upload/v1746011634/giphy_lkeedr.gif" 
-                        alt='emote' 
-                        height="20px"
-                        width="20px" />
-                        <img src="https://res.cloudinary.com/dv7ai6yrb/image/upload/v1746011634/giphy_lkeedr.gif" 
-                        alt='emote' 
-                        height="20px"
-                        width="20px" />
-                        </span>
-                    <div>
-                        <Card style={{height:'10rem',display:'flex',flexDirection:'column'}}>
-                            <Row style={{height:'4rem'}}>
-                                <span>
-                                    This is a sample text
-                                </span>
-                            </Row>
-                            <Row style={{display:'flex', flex:'1'}}>
-                            
-                            <Form style={{display:'flex', flex:'1',flexDirection:'column'}}>
-                                <Form.Group style={{width:'100%', height:'100%'}}>
-                                    <Form.Control style={{flex:'1',width:'100%',height:'100%'}}>
-                                        
-                                    </Form.Control>
-                                </Form.Group>
-
-                                <Button className="p-2 ms-auto"style={{width:'5rem'}}>Post</Button>
-                            </Form>
-                            </Row>
-                        </Card>
-                    </div>
-                    <br />
-                    <Button onClick={handleShow}>
-                        Ask Question
-                    </Button>
-                    
-                    <Modal
-                    show={showModal}
-                    onHide={handleClose}
-                    backdrop="static"
-                    keyboard={false}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Select a Topic</Modal.Title>
-                        </Modal.Header>
-                            <ListGroup>
-                            {
-                            topics.length > 0 && (
-                                topics.map((t)=>(
-                                        <ListGroup.Item key={t.topic_id}>
-                                            {t.topic_name}
-                                        </ListGroup.Item>
-                                    ))
-                                )
-                            }
-                            </ListGroup>
-                    <Modal.Body>
-                       
-                        </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                            </Button>
-                        <Button variant="primary">Understood</Button>
-                            </Modal.Footer>
-                    </Modal>
-                {
-                    post.length > 0 && (
-                        post.map((p)=>(
-                            <div>
-                            <Card key={p.postID}>
-                                <Card.Header>
-                                <span style={{fontSize:'30px',fontWeight:'bold'}}>{p.title}</span><br />
-                                <span style ={{fontSize:'13px'}}>by {p.username}</span><br />
-                                <span>{new Date(p.date_posted).toLocaleDateString()}</span>
-                                </Card.Header>
-                                <Card.Body>
-                                {p.content}
-                                </Card.Body>
-                               
-                                <Card.Body>
-                                    <Button variant='outline-success' onClick={() => getSpecificPost(p.postID)}>
-                                        Comments {p.commentCount}
-                                    </Button>
-
-                                    
-                                </Card.Body>
-
-
-                            </Card>
-                            <br />
-                            </div>
-                        ))
-                    )
-                }
-
-                </Container>
-                <br />
+                <h3 style={{color:'black'}}>Dashboard</h3>
+                <br /><br /><br />
+                <span className='d-flex justify-content-center' style={{height:'100vh'}}><strong style={{color:'black'}}>Welcome {user ? `${user.username}`:'Guest'}</strong></span>
             </Col>
 
             <Col lg={3}>
-                <Card border="success" style={{ width: '18rem' }}>
-                    <Card.Header>Header</Card.Header>
-                    <Card.Body>
-                    <Card.Title>Success Card Title</Card.Title>
-                    <Card.Text>
-                        Some quick example text to build on the card title and make up the
-                        bulk of the card's content.
-                    </Card.Text>
-                    </Card.Body>
-                </Card>
+                
             </Col>
             </Row>
         </Container>
