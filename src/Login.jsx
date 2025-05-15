@@ -75,7 +75,7 @@ function Login () {
                 setPasswordError(error.response.data.message);
             }
             setLoading(false)
-            // setError(error.response.data.message);
+            setError(error.response.data.message);
         }
     };
 
@@ -132,26 +132,26 @@ function Login () {
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}isInvalid={!!passwordError} 
                                         style={{borderRadius:'25px'}}
-                                        required/>
+                                        required />
                                         <Form.Control.Feedback type='invalid'>{passwordError}</Form.Control.Feedback>
                             </Form.Group> <br/>
    
                             <Form.Group controlId='formButton'style={{display:'flex', justifyContent:'center'}}>
-                                {error && <p style={{color:'red'}}>{error}</p>}
 
                                 <Button  
                                 type='submit'
-                                style={{maxWidth:'250px', borderRadius:'25px', backgroundColor:'#008000'}}
+                                style={{width:'250px', borderRadius:'25px', backgroundColor:'#008000'}}
                                 disabled={loading} >
                                     {loading ? (
                                         <>
                                             <Spinner
                                             as="span"
-                                            animation="grow"
+                                            animation="border"
                                             size="sm"
                                             role="status"
                                             aria-hidden="true"
-                                            /> <span>Loading</span>
+                                            />
+                                             <span>Please wait ...</span>
                                         </> 
                                     ) : ('Login')}
                                 </Button>
