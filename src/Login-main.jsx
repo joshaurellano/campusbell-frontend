@@ -4,7 +4,7 @@ import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 import Cookies from 'js-cookie';
 
-import {Navbar,Container,Button,Form,Row,Col,Spinner,Card,FloatingLabel} from 'react-bootstrap';
+import {Navbar,Container,Button,Form,Row,Col,Spinner,Card} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 import { FaUserAlt } from "react-icons/fa";
@@ -104,54 +104,39 @@ function Login () {
                         <Card style={{
                             backgroundColor: 'rgba(255, 255, 255, 0.4)',
                             border:'1px solid', 
-                            borderRadius:'15px',
+                            borderRadius:'25px',
                             zIndex:'1',
                             minWidth:'320px',
                             maxWidth:'400px',
                             backdropFilter: 'blur(3px)'}}>
                             <Card.Body> 
                             <span style={{fontSize:'24px',fontWeight:'bold', display:'flex', justifyContent:'center'}}>Login</span>
-                            <span className='mt-3'style={{fontSize:'14px', fontWeight:'600', display:'flex', justifyContent:'center', opacity:'0.9'}}>Connecting students across campus</span>
+                            <span className='mt-3'style={{fontSize:'14px', fontWeight:'bold', display:'flex', justifyContent:'center', opacity:'0.9'}}>Connecting students across campus</span>
                             <Form noValidate validated={validated}onSubmit={handleSubmit} style={{width:'100%'}}>
                             
-                            <div>
                             <Form.Group controlId = 'formUsername' className='mt-3'> 
-                                <FloatingLabel style={{fontSize:'12px'}}
-                                    label="Enter Username or Email"
-                                    controlId="floatingInput"
-                                    >
-                                    
+                                <Form.Label><FaUserAlt /> Username:</Form.Label>
                                 <Form.Control 
                                         type='text'
-                                        placeholder=' '
+                                        placeholder='Enter username'
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}isInvalid={!!usernameError}
-                                        style={{borderRadius:'10px',fontSize:'12px'}}
+                                        style={{borderRadius:'10px', fontSize:'13px'}}
                                         required />
                                 <Form.Control.Feedback type='invalid'>{usernameError}</Form.Control.Feedback>
-                                </FloatingLabel>
-                            </Form.Group>
-                            </div>
+                            </Form.Group> <br/>
 
-                            <div>
-                            <Form.Group controlId='formPassword' className='mt-3'>
-                                <FloatingLabel style={{fontSize:'12px'}}
-                                    label="🔒 Password"
-                                    controlId="floatingPassword"
-                                >
+                            <Form.Group controlId='formPassword'>
+                                <Form.Label>🔒 Password:</Form.Label>
                                 <Form.Control
                                         type='password'
-                                        placeholder=' '
+                                        placeholder='Enter your password'
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}isInvalid={!!passwordError} 
-                                        style={{borderRadius:'10px', fontSize:'12px'}}
+                                        style={{borderRadius:'10px', fontSize:'13px'}}
                                         required />
                                         <Form.Control.Feedback type='invalid'>{passwordError}</Form.Control.Feedback>
-                                </FloatingLabel>
-                            </Form.Group>
-                            </div>
-                             <br/>
-                            
+                            </Form.Group> <br/>
    
                             <Form.Group controlId='formButton'style={{display:'flex', justifyContent:'center'}}>
 
