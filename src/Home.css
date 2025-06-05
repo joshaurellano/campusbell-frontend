@@ -1,6 +1,6 @@
 .navLinkColor {
     text-decoration: none;  
-    color: black
+    color: white
 }
 .colDivider {
     border-left: 1px solid;
@@ -9,3 +9,10 @@
 .titleDesign {
     font-weight: bold;
 }
+
+ #oval {
+      width: 120px;
+      height: 40px;
+      background: gray;
+      border-radius:  50px;
+    }

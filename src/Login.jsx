@@ -12,6 +12,8 @@ import { FaLock } from "react-icons/fa";
 
 import {API_ENDPOINT} from './Api';
 
+import './Login.css';
+
 function Login () {
     const navigate = useNavigate();
     const [user,setUser] = useState(null);
@@ -80,7 +82,8 @@ function Login () {
     };
 
     return (
-        <div style={{
+        <div className='edu-sa-hand-bodyFont'
+        style={{
         backgroundImage: "url('https://res.cloudinary.com/dv7ai6yrb/image/upload/v1747197271/students_wccpdv.jpg')" ,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
@@ -88,10 +91,9 @@ function Login () {
         minHeight:'100vh',
         width: "100vw",
         position:"relative",
-        fontFamily: 'Tahoma, sans-serif'
     }}> 
             <Container>
-                <h3 style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>Campus Bell</h3>
+                <h3 style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black', }}>Campus Bell</h3>
             </Container>  
 
         <Container fluid style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
@@ -119,7 +121,7 @@ function Login () {
                                         placeholder='Enter username'
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}isInvalid={!!usernameError}
-                                        style={{borderRadius:'25px'}}
+                                        style={{borderRadius:'10px', fontSize:'13px'}}
                                         required />
                                 <Form.Control.Feedback type='invalid'>{usernameError}</Form.Control.Feedback>
                             </Form.Group> <br/>
@@ -131,7 +133,7 @@ function Login () {
                                         placeholder='Enter your password'
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}isInvalid={!!passwordError} 
-                                        style={{borderRadius:'25px'}}
+                                        style={{borderRadius:'10px', fontSize:'13px'}}
                                         required />
                                         <Form.Control.Feedback type='invalid'>{passwordError}</Form.Control.Feedback>
                             </Form.Group> <br/>
@@ -140,7 +142,7 @@ function Login () {
 
                                 <Button  
                                 type='submit'
-                                style={{width:'250px', borderRadius:'25px', backgroundColor:'#008000'}}
+                                style={{width:'250px', borderRadius:'10px', backgroundColor:'#008000'}}
                                 disabled={loading} >
                                     {loading ? (
                                         <>
