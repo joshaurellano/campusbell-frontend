@@ -8,7 +8,7 @@ import {Navbar,Container,Button,Form,Row,Col,Spinner,Card,FloatingLabel} from 'r
 import {Link} from 'react-router-dom';
 
 import { FaUserAlt } from "react-icons/fa";
-import { FaLock } from "react-icons/fa";
+import { FaKey } from "react-icons/fa";
 
 import {API_ENDPOINT} from './Api';
 
@@ -117,7 +117,13 @@ function Login () {
                             <div>
                             <Form.Group controlId = 'formUsername' className='mt-3'> 
                                 <FloatingLabel style={{fontSize:'12px'}}
-                                    label="Enter Username or Email"
+                                    label={
+                                        <>
+                                            <div>
+                                            <FaUserAlt /> Username
+                                            </div>
+                                        </>
+                                        }
                                     controlId="floatingInput"
                                     >
                                     
@@ -136,12 +142,19 @@ function Login () {
                             <div>
                             <Form.Group controlId='formPassword' className='mt-3'>
                                 <FloatingLabel style={{fontSize:'12px'}}
-                                    label="🔒 Password"
+                                    label={
+                                        <>
+                                            <FaKey style={{color:'#eda305'}}/> Password
+                                        </>
+ 
+                                    }
+                                    
+                                    
                                     controlId="floatingPassword"
                                 >
                                 <Form.Control
                                         type='password'
-                                        placeholder=' '
+                                        placeholder=''
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}isInvalid={!!passwordError} 
                                         style={{borderRadius:'10px', fontSize:'12px'}}
