@@ -8,6 +8,7 @@ import {Navbar,Nav,Container,Button,Form,Row,Col,Spinner,Card} from 'react-boots
 import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
+import './Registration.css';
 
 function Registration () {
     const navigate = useNavigate();
@@ -76,16 +77,18 @@ function Registration () {
 
     return (
         <div style={{
-                // backgroundImage: "url('https://res.cloudinary.com/dv7ai6yrb/image/upload/v1749185659/element5-digital-jCIMcOpFHig-unsplash_yjxbqj.jpg')" ,
+                backgroundImage: "url('https://res.cloudinary.com/dv7ai6yrb/image/upload/v1749185659/element5-digital-jCIMcOpFHig-unsplash_yjxbqj.jpg')" ,
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
                 minHeight:'100vh',
-                width: "100%",}}>
+                width: "100%",
+                position:'relative'}}>
+            <div className='overlay'>``
         <Navbar data-bs-theme='dark'>
             <Container>
                 <Navbar.Brand>
-                    <Nav.Link as={Link} to='/login' style={{color:'black',fontWeight:'bold'}}>
+                    <Nav.Link as={Link} to='/login' style={{color:'white',textShadow:'1px 1px black',fontWeight:'bold'}}>
                         Campus Bell
                     </Nav.Link>
                 </Navbar.Brand>
@@ -94,16 +97,19 @@ function Registration () {
 
         <Container>
             <Row className = 'justify-content-md-center'>
-                <Col md={6} sm={12}>
-                <div className='d-flex flex-column' style={{gap:'16px', height:'100vh', justifyContent:'center'}}>
+                <Col md={6} sm={12} style={{color:'white',}}>
+                <div className='d-flex flex-column' style={{
+                    gap:'16px',
+                    height:'100vh',
+                    justifyContent:'center'}}>
                     <br />
                     <div>
-                        <h2 style={{fontWeight:'bold', fontSize:'32px'}}>Helping each students Grow and Build Together</h2>
+                        <h2 style={{fontWeight:'bold', fontSize:'32px',textShadow: '1px 1px black'}}>Helping each students Grow and Build Together</h2>
                     </div>
                     <div style={{marginTop:'8px'}}>
-                        <span style={{fontWeight:'600', fontSize:'20px'}}>Built for students. By students</span>
+                        <span style={{fontWeight:'600', fontSize:'20px',textShadow: '1px 1px black'}}>Built for students. By students</span>
                     </div>
-                    <div style={{marginTop:'8px', fontSize:'18px'}} >
+                    <div style={{marginTop:'8px', fontSize:'18px',textShadow: '1px 1px black'}} >
                         <span>
                             Find Answers 
                         </span>
@@ -117,13 +123,13 @@ function Registration () {
                         </span>
                     </div>
                     <div style={{marginTop:'8px'}}>
-                        <span style={{fontWeight:'600', fontSize:'20px'}}>
+                        <span style={{fontWeight:'600', fontSize:'20px',textShadow: '1px 1px black'}}>
                             A safe space to ask anything. Let your thoughts be heard
                         </span>
                     </div>
-                    <div style={{marginTop:'8px'}}>
+                    <div style={{marginTop:'8px',textShadow: '1px 1px black'}}>
                         <span>
-                            Already have an Account? Login <Link to={'/login'}> Here </Link>
+                            Already have an Account? Login <span style={{textShadow:'none'}}><Link to={'/login'}> Here </Link></span>
                         </span>
                     </div>
                 </div>
@@ -133,12 +139,7 @@ function Registration () {
                     <div className='container'>
                         <div>
                             <br />
-                            <Card style={{boxShadow:'2px 2px 3px', 
-                            backgroundColor: 'rgba(255, 255, 255, 0.4)',
-                            border:'1px solid', 
-                            borderRadius:'15px',
-                            zIndex:'1',
-                            backdropFilter: 'blur(3px)',}}>
+                            <Card >
                                 <Card.Body>
                                 <span style={{display:'flex',justifyContent:'center',fontSize:'24px'}}>Register</span>
                                 <span style={{display:'flex',justifyContent:'center',fontWeight:'bold',fontSize:'30px'}}>Campus Bell</span> <br/>
@@ -240,6 +241,7 @@ function Registration () {
             
             </Row>
         </Container>
+        </div>
         </div>
     )
 }
