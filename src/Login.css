@@ -1,7 +1,19 @@
 .edu-sa-hand-bodyFont {
-     font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
   font-variation-settings:"wdth" 100;
+}
+.btn-main {
+  width: 100%;
+  border-radius: 10px;
+  background-color: #008000;
+  border-style: none;
+}
+.btn-main:hover {
+  width: 100%;
+  border-radius: 10px;
+  background-color: #4c9a47;
+  transform: scale(1.03);
 }

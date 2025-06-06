@@ -107,10 +107,10 @@ function Login () {
                             borderRadius:'15px',
                             zIndex:'1',
                             minWidth:'320px',
-                            maxWidth:'400px',
+                            maxWidth:'350px',
                             backdropFilter: 'blur(3px)'}}>
                             <Card.Body> 
-                            <span style={{fontSize:'24px',fontWeight:'bold', display:'flex', justifyContent:'center'}}>Login</span>
+                            <span style={{fontSize:'24px',fontWeight:'bold', display:'flex', justifyContent:'center'}}>Sign In</span>
                             <span className='mt-3'style={{fontSize:'14px', fontWeight:'600', display:'flex', justifyContent:'center', opacity:'0.9'}}>Connecting students across campus</span>
                             <Form noValidate validated={validated}onSubmit={handleSubmit} style={{width:'100%'}}>
                             
@@ -126,13 +126,12 @@ function Login () {
                                         }
                                     controlId="floatingInput"
                                     >
-                                    
                                 <Form.Control 
                                         type='text'
                                         placeholder=' '
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}isInvalid={!!usernameError}
-                                        style={{borderRadius:'10px',fontSize:'12px'}}
+                                        style={{borderRadius:'10px',fontSize:'12px', height:'40px',  padding: '12px 10px 6px'}}
                                         required />
                                 <Form.Control.Feedback type='invalid'>{usernameError}</Form.Control.Feedback>
                                 </FloatingLabel>
@@ -144,14 +143,12 @@ function Login () {
                                 <FloatingLabel style={{fontSize:'12px'}}
                                     label={
                                         <>
+                                            <div>
                                             <FaKey style={{color:'#eda305'}}/> Password
+                                            </div>
                                         </>
- 
                                     }
-                                    
-                                    
-                                    controlId="floatingPassword"
-                                >
+                                    controlId="floatingPassword">
                                 <Form.Control
                                         type='password'
                                         placeholder=''
@@ -168,12 +165,10 @@ function Login () {
    
                             <Form.Group controlId='formButton'style={{display:'flex', justifyContent:'center'}}>
 
-                                <Button  
-                                type='submit'
-                                style={{width:'250px', borderRadius:'10px', backgroundColor:'#008000'}}
+                                <Button type="submit" variant='success' className='btn-main'
                                 disabled={loading} >
                                     {loading ? (
-                                        <>
+                                        <div>
                                             <Spinner
                                             as="span"
                                             animation="border"
@@ -182,17 +177,15 @@ function Login () {
                                             aria-hidden="true"
                                             />
                                              <span>Please wait ...</span>
-                                        </> 
+                                        </div> 
                                     ) : ('Login')}
                                 </Button>
                             </Form.Group>
                              <br />
-                             <Form.Group style={{display:'flex', justifyContent:'center'}}>
-                                <Link to ='/register' onClick={() => {
-                                    setUsername('');
-                                    setPassword('')}}>
-                                    <span style={{fontSize:'15px'}}>Sign Up for an Account?</span>
-                                </Link>
+                             <Form.Group style={{display:'flex', justifyContent:'center',}}>
+                                <span style={{fontSize:'12px'}}>
+                                    New User? <Link to ='/register'>Sign Up for an Account</Link>
+                                </span>
                             </Form.Group>
                             <br />
                             </Form>
