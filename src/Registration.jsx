@@ -149,7 +149,7 @@ function Registration () {
                                     <Form.Control 
                                         type='text' 
                                         style={{borderRadius:'10px'}}
-                                        placeholder='Enter username'
+                                        placeholder='johnSmith123'
                                         value={userName}
                                         onChange={(e) => setUserName(e.target.value)}isInvalid={!!userNameError} required />
                                     <Form.Control.Feedback type='invalid'>{userNameError}</Form.Control.Feedback>
@@ -171,7 +171,7 @@ function Registration () {
                                     <Form.Control 
                                         type='text'
                                         style={{borderRadius:'10px'}}
-                                        placeholder='Enter First Name'
+                                        placeholder='John'
                                         value={firstName}
                                         onChange={(e) => setFirstName(e.target.value)}isInvalid={!!firstNameError} required />
                                     <Form.Control.Feedback type='invalid'>{firstNameError}</Form.Control.Feedback>
@@ -182,7 +182,7 @@ function Registration () {
                                     <Form.Control 
                                         type='text'
                                         style={{borderRadius:'10px'}}
-                                        placeholder='Enter Last Name'
+                                        placeholder='Smith'
                                         value={lastName}
                                         onChange={(e) => setLastName(e.target.value)}isInvalid={!!lastNameError} required />
                                     <Form.Control.Feedback type='invalid'>{lastNameError}</Form.Control.Feedback>
@@ -193,7 +193,7 @@ function Registration () {
                                     <Form.Control
                                         type='email'
                                         style={{borderRadius:'10px'}}
-                                        placeholder='Enter email'
+                                        placeholder='someone@email.com'
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}isInvalid={!!emailError} required />
                                     <Form.Control.Feedback type='invalid'>{emailError}</Form.Control.Feedback>
@@ -204,7 +204,7 @@ function Registration () {
                                     <Form.Control 
                                         type='text'
                                         style={{borderRadius:'10px'}}
-                                        placeholder='Enter phone number'
+                                        placeholder='09123456789'
                                         value={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}isInvalid={!!phoneNumberError} required />
                                     <Form.Control.Feedback type='invalid'>{phoneNumberError}</Form.Control.Feedback>
