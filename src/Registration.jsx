@@ -84,7 +84,7 @@ function Registration () {
                 minHeight:'100vh',
                 width: "100%",
                 position:'relative'}}>
-            <div className='overlay'>``
+            <div className='overlay'>
         <Navbar data-bs-theme='dark'>
             <Container>
                 <Navbar.Brand>

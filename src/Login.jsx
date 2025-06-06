@@ -4,7 +4,7 @@ import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 import Cookies from 'js-cookie';
 
-import {Navbar,Container,Button,Form,Row,Col,Spinner,Card,FloatingLabel} from 'react-bootstrap';
+import {Nav,Navbar,Container,Button,Form,Row,Col,Spinner,Card,FloatingLabel} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 import { FaUserAlt } from "react-icons/fa";
@@ -92,9 +92,15 @@ function Login () {
         width: "100vw",
         position:"relative",
     }}> 
+        <Navbar data-bs-theme='dark'>
             <Container>
-                <h3 style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black', }}>Campus Bell</h3>
-            </Container>  
+            <Navbar.Brand>
+            <Nav.Link as={Link} to='/login' style={{color:'white',textShadow:'1px 1px black',fontWeight:'bold'}}>
+            Campus Bell
+            </Nav.Link>
+            </Navbar.Brand>
+            </Container>
+        </Navbar>
 
         <Container fluid style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
             <Row>
@@ -109,13 +115,17 @@ function Login () {
                             minWidth:'320px',
                             maxWidth:'350px',
                             backdropFilter: 'blur(3px)'}}>
-                            <Card.Body> 
+                            <Card.Body>
+                            <div style={{marginTop:'12px'}}>
                             <span style={{fontSize:'24px',fontWeight:'bold', display:'flex', justifyContent:'center'}}>Sign In</span>
-                            <span className='mt-3'style={{fontSize:'14px', fontWeight:'600', display:'flex', justifyContent:'center', opacity:'0.9'}}>Connecting students across campus</span>
+                            </div>
+                            <div style={{marginTop:'4px'}}>
+                            <span style={{fontSize:'16px', fontWeight:'600', display:'flex', justifyContent:'center', opacity:'0.9'}}>Connecting students across campus</span>
+                            </div>
                             <Form noValidate validated={validated}onSubmit={handleSubmit} style={{width:'100%'}}>
                             
-                            <div>
-                            <Form.Group controlId = 'formUsername' className='mt-3'> 
+                            <div style={{marginTop:'16px'}}>
+                            <Form.Group controlId = 'formUsername'> 
                                 <FloatingLabel style={{fontSize:'12px'}}
                                     label={
                                         <>
@@ -131,15 +141,15 @@ function Login () {
                                         placeholder=' '
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}isInvalid={!!usernameError}
-                                        style={{borderRadius:'10px',fontSize:'12px', height:'40px',  padding: '12px 10px 6px'}}
+                                        style={{borderRadius:'10px',fontSize:'16px'}}
                                         required />
                                 <Form.Control.Feedback type='invalid'>{usernameError}</Form.Control.Feedback>
                                 </FloatingLabel>
                             </Form.Group>
                             </div>
 
-                            <div>
-                            <Form.Group controlId='formPassword' className='mt-3'>
+                            <div style={{marginTop:'20px'}}>
+                            <Form.Group controlId='formPassword'>
                                 <FloatingLabel style={{fontSize:'12px'}}
                                     label={
                                         <>
@@ -160,11 +170,15 @@ function Login () {
                                 </FloatingLabel>
                             </Form.Group>
                             </div>
-                             <br/>
-                            
-   
+                            <div style={{marginTop:'16px'}}>
+                             <Form.Group>
+                                <span style={{fontSize:'12px'}}>
+                                    Forgot Password? <Link>Click Here</Link>
+                                </span>
+                            </Form.Group>
+                            </div>
+                            <div style={{marginTop:'20px'}}>                        
                             <Form.Group controlId='formButton'style={{display:'flex', justifyContent:'center'}}>
-
                                 <Button type="submit" variant='success' className='btn-main'
                                 disabled={loading} >
                                     {loading ? (
@@ -180,21 +194,21 @@ function Login () {
                                         </div> 
                                     ) : ('Login')}
                                 </Button>
+
                             </Form.Group>
-                             <br />
+                            </div> 
+                             <div style={{marginTop:'24px', marginBottom:'24px'}}>
                              <Form.Group style={{display:'flex', justifyContent:'center',}}>
                                 <span style={{fontSize:'12px'}}>
                                     New User? <Link to ='/register'>Sign Up for an Account</Link>
                                 </span>
                             </Form.Group>
-                            <br />
+                            </div>
                             </Form>
                                 </Card.Body>
                             </Card>
                         </div>
             </Col>
-
-            
             </Row>
         </Container>
         </div>
