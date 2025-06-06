@@ -73,25 +73,19 @@ function Registration () {
             // setError(error.response.data.message);
         }
     };
-    // const clearField = () => {
-    //     setUserName('');
-    //     setPassWord('');
-    //     setEmail('');
-    //     setPhoneNumber('');
-    //     setFirstName('');
-    //     setLastName('');
-    //     setError('');
-    // }
-    // useEffect (() =>{
-    //     clearField();
-    // },[])
 
     return (
-        <>
-        <Navbar bg='success' data-bs-theme='dark'>
+        <div style={{
+                // backgroundImage: "url('https://res.cloudinary.com/dv7ai6yrb/image/upload/v1749185659/element5-digital-jCIMcOpFHig-unsplash_yjxbqj.jpg')" ,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                minHeight:'100vh',
+                width: "100%",}}>
+        <Navbar data-bs-theme='dark'>
             <Container>
                 <Navbar.Brand>
-                    <Nav.Link as={Link} to='/login'>
+                    <Nav.Link as={Link} to='/login' style={{color:'black',fontWeight:'bold'}}>
                         Campus Bell
                     </Nav.Link>
                 </Navbar.Brand>
@@ -101,11 +95,53 @@ function Registration () {
         <Container>
             <Row className = 'justify-content-md-center'>
                 <Col md={6} sm={12}>
+                <div className='d-flex flex-column' style={{gap:'16px'}}>
+                    <br />
+                    <div>
+                        <h2 style={{fontWeight:'bold', fontSize:'32px'}}>Helping each students Grow and Build Together</h2>
+                    </div>
+                    <div style={{marginTop:'8px'}}>
+                        <span style={{fontWeight:'600', fontSize:'20px'}}>Built for students. By students</span>
+                    </div>
+                    <div style={{marginTop:'8px', fontSize:'18px'}} >
+                        <span>
+                            Find Answers 
+                        </span>
+                        <br/>
+                        <span>
+                            Share Knowledge 
+                        </span>
+                        <br/>
+                        <span>
+                            Create something great, together
+                        </span>
+                    </div>
+                    <div style={{marginTop:'8px'}}>
+                        <span style={{fontWeight:'600', fontSize:'20px'}}>
+                            A safe space to ask anything. Let your thoughts be heard
+                        </span>
+                    </div>
+                    <div style={{marginTop:'8px'}}>
+                        <span>
+                            Already have an Account? Login <Link to={'/login'}> Here </Link>
+                        </span>
+                    </div>
+
+                </div>
+                   
+                </Col>
+                
+                <Col md={6} sm={12}>
                 <div>
                     <div className='container'>
                         <div>
                             <br />
-                            <Card style={{boxShadow:'2px 2px 3px'}}>
+                            <Card style={{boxShadow:'2px 2px 3px', 
+                            backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                            border:'1px solid', 
+                            borderRadius:'15px',
+                            zIndex:'1',
+                            backdropFilter: 'blur(3px)'}}>
                                 <Card.Body>
                                 <span style={{display:'flex',justifyContent:'center',fontSize:'24px'}}>Register</span>
                                 <span style={{display:'flex',justifyContent:'center',fontWeight:'bold',fontSize:'30px'}}>Campus Bell</span> <br/>
@@ -205,7 +241,7 @@ function Registration () {
             
             </Row>
         </Container>
-        </>
+        </div>
     )
 }
 export default Registration;
