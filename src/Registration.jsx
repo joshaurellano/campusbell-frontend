@@ -139,7 +139,7 @@ function Registration () {
                     <div className='container'>
                         <div>
                             <br />
-                            <Card >
+                            <Card style={{borderRadius:'15px', boxShadow:'2px 2px 2px black'}}>
                                 <Card.Body>
                                 <span style={{display:'flex',justifyContent:'center',fontSize:'24px'}}>Register</span>
                                 <span style={{display:'flex',justifyContent:'center',fontWeight:'bold',fontSize:'30px'}}>Campus Bell</span> <br/>
@@ -149,7 +149,7 @@ function Registration () {
                                     <Form.Label>Username:</Form.Label>
                                     <Form.Control 
                                         type='text' 
-                                        style={{borderRadius:'10px'}}
+                                        style={{border:'none', borderBottom:'1px solid gray',}}
                                         placeholder='johnSmith123'
                                         value={userName}
                                         onChange={(e) => setUserName(e.target.value)}isInvalid={!!userNameError} required />
@@ -160,7 +160,7 @@ function Registration () {
                                 <Form.Label>Password:</Form.Label>
                                 <Form.Control
                                         type='password'
-                                        style={{borderRadius:'10px'}}
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
                                         placeholder='Enter your password'
                                         value={passWord}
                                         onChange={(e) => setPassWord(e.target.value)}isInvalid={!!passWordError} required/>
@@ -171,7 +171,7 @@ function Registration () {
                                     <Form.Label>First Name:</Form.Label>
                                     <Form.Control 
                                         type='text'
-                                        style={{borderRadius:'10px'}}
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
                                         placeholder='John'
                                         value={firstName}
                                         onChange={(e) => setFirstName(e.target.value)}isInvalid={!!firstNameError} required />
@@ -182,7 +182,7 @@ function Registration () {
                                     <Form.Label>Last Name:</Form.Label>
                                     <Form.Control 
                                         type='text'
-                                        style={{borderRadius:'10px'}}
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
                                         placeholder='Smith'
                                         value={lastName}
                                         onChange={(e) => setLastName(e.target.value)}isInvalid={!!lastNameError} required />
@@ -193,7 +193,7 @@ function Registration () {
                                     <Form.Label>Email:</Form.Label>
                                     <Form.Control
                                         type='email'
-                                        style={{borderRadius:'10px'}}
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
                                         placeholder='someone@email.com'
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}isInvalid={!!emailError} required />
@@ -204,7 +204,7 @@ function Registration () {
                                     <Form.Label>Phone Number:</Form.Label>
                                     <Form.Control 
                                         type='text'
-                                        style={{borderRadius:'10px'}}
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
                                         placeholder='09123456789'
                                         value={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}isInvalid={!!phoneNumberError} required />
