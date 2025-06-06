@@ -95,7 +95,7 @@ function Registration () {
         <Container>
             <Row className = 'justify-content-md-center'>
                 <Col md={6} sm={12}>
-                <div className='d-flex flex-column' style={{gap:'16px'}}>
+                <div className='d-flex flex-column' style={{gap:'16px', height:'100vh', justifyContent:'center'}}>
                     <br />
                     <div>
                         <h2 style={{fontWeight:'bold', fontSize:'32px'}}>Helping each students Grow and Build Together</h2>
@@ -126,11 +126,8 @@ function Registration () {
                             Already have an Account? Login <Link to={'/login'}> Here </Link>
                         </span>
                     </div>
-
                 </div>
-                   
                 </Col>
-                
                 <Col md={6} sm={12}>
                 <div>
                     <div className='container'>
@@ -141,15 +138,16 @@ function Registration () {
                             border:'1px solid', 
                             borderRadius:'15px',
                             zIndex:'1',
-                            backdropFilter: 'blur(3px)'}}>
+                            backdropFilter: 'blur(3px)',}}>
                                 <Card.Body>
                                 <span style={{display:'flex',justifyContent:'center',fontSize:'24px'}}>Register</span>
                                 <span style={{display:'flex',justifyContent:'center',fontWeight:'bold',fontSize:'30px'}}>Campus Bell</span> <br/>
+                                <div>
                                 <Form noValidate validated={validated}onSubmit={handleSubmit}>
                                 <Form.Group controlId = 'formUsername'>
                                     <Form.Label>Username:</Form.Label>
                                     <Form.Control 
-                                        type='text'
+                                        type='text' 
                                         style={{borderRadius:'10px'}}
                                         placeholder='Enter username'
                                         value={userName}
@@ -231,6 +229,7 @@ function Registration () {
                                 </Button>
                             </Form.Group>
                             </Form>
+                            </div>
                                 </Card.Body>
                             </Card>
                         </div>
