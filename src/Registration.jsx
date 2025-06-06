@@ -105,15 +105,16 @@ function Registration () {
                     <div className='container'>
                         <div>
                             <br />
-                            <Card>
+                            <Card style={{boxShadow:'2px 2px 3px'}}>
                                 <Card.Body>
                                 <span style={{display:'flex',justifyContent:'center',fontSize:'24px'}}>Register</span>
                                 <span style={{display:'flex',justifyContent:'center',fontWeight:'bold',fontSize:'30px'}}>Campus Bell</span> <br/>
                                 <Form noValidate validated={validated}onSubmit={handleSubmit}>
                                 <Form.Group controlId = 'formUsername'>
                                     <Form.Label>Username:</Form.Label>
-                                    <Form.Control className='form-control-sm rounded-0' 
+                                    <Form.Control 
                                         type='text'
+                                        style={{borderRadius:'10px'}}
                                         placeholder='Enter username'
                                         value={userName}
                                         onChange={(e) => setUserName(e.target.value)}isInvalid={!!userNameError} required />
@@ -122,8 +123,9 @@ function Registration () {
 
                             <Form.Group controlId='formPassword'>
                                 <Form.Label>Password:</Form.Label>
-                                <Form.Control className='form-control-sm-rounded-0'
+                                <Form.Control
                                         type='password'
+                                        style={{borderRadius:'10px'}}
                                         placeholder='Enter your password'
                                         value={passWord}
                                         onChange={(e) => setPassWord(e.target.value)}isInvalid={!!passWordError} required/>
@@ -132,8 +134,9 @@ function Registration () {
 
                             <Form.Group controlId = 'formFirstName'>
                                     <Form.Label>First Name:</Form.Label>
-                                    <Form.Control className='form-control-sm rounded-0' 
+                                    <Form.Control 
                                         type='text'
+                                        style={{borderRadius:'10px'}}
                                         placeholder='Enter First Name'
                                         value={firstName}
                                         onChange={(e) => setFirstName(e.target.value)}isInvalid={!!firstNameError} required />
@@ -142,8 +145,9 @@ function Registration () {
 
                             <Form.Group controlId = 'formLastName'>
                                     <Form.Label>Last Name:</Form.Label>
-                                    <Form.Control className='form-control-sm rounded-0' 
+                                    <Form.Control 
                                         type='text'
+                                        style={{borderRadius:'10px'}}
                                         placeholder='Enter Last Name'
                                         value={lastName}
                                         onChange={(e) => setLastName(e.target.value)}isInvalid={!!lastNameError} required />
@@ -152,8 +156,9 @@ function Registration () {
 
                             <Form.Group controlId = 'formEmail'>
                                     <Form.Label>Email:</Form.Label>
-                                    <Form.Control className='form-control-sm rounded-0' 
+                                    <Form.Control
                                         type='email'
+                                        style={{borderRadius:'10px'}}
                                         placeholder='Enter email'
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}isInvalid={!!emailError} required />
@@ -162,8 +167,9 @@ function Registration () {
 
                             <Form.Group controlId = 'formPhoneNumber'>
                                     <Form.Label>Phone Number:</Form.Label>
-                                    <Form.Control className='form-control-sm rounded-0' 
+                                    <Form.Control 
                                         type='text'
+                                        style={{borderRadius:'10px'}}
                                         placeholder='Enter phone number'
                                         value={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}isInvalid={!!phoneNumberError} required />
@@ -173,8 +179,8 @@ function Registration () {
                             <Form.Group controlId='formButton'>
                                 {error && <p style={{color:'red'}}>{error}</p>}
 
-                                <Button variant='success' className='btn btn-block bg-customer btn-flat rounded-0' 
-                                size='sm' block='block' type='submit' disabled={loading}>
+                                <Button variant='success' style={{borderRadius:'10px', width:'100%'}} 
+                                block='block' type='submit' disabled={loading}>
                                     {loading ? (
                                         <>
                                             <Spinner
