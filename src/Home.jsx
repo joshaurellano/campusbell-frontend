@@ -82,7 +82,7 @@ function Home () {
         getTopics()
         getPosts()
         
-    },[])
+    })
     
     const getTopics = async () => {
             await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
