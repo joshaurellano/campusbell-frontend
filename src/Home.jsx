@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder } from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { CiCirclePlus } from "react-icons/ci";
@@ -81,17 +81,16 @@ function Home () {
             console.log(data.result)
         })
     }
- 
-    
     return (
     <div style={{
         backgroundColor:'black',
         fontFamily: 'Tahoma, sans-serif',
-        width:'100vw'
+        minWidth:'100vw'
     }}>
-    <Navbar data-bs-theme='dark' style={{borderBottom:'solid', }}>
+    <Navbar data-bs-theme='dark' style={{borderBottom:'solid', paddingTop:20, paddingBottom: 0, height:'60px'}}>
         <Container fluid>
             <Row className="w-100 align-items-center">
+            <div className='d-flex justify-content-center' style={{height:'100%'}}>
             <Col>
             <div style={{display:'flex', alignItems:'center'}}>
             <FaBell style={{color:'#ffac33', fontSize:'25px'}} />
@@ -105,7 +104,7 @@ function Home () {
                     position: 'absolute',
                     left:'10px',
                     top: '50%',
-                    transform: 'translateY(-50%)',
+                    transform: 'translateY(-120%)',
                     color: 'gray',
                     pointerEvents: 'none'
                 }} />
@@ -113,11 +112,11 @@ function Home () {
                 </div>
             </Nav>
                 </Col>
-                <Col className="d-flex justify-content-end gap-4" style={{marginTop:'5px', color:'white'}}>
+                <Col className="d-flex justify-content-end align-items-center gap-4" style={{color:'white', paddingLeft:16, paddingTop:4}}>
                     <div style={{display:'flex',alignItems:'center', justifyItems:'center'}}>
                     <Nav className="d-flex justify-content-end gap-4">
                     <Nav.Item>
-                    <div style={{cursor:'pointer'}}>
+                    <div style={{cursor:'pointer', paddingTop:4}}>
                     Post
                     </div>
                         </Nav.Item>
@@ -127,16 +126,26 @@ function Home () {
                     <Nav.Item>
                     <IoIosNotifications style={{fontSize:'30px'}} />
                         </Nav.Item>
-                    <NavDropdown title={<>
-                            <FaUserCircle style={{fontSize:'30px', color:'green'}} />
-                        </>} id="basic-nav-dropdown">
-                            <NavDropdown.Item 
-                            onClick={handleLogout}
-                            style={{left:'auto', right:'0'}}>Logout</NavDropdown.Item>
-                    </NavDropdown>
+                    <Nav.Item>
+                    <div >
+                    <FaUserCircle style={{fontSize:'30px', color:'green',}} />
+                    <Dropdown style={{translate:'8px -25px', zIndex:1}}>
+                    <Dropdown.Toggle id="dropdown-basic" style={{fontSize:'12px',border:'none', backgroundColor:'transparent'}}>
+                        
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu style={{translate:'-128px 0px'}}>
+                        <Dropdown.Item>Settings</Dropdown.Item>
+                        <Dropdown.Item>Profile</Dropdown.Item>
+                        <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                    </Dropdown.Menu>
+                    </Dropdown>
+                    </div>
+                    </Nav.Item>
                     </Nav>
                     </div>
                 </Col>
+                </div>
         </Row>
         </Container>
     </Navbar>
