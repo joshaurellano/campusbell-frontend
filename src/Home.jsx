@@ -13,6 +13,10 @@ import { FaHome } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { CiClock2 } from "react-icons/ci";
+import { AiOutlineLike } from "react-icons/ai";
+import { TbShare3 } from "react-icons/tb";
+import { FaRegComment } from "react-icons/fa6";
+
 
 import {Link} from 'react-router-dom';
 
@@ -265,17 +269,26 @@ function Home () {
                                 <div className='d-flex justify-content-start gap-4'>
                                 <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <span>React</span>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <AiOutlineLike />
+                                    <span style={{marginLeft:'4px'}}>React</span>
+                                    </div>
                                 </div>
                                 </div>
                                 <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <span>Comments</span>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <FaRegComment />
+                                    <span style={{marginLeft:'4px'}}>Comments</span>
+                                    </div>
                                 </div>
                                 </div>
                                 <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <span>Share</span>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <TbShare3 />
+                                    <span style={{marginLeft:'4px'}}>Share</span>
+                                    </div>
                                 </div>
                                 </div>
                                 </div>
@@ -300,17 +313,26 @@ function Home () {
                                 <div className='d-flex justify-content-start gap-4'>
                                 <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <span>React</span>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <AiOutlineLike />
+                                    <span style={{marginLeft:'4px'}}>React</span>
+                                    </div>
                                 </div>
                                 </div>
                                 <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <span>Comments</span>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <FaRegComment />
+                                    <span style={{marginLeft:'4px'}}>Comments</span>
+                                    </div>
                                 </div>
                                 </div>
                                 <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <span>Share</span>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <TbShare3 />
+                                    <span style={{marginLeft:'4px'}}>Share</span>
+                                    </div>
                                 </div>
                                 </div>
                                 </div>
@@ -331,17 +353,26 @@ function Home () {
                                 <div className='d-flex justify-content-start gap-4'>
                                 <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <span>React</span>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <AiOutlineLike />
+                                    <span style={{marginLeft:'4px'}}>React</span>
+                                    </div>
                                 </div>
                                 </div>
                                 <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <span>Comments</span>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <FaRegComment />
+                                    <span style={{marginLeft:'4px'}}>Comments</span>
+                                    </div>
                                 </div>
                                 </div>
                                 <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <span>Share</span>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <TbShare3 />
+                                    <span style={{marginLeft:'4px'}}>Share</span>
+                                    </div>
                                 </div>
                                 </div>
                                 </div>
