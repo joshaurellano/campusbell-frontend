@@ -11,7 +11,8 @@ import { IoIosNotifications } from "react-icons/io";
 import { FaUserCircle } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
-
+import { FaUser } from "react-icons/fa";
+import { CiClock2 } from "react-icons/ci";
 
 import {Link} from 'react-router-dom';
 
@@ -233,11 +234,28 @@ function Home () {
                         <div key={post.postID}>
                         <Card style={{backgroundColor:'black', color:'white'}}>
                             <Card.Header>
-                            <div>
-                            <span style={{fontSize:'30px',fontWeight:'bold',}}>{post.title} <IoIosMore /> </span><br />
+                            <div className='d-flex flex-row w-100'>
+                            <div style ={{fontSize:'12px'}}>
+                                <div className='d-flex align-items-center h-100'>
+                                    <FaUser  />
+                                    <span style ={{marginLeft:'4px'}}> {post.username}  
+                                    </span>
+                                </div>
                             </div>
-                            <span style ={{fontSize:'13px'}}>by {post.username} . 
-                                {new Date (post.date_posted).toLocaleDateString()} </span>
+                            <div style ={{fontSize:'12px', marginLeft:'4px'}}>
+                                <div className='d-flex align-items-center h-100'>
+                                    <CiClock2 />
+                                    <span style ={{marginLeft:'4px'}}> {new Date (post.date_posted).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                            <div style={{display:'flex',width:'100%',justifyContent:'end'}}>
+                                <IoIosMore />
+                            </div>
+                            </div>
+                            <div>
+                            <span style={{fontSize:'30px',fontWeight:'bold',}}>{post.title}  </span><br />
+                            </div>
+                            
                             </Card.Header>
 
                             <Card.Body>
@@ -311,14 +329,9 @@ function Home () {
             <Col lg={2}>
                 <div>
                     <Card style={{backgroundColor:'black'}}>
+                        <div className='d-flex flex-column '>
                         <span style={{fontWeight:'bold',color:'white'}}>New Post</span>
                         <div className="container">
-                        {/* <Placeholder className="w-100" /> <br />
-                        <Placeholder className="w-100" /> <br />
-                        <Placeholder className="w-100" /> <br />
-                        <Placeholder className="w-100" /> <br />
-                        <Placeholder className="w-100" /> <br />
-                        <Placeholder className="w-100" /> <br /> */}
                         <div>
                         {
                         post.length > 0 && (
@@ -330,6 +343,7 @@ function Home () {
                         }
                         </div>
                         <br />
+                        </div>
                         </div>
                     </Card>
                     <br />
