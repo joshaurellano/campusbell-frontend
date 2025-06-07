@@ -17,6 +17,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import { TbShare3 } from "react-icons/tb";
 import { FaRegComment } from "react-icons/fa6";
 
+import ReactTimeAgo from 'react-time-ago'
 
 import {Link} from 'react-router-dom';
 
@@ -249,7 +250,7 @@ function Home () {
                             <div style ={{fontSize:'12px', marginLeft:'4px'}}>
                                 <div className='d-flex align-items-center h-100'>
                                     <CiClock2 />
-                                    <span style ={{marginLeft:'4px'}}> {new Date (post.date_posted).toLocaleDateString()}</span>
+                                    <span style ={{marginLeft:'4px'}}> <ReactTimeAgo date={new Date (post.date_posted)} locale="en-US" timeStyle="twitter"/></span>
                                 </div>
                             </div>
                             <div style={{display:'flex',width:'100%',justifyContent:'end'}}>
