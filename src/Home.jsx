@@ -229,7 +229,7 @@ function Home () {
                 <br />
                 {
                     post.length > 0 && (
-                    post.map((post)=>(
+                    post.slice(0,5).map((post)=>(
                         <div key={post.postID}>
                         <Card style={{backgroundColor:'black', color:'white'}}>
                             <Card.Header>
@@ -311,14 +311,24 @@ function Home () {
             <Col lg={2}>
                 <div>
                     <Card style={{backgroundColor:'black'}}>
-                        <span style={{fontWeight:'bold',color:'gray'}}>New Post</span>
+                        <span style={{fontWeight:'bold',color:'white'}}>New Post</span>
                         <div className="container">
+                        {/* <Placeholder className="w-100" /> <br />
                         <Placeholder className="w-100" /> <br />
                         <Placeholder className="w-100" /> <br />
                         <Placeholder className="w-100" /> <br />
                         <Placeholder className="w-100" /> <br />
-                        <Placeholder className="w-100" /> <br />
-                        <Placeholder className="w-100" /> <br />
+                        <Placeholder className="w-100" /> <br /> */}
+                        <div>
+                        {
+                        post.length > 0 && (
+                        post.slice(0,5).map((post)=>(
+                            <div key={post.postID}>
+                            <span style={{color:'white'}}>{post.title}</span>
+                            </div>))
+                            )
+                        }
+                        </div>
                         <br />
                         </div>
                     </Card>
