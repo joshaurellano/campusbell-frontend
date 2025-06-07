@@ -233,7 +233,9 @@ function Home () {
                         <div key={post.postID}>
                         <Card style={{backgroundColor:'black', color:'white'}}>
                             <Card.Header>
-                            <span style={{fontSize:'30px',fontWeight:'bold'}}>{post.title} <IoIosMore style={{marginLeft:'550px'}} /> </span><br />
+                            <div>
+                            <span style={{fontSize:'30px',fontWeight:'bold',}}>{post.title} <IoIosMore /> </span><br />
+                            </div>
                             <span style ={{fontSize:'13px'}}>by {post.username} . 
                                 {new Date (post.date_posted).toLocaleDateString()} </span>
                             </Card.Header>
@@ -254,8 +256,11 @@ function Home () {
                             </Card.Footer>
                         </Card>
                         <hr/>
-
-                        <br />
+                        </div>
+                    ))
+                )
+            }
+            <br />
                         <Card style={{backgroundColor:'black', color:'gray'}}>
                             <Card.Header>
                                 <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
@@ -278,7 +283,7 @@ function Home () {
                             </Card.Footer>
                         </Card>
                         <br />
-                                         <hr/>
+                        <hr/>
                         <Card style={{backgroundColor:'black', color:'white'}}>
                             <Card.Header>
                                 <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
@@ -300,11 +305,6 @@ function Home () {
                                 </div>
                             </Card.Footer>
                         </Card>
-                        </div>
-                    ))
-                )
-                
-                }
                 </div>
             </Col>
 
