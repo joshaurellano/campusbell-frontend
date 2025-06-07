@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown} from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { CiCirclePlus } from "react-icons/ci";
@@ -33,10 +33,13 @@ function Home () {
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
 
+    const [pageLoading, setPageLoading] = useState(false);
+
     const navigate = useNavigate();
     //Check if user has session
     useEffect(() =>{
         const checkUserSession = async () => {
+            setPageLoading(true);
             try {
                 await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
                     setUser(data.result);
@@ -48,6 +51,19 @@ function Home () {
         };
         checkUserSession();
     }, []);
+     useEffect(() => {
+        function simulateNetworkRequest() {
+        return new Promise(resolve => {
+            setTimeout(resolve, 2000);
+        });
+        }
+        if (pageLoading) {
+        simulateNetworkRequest().then(() => {
+            setPageLoading(false);
+        });
+        }
+    }, [pageLoading]);
+
 
     //function to handle logout
     const handleLogout = async () => {
@@ -82,7 +98,18 @@ function Home () {
         })
     }
     return (
-    <div style={{
+    <>
+        {
+        pageLoading ?
+        <>
+            <div className='d-flex justify-content-center align-items-center' style={{height:'100vh', width:'100vw', backgroundColor:'black'}}>
+                <FaBell style={{color:'#ffac33', fontSize:'25px'}} />
+            <h3 style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>Campus Bell </h3>
+            <Spinner style={{marginLeft:'4px'}} animation="grow" variant="warning" />
+            </div>
+        </> 
+        
+        : <div style={{
         backgroundColor:'black',
         fontFamily: 'Tahoma, sans-serif',
         minWidth:'100vw'
@@ -314,6 +341,9 @@ function Home () {
         </Container>
         
         </div>
+       
+        }
+    </>
     )
 }
 
