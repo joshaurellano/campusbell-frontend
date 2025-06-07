@@ -261,15 +261,23 @@ function Home () {
                             <Card.Body>
                             {post.content}
                             </Card.Body>
-                            <Card.Footer className='d-flex justify-content-center gap-4'>
+                            <Card.Footer>
+                                <div className='d-flex justify-content-start gap-4'>
+                                <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
                                     <span>React</span>
                                 </div>
+                                </div>
+                                <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
                                     <span>Comments</span>
                                 </div>
+                                </div>
+                                <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
                                     <span>Share</span>
+                                </div>
+                                </div>
                                 </div>
                             </Card.Footer>
                         </Card>
@@ -288,15 +296,23 @@ function Home () {
                                 <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
                             </Card.Body>
 
-                            <Card.Footer className='d-flex justify-content-center gap-4'>
+                            <Card.Footer>
+                                <div className='d-flex justify-content-start gap-4'>
+                                <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
                                     <span>React</span>
                                 </div>
+                                </div>
+                                <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
                                     <span>Comments</span>
                                 </div>
+                                </div>
+                                <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
                                     <span>Share</span>
+                                </div>
+                                </div>
                                 </div>
                             </Card.Footer>
                         </Card>
@@ -311,15 +327,23 @@ function Home () {
                                 <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
                             </Card.Body>
 
-                            <Card.Footer className='d-flex justify-content-center gap-4'>
+                            <Card.Footer>
+                                <div className='d-flex justify-content-start gap-4'>
+                                <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
                                     <span>React</span>
                                 </div>
+                                </div>
+                                <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
                                     <span>Comments</span>
                                 </div>
+                                </div>
+                                <div>
                                 <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
                                     <span>Share</span>
+                                </div>
+                                </div>
                                 </div>
                             </Card.Footer>
                         </Card>
@@ -331,7 +355,7 @@ function Home () {
                     <Card style={{backgroundColor:'black'}}>
                         <div className='d-flex flex-column '>
                         <span style={{fontWeight:'bold',color:'white'}}>New Post</span>
-                        <div className="container">
+                        <div>
                         <div>
                         {
                         post.length > 0 && (
@@ -349,7 +373,7 @@ function Home () {
                     <br />
                      <Card style={{backgroundColor:'black'}}>
                         <span style={{fontWeight:'bold',color:'gray'}}>Community Discussion</span>
-                        <div className="container">
+                        <div>
                         <Placeholder className="w-100" /> <br />
                         <Placeholder className="w-100" /> <br />
                         <Placeholder className="w-100" /> <br />
