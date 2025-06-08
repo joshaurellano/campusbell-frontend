@@ -384,16 +384,24 @@ function Home () {
 
             <Col lg={2}>
                 <div>
-                    <Card style={{backgroundColor:'black'}}>
+                    <Card style={{backgroundColor:'black', width:'100%'}}>
                         <div className='d-flex flex-column '>
                         <span style={{fontWeight:'bold',color:'white'}}>New Post</span>
                         <div>
                         <div>
                         {
                         post.length > 0 && (
-                        post.slice(0,5).map((post)=>(
+                        post.slice(0,10).map((post)=>(
                             <div key={post.postID}>
-                            <span style={{color:'white'}}>{post.title}</span>
+                            <div style={{height:'100%',
+                            display:'flex', 
+                            flexDirection:'row', 
+                            fontSize:'12px', 
+                            marginBottom:'4px',
+                            alignItems:'center',width:'100%',flexGrow:1}}>
+                            <FaUserCircle style={{color:'white',fontSize:'12px',}}/>
+                            <span style={{color:'white', marginLeft:'4px',width:'100%'}}>{(post.title).slice(0,50)}</span>
+                            </div>
                             </div>))
                             )
                         }
