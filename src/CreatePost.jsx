@@ -35,6 +35,7 @@ function CreatePost () {
     // for post
     const [selectedTopic, setSelectedTopic] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
+    const [postButtonLoading, setpostButtonLoading] = useState(false);
 
     const navigate = useNavigate();
     //Check if user has session
@@ -90,6 +91,8 @@ function CreatePost () {
     }
   
     const addPost = async (e) => {
+        setpostButtonLoading(true)
+
         e.preventDefault();
         const user_id = user.user_id;
         const topic_id = selectedTopic;
@@ -97,10 +100,21 @@ function CreatePost () {
             ...values, user_id, topic_id
         }
         console.log(payload);
-        await axios.post(`${API_ENDPOINT}post`,payload,{withCredentials: true}).then(({data})=>{
-            setPost(data.result)
-        })
+        await axios.post(`${API_ENDPOINT}post`,payload,{withCredentials: true})
     }
+    useEffect(() => {
+            function simulateNetworkRequest() {
+            return new Promise(resolve => {
+                setTimeout(resolve, 2000);
+            });
+            }
+            if (postButtonLoading) {
+            simulateNetworkRequest().then(() => {
+                setpostButtonLoading(false);
+                navigate('/');
+            });
+            }
+        }, [postButtonLoading]);
     return (
         <>
             {
@@ -249,7 +263,6 @@ function CreatePost () {
                                                         {
                                                         topics.length > 0 && (
                                                             topics.map((t)=>(
-                                                                    // <option style={{backgroundColor:'black'}} key={t.topic_id}>
                                                                     <option style={{backgroundColor:'black'}} value={t.topic_id}key={t.topic_id}>   
                                                                         {t.topic_name}
                                                                     </option>
@@ -281,7 +294,18 @@ function CreatePost () {
                                                             </div>
                                                             <div style={{marginTop:'8px'}}>
                                                                 <Form.Group>
-                                                                    <Button type='submit' variant='success' style={{borderRadius:'15px', width:'120px'}}>Post</Button>
+                                                                    <Button type='submit' variant='success' style={{borderRadius:'15px', width:'120px'}}>
+                                                                        {
+                                                                            postButtonLoading ?
+                                                                            <>
+                                                                            <Spinner animation="border" size="sm" /> Posting
+                                                                            </> : <>
+                                                                            Post
+                                                                            </>
+                                                                            
+                                                                        }
+                                                                        
+                                                                        </Button>
                                                                 </Form.Group>
                                                             </div>
                                                         </div>
