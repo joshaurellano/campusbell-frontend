@@ -5,6 +5,7 @@ import Login from './Login';
 import Home from './Home';
 import Post from './Post';
 import Register from './Registration';
+import CreatePost from './CreatePost';
 
 
 function App() {
@@ -15,7 +16,8 @@ function App() {
         <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login key="login"/>} />
           <Route path='/home' element={<Home />} />
-          <Route path='/post' element={<Post />} />
+          <Route path='/post' element={<CreatePost />} />
+          <Route path='/view' element={<Post />} />
           <Route path='/register' element={<Register key="register"/>} />
         </Routes>
       </Router>

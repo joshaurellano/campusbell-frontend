@@ -132,7 +132,7 @@ function Home () {
             </Col>
             <Col className="d-flex justify-content-center">
             <Nav>
-                <div style={{width:'400px', position:'relative'}}>
+                <div style={{width:'400px', position:'relative',marginTop:'4px'}}>
                     <FaMagnifyingGlass style={{
                     position: 'absolute',
                     left:'10px',
@@ -145,23 +145,29 @@ function Home () {
                 </div>
             </Nav>
                 </Col>
-                <Col className="d-flex justify-content-end align-items-center gap-4" style={{color:'white', paddingLeft:16, paddingTop:4}}>
+                <Col className="d-flex justify-content-end align-items-center gap-4" style={{color:'white', paddingLeft:16,}}>
                     <div style={{display:'flex',alignItems:'center', justifyItems:'center'}}>
-                    <Nav className="d-flex justify-content-end gap-4">
+                    <Nav className="d-flex justify-content-end gap-2">
                     <Nav.Item>
-                    <div style={{cursor:'pointer', paddingTop:4}}>
-                    Post
-                    </div>
+                        <Nav.Link as={Link} to='/post'>
+                            <div style={{cursor:'pointer',color:'white'}}>
+                            Post
+                            </div>
+                        </Nav.Link>
                         </Nav.Item>
                     <Nav.Item>
-                    <BiSolidMessageRoundedDots style={{fontSize:'30px'}} />
+                        <Nav.Link as={Link} to='/post'>
+                    <BiSolidMessageRoundedDots style={{fontSize:'30px',cursor:'pointer',color:'white'}} />
+                        </Nav.Link>
                         </Nav.Item>
                     <Nav.Item>
-                    <IoIosNotifications style={{fontSize:'30px'}} />
+                        <Nav.Link as={Link} to='/post'>
+                    <IoIosNotifications style={{fontSize:'30px',cursor:'pointer',color:'white'}} />
+                        </Nav.Link>
                         </Nav.Item>
                     <Nav.Item>
-                    <div >
-                    <FaUserCircle style={{fontSize:'30px', color:'green',}} />
+                    <div style={{paddingTop:'8px'}}>
+                    <FaUserCircle style={{fontSize:'30px', color:'green'}} />
                     <Dropdown style={{translate:'8px -25px', zIndex:1}}>
                     <Dropdown.Toggle id="dropdown-basic" style={{fontSize:'12px',border:'none', backgroundColor:'transparent'}}>
                         
