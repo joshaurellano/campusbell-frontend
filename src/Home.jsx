@@ -274,7 +274,20 @@ function Home () {
                             </Card.Header>
 
                             <Card.Body>
-                            {post.content}
+                            <div className='container'>
+                                {post.content}
+                            </div>
+                            <div style={{marginTop:'8px',fontSize:'12px',display:'flex', flexDirection:'row', width:'100%', justifyContent:'end', gap:'40px'}}>
+                                <div className='d-flex' style={{gap:'8px'}}>
+                                <span>Reacts</span>
+                                {/* <span>0</span> */}
+                                </div>
+                                <div className='d-flex' style={{gap:'8px'}}>
+                                <span>Comments</span>
+                                <span>{post.commentCount}</span>
+                                </div>
+                            </div>
+                            
                             </Card.Body>
                             <Card.Footer>
                                 <div className='d-flex justify-content-start gap-4'>
