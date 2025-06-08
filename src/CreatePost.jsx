@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner} from 'react-bootstrap';
+import {Navbar,Nav,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner,ButtonGroup} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { CiCirclePlus } from "react-icons/ci";
@@ -23,7 +23,7 @@ import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
 
-import './Home.css';
+import './CreatePost.css';
 
 axios.defaults.withCredentials = true;
 
@@ -34,21 +34,22 @@ function CreatePost () {
     const [topics, setTopics] = useState([]);
     // for post
     const [post, setPost] = useState([]);
+    const [title, setTitle] = useState('');
+    const [body, setBody] = useState('');
+    const [selectedTopic, setSelectedTopic] = useState([]);
     const [showModal, setShowModal] = useState(false);
 
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
 
-    const [pageLoading, setPageLoading] = useState(false);
-
     const navigate = useNavigate();
     //Check if user has session
     useEffect(() =>{
         const checkUserSession = async () => {
-            setPageLoading(true);
             try {
                 await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
                     setUser(data.result);
+                    console.log(data.result);
                 })
             } catch(error) {
                 //go back to login in case if error
@@ -57,18 +58,6 @@ function CreatePost () {
         };
         checkUserSession();
     }, []);
-     useEffect(() => {
-        function simulateNetworkRequest() {
-        return new Promise(resolve => {
-            setTimeout(resolve, 2000);
-        });
-        }
-        if (pageLoading) {
-        simulateNetworkRequest().then(() => {
-            setPageLoading(false);
-        });
-        }
-    }, [pageLoading]);
 
 
     //function to handle logout
@@ -85,9 +74,7 @@ function CreatePost () {
         }
     }
     useEffect(() =>{
-        getTopics()
-        getPosts()
-        
+        getTopics()        
     })
     
     const getTopics = async () => {
@@ -96,11 +83,26 @@ function CreatePost () {
             // console.log(data.result)
         })
     }
+
+    const [values, setValues] = useState({
+        title:'',
+        body:'',
+    });
+
+    const sample = (event) => {
+        setSelectedTopic(event.target.value);
+    }
   
-    const getPosts = async () => {
-        await axios.get(`${API_ENDPOINT}post`,{withCredentials: true}).then(({data})=>{
+    const addPost = async (e) => {
+        e.preventDefault();
+        const user_id = user.user_id;
+        const topic_id = selectedTopic;
+        const payload = {
+            ...values, user_id, topic_id
+        }
+        console.log(payload);
+        await axios.post(`${API_ENDPOINT}post`,payload,{withCredentials: true}).then(({data})=>{
             setPost(data.result)
-            console.log(data.result)
         })
     }
     return (
@@ -226,6 +228,60 @@ function CreatePost () {
                              <span style={{fontWeight:'bold',color:'gray'}}>Miscellaneous</span>
                              <Nav.Link className='navLinkColor'>Help Desk</Nav.Link>
                             </Nav>
+                            </Col>
+
+                            <Col>
+                                <div className='container' style={{color:'white'}}>
+                                    <Row>
+                                        <div>
+                                            <h3 style={{fontWeight:'600'}}>Create Post</h3>
+                                        </div>
+                                        <Form onSubmit={addPost} id='addPost'>
+                                        <div style={{marginTop:'8px'}}>
+                                            <Form.Select className='select-topic' onChange={sample}>
+                                                <option style={{backgroundColor:'black'}}>--Select Topic--</option>
+                                                {
+                                                topics.length > 0 && (
+                                                    topics.map((t)=>(
+                                                            // <option style={{backgroundColor:'black'}} key={t.topic_id}>
+                                                            <option style={{backgroundColor:'black'}} value={t.topic_id}key={t.topic_id}>   
+                                                                {t.topic_name}
+                                                            </option>
+                                                        ))
+                                                    )
+                                                }
+                                                </Form.Select>    
+                                        </div>
+                                            <div style={{marginTop:'8px'}}> 
+                                                <Form.Group>
+                                                    <Form.Label>
+                                                        Title
+                                                    </Form.Label>
+                                                        <Form.Control placeholder='Title' style={{borderRadius:'15px', height:'60px'}}
+                                                            onChange={(e)=>setValues({...values,title: e.target.value})}>
+                                                                
+                                                            </Form.Control>
+                                                    </Form.Group>
+                                                <div style={{marginTop:'8px'}}>
+                                                    <Form.Group>
+                                                        <Form.Label>
+                                                            Body
+                                                        </Form.Label>
+                                                        <Form.Control className='post-area' as="textarea"
+                                                        onChange={(e)=>setValues({...values,body:e.target.value})}>
+                                                                
+                                                            </Form.Control>
+                                                    </Form.Group>
+                                                    </div>
+                                                    <div style={{marginTop:'8px'}}>
+                                                        <Form.Group>
+                                                            <Button type='submit' variant='success' style={{borderRadius:'15px', width:'120px'}}>Post</Button>
+                                                        </Form.Group>
+                                                    </div>
+                                                </div>
+                                            </Form>
+                                    </Row>
+                                </div>
                             </Col>
                         </Row>
             </Container>
