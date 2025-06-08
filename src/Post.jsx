@@ -1,11 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Stack,Card,ListGroup,InputGroup} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner} from 'react-bootstrap';
+import { FaBell } from "react-icons/fa";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+import { CiCirclePlus } from "react-icons/ci";
+import { BiSolidMessageRoundedDots } from "react-icons/bi";
+import { IoIosNotifications } from "react-icons/io";
+import { FaUserCircle } from "react-icons/fa";
+import { FaHome } from "react-icons/fa";
+import { IoIosMore } from "react-icons/io";
+import { FaUser } from "react-icons/fa";
+import { CiClock2 } from "react-icons/ci";
+import { AiOutlineLike } from "react-icons/ai";
+import { TbShare3 } from "react-icons/tb";
+import { FaRegComment } from "react-icons/fa6";
 
-import { FaLocationArrow } from "react-icons/fa";
+import ReactTimeAgo from 'react-time-ago'
+
+import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
 
@@ -20,13 +34,18 @@ function Post () {
     const [topics, setTopics] = useState([]);
     // for post
     const [post, setPost] = useState([]);
-    // adding comments
-    const [commentBody, setCommentBody] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+
+    const handleClose = () => setShowModal(false);
+    const handleShow = () => setShowModal(true);
+
+    const [pageLoading, setPageLoading] = useState(false);
 
     const navigate = useNavigate();
     //Check if user has session
     useEffect(() =>{
         const checkUserSession = async () => {
+            setPageLoading(true);
             try {
                 await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
                     setUser(data.result);
@@ -38,6 +57,19 @@ function Post () {
         };
         checkUserSession();
     }, []);
+     useEffect(() => {
+        function simulateNetworkRequest() {
+        return new Promise(resolve => {
+            setTimeout(resolve, 2000);
+        });
+        }
+        if (pageLoading) {
+        simulateNetworkRequest().then(() => {
+            setPageLoading(false);
+        });
+        }
+    }, [pageLoading]);
+
 
     //function to handle logout
     const handleLogout = async () => {
@@ -55,83 +87,138 @@ function Post () {
     useEffect(() =>{
         getTopics()
         getPost()
-    },[])
-
-    const location = useLocation();
-    const id = location.state?.postID;
-
+        
+    })
+    
     const getTopics = async () => {
             await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
             setTopics(data.result)
             // console.log(data.result)
         })
     }
-const createPost = async () => {
-        console.log(id);
-        await axios.post(`${API_ENDPOINT}post`,{withCredentials: true}).then(({data})=>{
-            setPost(data.result)
-            console.log(data.result)
-        })
-    }
+  
+    const location = useLocation();
+    const post_id = location.state.postID;
+    
     const getPost = async () => {
-        console.log(id);
+        const id = post_id;
         await axios.get(`${API_ENDPOINT}post/${id}`,{withCredentials: true}).then(({data})=>{
             setPost(data.result)
-            console.log(data.result)
+            console.log(post)
         })
-    }
-    const handleAddComment = async (e,postID) => {
-        e.preventDefault();
-        try {
-            const payload = {
-                post_id:postID,
-                body:commentBody,
-                user_id:user.user_id
-            };
-            await axios.post(`${API_ENDPOINT}comment`,payload,{withCredentials: true});
-            setCommentBody('');
-            getPost();
-        } catch(error){
-            console.error(error);
-        }
     }
     return (
     <>
-    <Navbar bg='success' data-bs-theme='dark'>
+        {
+        pageLoading ?
+        <>
+            <div className='d-flex justify-content-center align-items-center' style={{height:'100vh', width:'100vw', backgroundColor:'black'}}>
+                <FaBell style={{color:'#ffac33', fontSize:'25px'}} />
+            <h3 style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>Campus Bell </h3>
+            <Spinner style={{marginLeft:'4px'}} animation="grow" variant="warning" />
+            </div>
+        </> 
+        
+        : <div style={{
+        backgroundColor:'black',
+        fontFamily: 'Tahoma, sans-serif',
+        minWidth:'100vw'
+    }}>
+    <Navbar data-bs-theme='dark' style={{borderBottom:'solid', paddingTop:20, paddingBottom: 0, height:'60px'}}>
         <Container fluid>
-            <Navbar.Brand>
-                <Nav>
+            <Row className="w-100 align-items-center">
+            <div className='d-flex justify-content-center' style={{height:'100%'}}>
+            <Col>
+            <div style={{display:'flex', alignItems:'center'}}>
+            <FaBell style={{color:'#ffac33', fontSize:'25px'}} />
+            <Navbar.Brand style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
                 <Nav.Link as={Link} to='/'>
-                Campus Bell
+                    Campus Bell
                 </Nav.Link>
-                </Nav>
-                </Navbar.Brand>
-
-            {/* Search bar */}
+            </Navbar.Brand>
+            </div>
+            </Col>
+            <Col className="d-flex justify-content-center">
             <Nav>
-            <Stack direction='horizontal' gap={3}>
-                    <Form.Control className='me-auto' placeholder='Search' />
-                    <Button variant='primary'>Search</Button>
-                    <div className='vr'>
+                <div style={{width:'400px', position:'relative',marginTop:'4px'}}>
+                    <FaMagnifyingGlass style={{
+                    position: 'absolute',
+                    left:'10px',
+                    top: '50%',
+                    transform: 'translateY(-120%)',
+                    color: 'gray',
+                    pointerEvents: 'none'
+                }} />
+                 <Form.Control placeholder='Search'style={{ borderRadius: '25px',paddingLeft:'40px'}} />
+                </div>
+            </Nav>
+                </Col>
+                <Col className="d-flex justify-content-end align-items-center gap-4" style={{color:'white', paddingLeft:16,}}>
+                    <div style={{display:'flex',alignItems:'center', justifyItems:'center'}}>
+                    <Nav className="d-flex justify-content-end gap-2">
+                    <Nav.Item>
+                        <Nav.Link as={Link} to='/post'>
+                            <div style={{cursor:'pointer',color:'white'}}>
+                            Post
+                            </div>
+                        </Nav.Link>
+                        </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link as={Link} to='/post'>
+                    <BiSolidMessageRoundedDots style={{fontSize:'30px',cursor:'pointer',color:'white'}} />
+                        </Nav.Link>
+                        </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link as={Link} to='/post'>
+                    <IoIosNotifications style={{fontSize:'30px',cursor:'pointer',color:'white'}} />
+                        </Nav.Link>
+                        </Nav.Item>
+                    <Nav.Item>
+                    <div style={{paddingTop:'8px'}}>
+                    <FaUserCircle style={{fontSize:'30px', color:'green'}} />
+                    <Dropdown style={{translate:'8px -25px', zIndex:1}}>
+                    <Dropdown.Toggle id="dropdown-basic" style={{fontSize:'12px',border:'none', backgroundColor:'transparent'}}>
+                        
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu style={{translate:'-128px 0px'}}>
+                        <Dropdown.Item>Settings</Dropdown.Item>
+                        <Dropdown.Item>Profile</Dropdown.Item>
+                        <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                    </Dropdown.Menu>
+                    </Dropdown>
                     </div>
-                </Stack>
-            </Nav>
-            <Nav className='ms-auto'>
-                <NavDropdown title={user ? `User:${user.username}`:'Dropdown'} id = "basic-nav-dropdown" align = "end">
-                    <NavDropdown.Item href="#" onClick={handleLogout}> Logout </NavDropdown.Item>
-                </NavDropdown>
-            </Nav>
+                    </Nav.Item>
+                    </Nav>
+                    </div>
+                </Col>
+                </div>
+        </Row>
         </Container>
     </Navbar>
 
     <Container fluid> 
         <Row>
-            <Col lg={3} gap='0'>
-            <Nav className='ms-auto flex-column'>
-                <Nav.Link className='navLinkColor'>Home</Nav.Link>
-                <Nav.Link className='navLinkColor'>Featured</Nav.Link> 
-                <hr />
-                <Nav.Link>Topics</Nav.Link>              
+            <Col lg={2}>
+            <Nav className='ms-auto flex-column' style={{color:'white'}}>
+                <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
+                <span style={{color:'white'}}>
+                    <strong>
+                        Welcome {user ? `${user.username}`:'Guest'}
+                        </strong>
+                </span>
+                </div>
+                <hr/>
+                <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}}>
+                    <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
+                    <FaHome style={{display:'flex', gap:'4'}} />
+                    <span>
+                    Home
+                    </span>
+                    </div>
+                    </Nav.Link>
+                     <hr/>
+                <span style={{fontWeight:'bold',color:'gray'}}>Topics</span>              
                 {
                     topics.length > 0 && (
                         topics.map((t)=>(
@@ -141,99 +228,157 @@ const createPost = async () => {
                         ))
                     )
                 }
+                <hr/>
+                <span style={{fontWeight:'bold',color:'gray'}}>Community</span>
+                
+                <Nav.Link className='navLinkColor'>
+                <div style={{display:'flex', alignItems:'center', gap:'2'}}>
+                <CiCirclePlus style={{fontSize:'20px'}} />
+                    Create Community
+                </div>   
+                    </Nav.Link>
+                 <hr/>
+                 <span style={{fontWeight:'bold',color:'gray'}}>Miscellaneous</span>
+                 <Nav.Link className='navLinkColor'>Help Desk</Nav.Link>
                 </Nav>
+
             </Col>
-            <Col lg={6} className='colDivider'>
-            <br />
-                <Container>
-                {
-                    post && (
-                            <div>
-                            <Card key={post.postID}>
-                                <Card.Header>
-                                <span style={{fontSize:'30px',fontWeight:'bold'}}>{post.title}</span><br />
-                                <span style ={{fontSize:'13px'}}>by {post.username} </span><br />
-                                <span>{new Date (post.date_posted).toLocaleDateString()}</span>
-                                </Card.Header>
-                                <Card.Body>
-                                {post.content}
-                                </Card.Body>
-                                <Card.Body>
-                                    <ListGroup variant='flush'>
-                                        <ListGroup.Item variant='dark'>
-                                            <span style={{fontSize:'13px'}}>Comments {post.commentCount}</span>
-                                        </ListGroup.Item>
-
-                                        { 
-                                            post.comments && Object.values(post.comments).map((c,idx)=>(
-                                            <ListGroup.Item key={c.commentID || idx} style={{fontSize:'12px'}}>
-                                                {c.username} <br />
-                                                {c.body}
-                                                    <ListGroup variant ='flush'>
-                                                        <ListGroup.Item variant='secondary'>
-                                                            <span style={{fontSize:'12px'}}>Replies {c.replyCount}</span>
-                                                        </ListGroup.Item>
-                                                        {
-                                                            c.replies && Object.values(c.replies).map((r,idx)=>(
-                                                                <ListGroup.Item key={r.replyID || idx}>
-                                                                    {r.username}<br />
-                                                                    {r.body}
-                                                                </ListGroup.Item>
-                                                            ))
-                                                        }
-                                                    </ListGroup>
-                                            </ListGroup.Item>))
-                                        }
-                                    </ListGroup>
-                                    <Card.Body>
-                                        <Form onSubmit={(e) => handleAddComment(e,post.postID)}>
-                                            <Form.Group>
-                                                <InputGroup>
-                                                <Form.Control 
-                                                placeholder='Comment' 
-                                                as='textarea' 
-                                                value={commentBody}
-                                                onChange={(event)=>{setCommentBody(event.target.value)}}>
-
-                                                </Form.Control>
-                                                <Button type='submit'>
-                                                <FaLocationArrow />
-                                                </Button>
-                                                </InputGroup>
-                                            </Form.Group>
-
-                                        </Form>
-                                    </Card.Body>
-                                    </Card.Body>
-                                <br />
-                               
-
-                            </Card>
-                            <br />
-                            </div>
-                    )
-                }
-
-                </Container>
+            <Col lg={8} className='colDivider'>
+                <div className='container'>
                 <br />
-            </Col>
+                {
+                    post ? (
+                        <div>
+                        <Card style={{backgroundColor:'black', color:'white'}}>
+                            <Card.Header>
+                            <div className='d-flex flex-row w-100' style={{flexGrow:1}}>
+                            <div style ={{fontSize:'12px'}}>
+                                <div className='d-flex align-items-center h-100'>
+                                    <FaUser  />
+                                    <span style ={{marginLeft:'4px'}}> {post.username}  
+                                    </span>
+                                </div>
+                            </div>
+                            <div style ={{fontSize:'12px', marginLeft:'4px', width:'100%'}}>
+                                <div className='d-flex align-items-center h-100 w-100'>
+                                    <CiClock2 />
+                                    <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div style={{display:'flex',width:'100%',justifyContent:'end'}}>
+                                <IoIosMore />
+                            </div>
+                            </div>
+                            <div style ={{fontSize:'12px', marginTop:'4px'}}>
+                                {post.topic_name}
+                            </div>
+                            <div>
+                            <span style={{fontSize:'30px',fontWeight:'bold',}}>{post.title}  </span><br />
+                            </div>
+                            
+                            </Card.Header>
 
-            <Col lg={3}>
-                <Card border="success" style={{ width: '18rem' }}>
-                    <Card.Header>Header</Card.Header>
-                    <Card.Body>
-                    <Card.Title>Success Card Title</Card.Title>
-                    <Card.Text>
-                        Some quick example text to build on the card title and make up the
-                        bulk of the card's content.
-                    </Card.Text>
-                    </Card.Body>
-                </Card>
+                            <Card.Body>
+                            <div className='container'>
+                                {post.content}
+                            </div>
+                            <div style={{marginTop:'8px',fontSize:'12px',display:'flex', flexDirection:'row', width:'100%', justifyContent:'end', gap:'40px'}}>
+                                <div className='d-flex' style={{gap:'8px'}}>
+                                <span>Reacts</span>
+                                {/* <span>0</span> */}
+                                </div>
+                                <div className='d-flex' style={{gap:'8px'}}>
+                                <span>Comments</span>
+                                <span>{post.commentCount}</span>
+                                </div>
+                            </div>
+                            
+                            </Card.Body>
+                            <Card.Footer>
+                                <div className='d-flex justify-content-start gap-4'>
+                                <div>
+                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <AiOutlineLike />
+                                    <span style={{marginLeft:'4px'}}>React</span>
+                                    </div>
+                                </div>
+                                </div>
+                                <div>
+                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <FaRegComment />
+                                    <span style={{marginLeft:'4px'}}>Comments</span>
+                                    </div>
+                                </div>
+                                </div>
+                                <div>
+                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <TbShare3 />
+                                    <span style={{marginLeft:'4px'}}>Share</span>
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+                            </Card.Footer>
+                        </Card>
+                        <hr/>
+                        </div>
+                ) : (
+                    <>No Data Available</>
+                )
+            }
+            <br />
+                        <Card style={{backgroundColor:'black', color:'gray'}}>
+                            <Card.Header>
+                                <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
+                            </Card.Header>
+
+                            <Card.Body>
+                                <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
+                            </Card.Body>
+
+                            <Card.Footer>
+                                <div className='d-flex justify-content-start gap-4'>
+                                <div>
+                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <AiOutlineLike />
+                                    <span style={{marginLeft:'4px'}}>React</span>
+                                    </div>
+                                </div>
+                                </div>
+                                <div>
+                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <FaRegComment />
+                                    <span style={{marginLeft:'4px'}}>Comments</span>
+                                    </div>
+                                </div>
+                                </div>
+                                <div>
+                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <TbShare3 />
+                                    <span style={{marginLeft:'4px'}}>Share</span>
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+                            </Card.Footer>
+                        </Card>
+                        <br />
+                </div>
             </Col>
             </Row>
         </Container>
         
-        </>
+        </div>
+       
+        }
+    </>
     )
 }
 

@@ -103,6 +103,11 @@ function Home () {
             console.log(data.result)
         })
     }
+    const viewPost = (postID) => {
+        navigate('/view', {state: {
+            postID
+        }});
+    }
     return (
     <>
         {
@@ -300,7 +305,7 @@ function Home () {
                                 </div>
                                 </div>
                                 <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                <div id='oval' onClick={()=>viewPost(post.postID)} className='d-flex justify-content-center align-items-center' style={{color:'white', cursor:'pointer'}}>
                                     <div className='d-flex h-100 align-items-center'>
                                     <FaRegComment />
                                     <span style={{marginLeft:'4px'}}>Comments</span>
