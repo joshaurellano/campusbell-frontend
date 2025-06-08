@@ -191,7 +191,6 @@ function Home () {
 
     <Container fluid> 
         <Row>
-
             <Col lg={2}>
             <Nav className='ms-auto flex-column' style={{color:'white'}}>
                 <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
@@ -245,7 +244,7 @@ function Home () {
                         <div key={post.postID}>
                         <Card style={{backgroundColor:'black', color:'white'}}>
                             <Card.Header>
-                            <div className='d-flex flex-row w-100'>
+                            <div className='d-flex flex-row w-100' style={{flexGrow:1}}>
                             <div style ={{fontSize:'12px'}}>
                                 <div className='d-flex align-items-center h-100'>
                                     <FaUser  />
@@ -253,15 +252,20 @@ function Home () {
                                     </span>
                                 </div>
                             </div>
-                            <div style ={{fontSize:'12px', marginLeft:'4px'}}>
-                                <div className='d-flex align-items-center h-100'>
+                            <div style ={{fontSize:'12px', marginLeft:'4px', width:'100%'}}>
+                                <div className='d-flex align-items-center h-100 w-100'>
                                     <CiClock2 />
+                                    <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
                                     <span style ={{marginLeft:'4px'}}> <ReactTimeAgo date={new Date (post.date_posted)} locale="en-US" timeStyle="twitter"/></span>
-                                </div>
+                                    </div>
+                                </div> 
                             </div>
                             <div style={{display:'flex',width:'100%',justifyContent:'end'}}>
                                 <IoIosMore />
                             </div>
+                            </div>
+                            <div style ={{fontSize:'12px', marginTop:'4px'}}>
+                                {post.topic_name}
                             </div>
                             <div>
                             <span style={{fontSize:'30px',fontWeight:'bold',}}>{post.title}  </span><br />
