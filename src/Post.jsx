@@ -294,7 +294,34 @@ function Post () {
                                 </div>
                             </div>
                             
+                            <Card style={{backgroundColor:'black',color:'white'}}>
+                                <Card.Body>
+                                    <div style={{marginBottom:'8px'}}>
+                                        <span>Comments</span>
+                                    </div>
+                                    {
+                                    post.comments ? (
+                                    post.comments && Object.values(post.comments).map(data=>(
+                                        <div key={data.commentID} style={{marginBottom:'8px'}}>
+                                            <div>
+                                                {data.username}
+                                            </div>
+                                            <div>
+                                                {data.body}
+                                            </div>
+                                        </div>
+                                        
+                                    ))
+                                ) : (
+                                    <>
+                                        <span>No comments available yet</span>
+                                    </>
+                                )
+                            }
+                                </Card.Body>
+                            </Card>
                             </Card.Body>
+                            
                             <Card.Footer>
                                 <div className='d-flex justify-content-start gap-4'>
                                 <div>
