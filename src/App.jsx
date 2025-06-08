@@ -15,7 +15,6 @@ function App() {
         <Routes>
         <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login key="login"/>} />
-          <Route path='/home' element={<Home />} />
           <Route path='/post' element={<CreatePost />} />
           <Route path='/view' element={<Post />} />
           <Route path='/register' element={<Register key="register"/>} />

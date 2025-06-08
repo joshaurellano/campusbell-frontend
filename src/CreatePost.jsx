@@ -115,7 +115,11 @@ function CreatePost () {
                         <Col>
                         <div style={{display:'flex', alignItems:'center'}}>
                         <FaBell style={{color:'#ffac33', fontSize:'25px'}} />
-                        <Navbar.Brand style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>Campus Bell</Navbar.Brand>
+                        <Navbar.Brand style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
+                            <Nav.Link as={Link} to='/'>
+                            Campus Bell
+                            </Nav.Link>
+                            </Navbar.Brand>
                         </div>
                         </Col>
                         

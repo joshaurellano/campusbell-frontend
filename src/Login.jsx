@@ -66,7 +66,7 @@ function Login () {
             setLoading(false)
             setError('');
             //if no error, proceed to homepage
-            navigate('/home');
+            navigate('/');
         } catch(error) {
             console.error(error)
             if(error.response.data.message.includes("Username")){
