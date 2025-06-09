@@ -37,6 +37,7 @@ function Post () {
     const [post, setPost] = useState([]);
 
     const [pageLoading, setPageLoading] = useState(false);
+    const [commentLoading, setCommentLoading] = useState(false)
 
     const navigate = useNavigate();
     //Check if user has session
@@ -113,6 +114,7 @@ function Post () {
         })
     }
     const addComment = async (e) => {
+            setCommentLoading(true)
             e.preventDefault();
             const user_id = user.user_id;
             const id = post_id;
@@ -123,6 +125,7 @@ function Post () {
             console.log(payload);
             await axios.post(`${API_ENDPOINT}comment`,payload,{withCredentials: true})
 
+            setCommentLoading(false)
             setCommentBody('');
             getPost();
         }
@@ -282,6 +285,13 @@ function Post () {
                                 <div className='d-flex align-items-center h-100 w-100'>
                                     <CiClock2 />
                                     <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
+                                        <span style ={{marginLeft:'4px'}}> 
+                                        {post?.date_posted && (<ReactTimeAgo
+                                        date={new Date(post.date_posted)}
+                                        locale="en-US"
+                                        timeStyle="twitter"
+                                        />)}
+                                        </span>
                                     </div>
                                 </div> 
                             </div>
@@ -360,18 +370,28 @@ function Post () {
                                                 </Form.Control>
                                             </div>
 
-                                            <div style={{display:'flex',justifyContent:'end' ,width:'100%'}}>
-                                                <IoSendSharp style={{position:'absolute', translate:'-10px -40px', zIndex:'1', fontSize:'24px'}} />
+                                            <div style={{display:'flex',
+                                                justifyContent:'end',
+                                                width:'100%', 
+                                                position:'absolute', 
+                                                translate:'-10px -50px', 
+                                                zIndex:'1', 
+                                                fontSize:'24px'}}>
+                                                <button type='submit' style={{border:'none', backgroundColor:'transparent'}}>
+                                                {
+                                                    commentLoading ? (
+                                                        <>
+                                                            <Spinner animation="border" size="sm" />
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <IoSendSharp /> 
+                                                        </>)
+                                                }
+                                                </button>
                                             </div>
                                         </div>
-                                        
-                                        
-
                                     </Form.Group>
-
-                                    {/* <Form.Group style={{marginTop:'8px'}}>
-                                        <Button style={{borderRadius:'24px', width:'120px'}}>Comment</Button>
-                                    </Form.Group> */}
                                 </Form>
                             </Card.Body>
                         </Card>
@@ -389,10 +409,19 @@ function Post () {
                                     post.comments ? (
                                     post.comments && Object.values(post.comments).map(data=>(
                                         <div key={data.commentID} style={{marginBottom:'8px'}}>
-                                            <div>
-                                                {data.username}
+                                            <div className='d-flex h-100 w-100 flex-row align-items-center'>
+                                                <div className='d-flex h-100 align-items-center'>
+                                                <FaUser style={{fontSize:'12px'}} />
+                                                <span style={{fontSize:'15px'}}>{data.username} </span> 
+                                                </div>
+                                                <span style ={{marginLeft:'4px',fontSize:'12px'}}> 
+                                                    {data?.date_posted && (<ReactTimeAgo
+                                                    date={new Date(data.date_posted)}
+                                                    locale="en-US"
+                                                    timeStyle="twitter"/>)}
+                                                </span>
                                             </div>
-                                            <div>
+                                            <div style={{fontSize:'15px'}}>
                                                 {data.body}
                                             </div>
                                             <hr/>
