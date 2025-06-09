@@ -16,23 +16,33 @@ import './Login.css';
 
 function EmailConfirmation () {
     const navigate = useNavigate();
-    const [user,setUser] = useState(null);
-    const [username,setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [validated, setValidated] = useState(false);
-    const [error, setError] = useState('');
-    const [usernameError, setUsernameError] = useState('');
-    const[passwordError, setPasswordError] = useState('');
-    const [loading, setLoading] = useState(false)
 
+    const [email,setEmail] = useState('');
+    const [otp,setOtp] = useState('');
+    const [error,setError] = useState('');
+
+const otpVerify = async (e) => {
+    e.preventDefault();
+    console.log(email, otp)
+    try {
+            const response = await axios.post(`${API_ENDPOINT}otp/verify`,{
+            email,
+            otp});
+        
+        console.log(response)
+        setEmail('');
+        setOtp('');
+    } catch(error) {
+        setError(error.response.data.message)
+    }
+}
 
     return (
        <>
-        
         <Navbar data-bs-theme='dark'>
             <Container>
                 <Navbar.Brand>
-                <Nav.Link as={Link} to='/login' style={{color:'#ffac33',textShadow:'1px 1px white',fontWeight:'bold'}}>
+                <Nav.Link as={Link} to='/login' style={{color:'black',textShadow:'1px 1px white',fontWeight:'bold'}}>
                 Campus Bell
                 </Nav.Link>
                 </Navbar.Brand>
@@ -58,27 +68,32 @@ function EmailConfirmation () {
                     height:'100%',
                     alignItems:'center',
                 }}>
-                <Form style={{width:'100%', borderRadius:'15px'}}>
+                <Form style={{width:'100%', borderRadius:'15px'}} onSubmit={otpVerify}>
                     <div style={{width:'100%', marginBottom:'8px'}}>
                     <Form.Group>
-                        <Form.Control placeholder='Enter Email'>
-
+                        <Form.Control placeholder='Enter Email' style={{borderRadius:'15px'}}
+                        value={email}
+                        onChange={(e)=>setEmail(e.target.value)}>
                         </Form.Control>
                     </Form.Group>
                     </div>
 
                     <div style={{width:'100%'}}>
                     <Form.Group>
-                        <Form.Control placeholder='Enter OTP'>
-
+                        <Form.Control placeholder='Enter OTP' style={{borderRadius:'15px'}}
+                        value={otp}
+                        onChange={(e)=>setOtp(e.target.value)}>
                         </Form.Control>
                     </Form.Group>
                     </div>
 
                     <div style={{marginTop:'8px'}}>
                     <Form.Group>
-                        <Button>Confirm</Button>
+                        <Button style={{borderRadius:'20px', width:'120px'}} type='submit'>Confirm</Button>
                     </Form.Group>
+                    </div>
+                    <div style={{marginTop:'8px'}}>
+                        {error && <span style={{color:'red'}}>{error}</span>}
                     </div>
                 </Form>
                 </div>
