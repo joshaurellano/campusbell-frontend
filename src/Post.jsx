@@ -16,6 +16,7 @@ import { CiClock2 } from "react-icons/ci";
 import { AiOutlineLike } from "react-icons/ai";
 import { TbShare3 } from "react-icons/tb";
 import { FaRegComment } from "react-icons/fa6";
+import { IoSendSharp } from "react-icons/io5";
 
 import ReactTimeAgo from 'react-time-ago'
 
@@ -23,7 +24,7 @@ import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
 
-import './Home.css';
+import './Post.css';
 
 axios.defaults.withCredentials = true;
 
@@ -88,7 +89,7 @@ function Post () {
         getTopics()
         getPost()
         
-    })
+    },[])
     
     const getTopics = async () => {
             await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
@@ -283,7 +284,7 @@ function Post () {
                             <div className='container'>
                                 {post.content}
                             </div>
-                            <div style={{marginTop:'8px',fontSize:'12px',display:'flex', flexDirection:'row', width:'100%', justifyContent:'end', gap:'40px'}}>
+                            <div style={{marginTop:'20px',fontSize:'12px',display:'flex', flexDirection:'row', width:'100%', justifyContent:'start', gap:'40px'}}>
                                 <div className='d-flex' style={{gap:'8px'}}>
                                 <span>Reacts</span>
                                 {/* <span>0</span> */}
@@ -294,11 +295,76 @@ function Post () {
                                 </div>
                             </div>
                             
-                            <Card style={{backgroundColor:'black',color:'white'}}>
-                                <Card.Body>
-                                    <div style={{marginBottom:'8px'}}>
+                            
+                            </Card.Body>
+                            
+                            <Card.Footer>
+                                <div className='d-flex justify-content-start gap-4'>
+                                <div>
+                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <AiOutlineLike />
+                                    <span style={{marginLeft:'4px'}}>React</span>
+                                    </div>
+                                </div>
+                                </div>
+                                <div>
+                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <FaRegComment />
+                                    <span style={{marginLeft:'4px'}}>Comments</span>
+                                    </div>
+                                </div>
+                                </div>
+                                <div>
+                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                    <div className='d-flex h-100 align-items-center'>
+                                    <TbShare3 />
+                                    <span style={{marginLeft:'4px'}}>Share</span>
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+                            </Card.Footer>
+                        </Card>
+
+                        <Card style={{backgroundColor:'black'}}>
+                            <Card.Body>
+                                <Form>
+                                    <Form.Group>
+                                        <div style={{position:'relative'}}>
+                                            <div>
+                                                <Form.Control style={{borderRadius:'15px' , height:'60px'}}
+                                                placeholder='Write Comment'>
+                                                    
+                                                </Form.Control>
+                                            </div>
+
+                                            <div style={{display:'flex',justifyContent:'end' ,width:'100%'}}>
+                                                <IoSendSharp style={{position:'absolute', translate:'-10px -40px', zIndex:'1', fontSize:'24px'}} />
+                                            </div>
+                                        </div>
+                                        
+                                        
+
+                                    </Form.Group>
+
+                                    {/* <Form.Group style={{marginTop:'8px'}}>
+                                        <Button style={{borderRadius:'24px', width:'120px'}}>Comment</Button>
+                                    </Form.Group> */}
+                                </Form>
+                            </Card.Body>
+                        </Card>
+
+                        <Card style={{backgroundColor:'black',color:'white'}}>
+                                <Card.Header>
+                                    <div style={{marginBottom:'8px', backgroundColor:'#D3D3D3', height:'40px', borderRadius:'12px', padding:'8px', color:'black'}}>
                                         <span>Comments</span>
                                     </div>
+                                </Card.Header>
+                                <Card.Body>
+                                    <div>
+                                        <div>
                                     {
                                     post.comments ? (
                                     post.comments && Object.values(post.comments).map(data=>(
@@ -318,85 +384,18 @@ function Post () {
                                     </>
                                 )
                             }
+                            </div>
+                            </div>
+                            <hr/>
                                 </Card.Body>
                             </Card>
-                            </Card.Body>
-                            
-                            <Card.Footer>
-                                <div className='d-flex justify-content-start gap-4'>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <AiOutlineLike />
-                                    <span style={{marginLeft:'4px'}}>React</span>
-                                    </div>
-                                </div>
-                                </div>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <FaRegComment />
-                                    <span style={{marginLeft:'4px'}}>Comments</span>
-                                    </div>
-                                </div>
-                                </div>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <TbShare3 />
-                                    <span style={{marginLeft:'4px'}}>Share</span>
-                                    </div>
-                                </div>
-                                </div>
-                                </div>
-                            </Card.Footer>
-                        </Card>
-                        <hr/>
+                        
                         </div>
                 ) : (
                     <>No Data Available</>
                 )
             }
             <br />
-                        <Card style={{backgroundColor:'black', color:'gray'}}>
-                            <Card.Header>
-                                <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
-                            </Card.Header>
-
-                            <Card.Body>
-                                <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
-                            </Card.Body>
-
-                            <Card.Footer>
-                                <div className='d-flex justify-content-start gap-4'>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <AiOutlineLike />
-                                    <span style={{marginLeft:'4px'}}>React</span>
-                                    </div>
-                                </div>
-                                </div>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <FaRegComment />
-                                    <span style={{marginLeft:'4px'}}>Comments</span>
-                                    </div>
-                                </div>
-                                </div>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <TbShare3 />
-                                    <span style={{marginLeft:'4px'}}>Share</span>
-                                    </div>
-                                </div>
-                                </div>
-                                </div>
-                            </Card.Footer>
-                        </Card>
-                        <br />
                 </div>
             </Col>
             </Row>

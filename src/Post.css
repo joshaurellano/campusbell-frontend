@@ -1,0 +1,28 @@
+.navLinkColor {
+    text-decoration: none;  
+    color: white
+}
+.colDivider {
+    border-left: 1px solid;
+    color: #ccc
+}
+.titleDesign {
+    font-weight: bold;
+}
+
+ #oval {
+      width: 120px;
+      height: 40px;
+      background: gray;
+      border-radius:  50px;
+}
+
+.overlay {
+  position: relative;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Dark transparent layer */
+  z-index: 1;
+}
