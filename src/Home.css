@@ -10,9 +10,29 @@
     font-weight: bold;
 }
 
- #oval {
+#oval {
       width: 120px;
       height: 40px;
       background: gray;
       border-radius:  50px;
+      font-size: 14px;
     }
+#oval:hover {
+      background: #0048fc;
+    }
+.post-card {
+    background-color: black; 
+    color: white; 
+    border: solid 1px gray; 
+    border-radius: 15px; 
+    padding: 8px;
+    cursor: pointer ;
+}
+.post-card:hover {
+    background-color: hsl(43 0% 12.8%); 
+    color: white; 
+    border: solid 1px gray; 
+    border-radius: 15px; 
+    padding: 8px;
+    cursor: pointer ;
+}

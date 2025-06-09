@@ -245,7 +245,7 @@ function Home () {
                     post.length > 0 && (
                     post.slice(0,5).map((post)=>(
                         <div key={post.postID}>
-                        <Card style={{backgroundColor:'black', color:'white'}}>
+                        <Card className='post-card' onClick={()=>viewPost(post.postID)}>
                             <Card.Header>
                             <div className='d-flex flex-row w-100' style={{flexGrow:1}}>
                             <div style ={{fontSize:'12px'}}>
@@ -271,14 +271,14 @@ function Home () {
                                 {post.topic_name}
                             </div>
                             <div>
-                            <span style={{fontSize:'30px',fontWeight:'bold',}}>{post.title}  </span><br />
+                            <span style={{fontSize:'24px',fontWeight:'bold'}}>{post.title}  </span><br />
                             </div>
                             
                             </Card.Header>
 
                             <Card.Body>
-                            <div className='container'>
-                                {post.content}
+                            <div className='container' style={{fontSize:'16px'}}>
+                                {(post.content).slice(0,500)}
                             </div>
                             <div style={{marginTop:'8px',fontSize:'12px',display:'flex', flexDirection:'row', width:'100%', justifyContent:'end', gap:'40px'}}>
                                 <div className='d-flex' style={{gap:'8px'}}>
