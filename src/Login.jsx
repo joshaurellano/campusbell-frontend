@@ -61,12 +61,15 @@ function Login () {
                 username,
                 password
             });
-            console.log(response)
+
+            console.log(response.data.message);
+             
             // set loading state to false after operation
             setLoading(false)
             setError('');
             //if no error, proceed to homepage
             navigate('/');
+        
         } catch(error) {
             console.error(error)
             if(error.response.data.message.includes("Username")){
@@ -75,6 +78,8 @@ function Login () {
             }else if(error.response.data.message.includes("Password")){
                 console.log('password')
                 setPasswordError(error.response.data.message);
+            }else if(error.response.data.message === 'Unverified'){
+                navigate('/verify');
             }
             setLoading(false)
             setError(error.response.data.message);
