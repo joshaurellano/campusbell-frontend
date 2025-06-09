@@ -43,6 +43,13 @@ function Registration () {
                 last_name:lastName,
                 phone_number:phoneNumber
             });
+            console.log(response);
+            const otpGen = await axios.post(`${API_ENDPOINT}otp/generate`,{
+                email:response.data.email,
+                user_id:response.data.id_number,
+                purpose_id:'3'
+            })
+            console.log(otpGen);
             // set loading state to false after operation
             setLoading(false)
             setError('');
