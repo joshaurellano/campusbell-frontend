@@ -34,11 +34,7 @@ function Home () {
     const [topics, setTopics] = useState([]);
     // for post
     const [post, setPost] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-
-    const handleClose = () => setShowModal(false);
-    const handleShow = () => setShowModal(true);
-
+   
     const [pageLoading, setPageLoading] = useState(false);
 
     const navigate = useNavigate();
@@ -206,12 +202,14 @@ function Home () {
                 </span>
                 </div>
                 <hr/>
-                <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}}>
+                <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/'>
                     <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
                     <FaHome style={{display:'flex', gap:'4'}} />
+                    <div>
                     <span>
                     Home
                     </span>
+                    </div>
                     </div>
                     </Nav.Link>
                      <hr/>
@@ -428,11 +426,13 @@ function Home () {
                             marginBottom:'4px',
                             alignItems:'center',width:'100%',flexGrow:1}}>
                             <FaUserCircle style={{color:'white',fontSize:'12px',}}/>
-                            <span style={{color:'white', marginLeft:'4px',width:'100%'}}>{(post.title).slice(0,50)}</span>
+                            <div onClick={()=>viewPost(post.postID)} style={{color:'white', marginLeft:'4px',width:'100%', cursor:'pointer'}}>
+                            <span>{(post.title).slice(0,50)}</span>
+                            </div>
                             </div>
                             </div>))
                             )
-                        }
+                        } 
                         </div>
                         <br />
                         </div>

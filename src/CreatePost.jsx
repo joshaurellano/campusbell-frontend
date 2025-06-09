@@ -216,7 +216,7 @@ function CreatePost () {
                                     </span>
                                     </div>
                                     <hr/>
-                                    <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}}>
+                                    <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/'>
                                         <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
                                         <FaHome style={{display:'flex', gap:'4'}} />
                                         <span>
