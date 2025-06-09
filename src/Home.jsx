@@ -409,7 +409,7 @@ function Home () {
             </Col>
 
             <Col lg={2}>
-                <div>
+                <div style={{width:'100%'}}>
                     <Card style={{backgroundColor:'black', width:'100%'}}>
                         <div className='d-flex flex-column '>
                         <span style={{fontWeight:'bold',color:'white'}}>New Post</span>
@@ -419,7 +419,7 @@ function Home () {
                         post.length > 0 && (
                         post.slice(0,10).map((post)=>(
                             <div key={post.postID}>
-                            <div style={{height:'100%',
+                            <div className='navLinkColor' style={{height:'100%',
                             display:'flex', 
                             flexDirection:'row', 
                             fontSize:'12px', 

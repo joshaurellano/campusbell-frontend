@@ -2,6 +2,11 @@
     text-decoration: none;  
     color: white
 }
+.navLinkColor:hover {
+    background-color: hsl(43 0% 12.8%); 
+    color: white;
+    border-radius: 12px;
+}
 .colDivider {
     border-left: 1px solid;
     color: #ccc
