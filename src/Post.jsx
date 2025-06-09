@@ -35,10 +35,6 @@ function Post () {
     const [topics, setTopics] = useState([]);
     // for post
     const [post, setPost] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-
-    const handleClose = () => setShowModal(false);
-    const handleShow = () => setShowModal(true);
 
     const [pageLoading, setPageLoading] = useState(false);
 
@@ -97,6 +93,14 @@ function Post () {
             // console.log(data.result)
         })
     }
+
+    const [values, setValues] = useState({
+        post_id: '',
+        user_id: '',
+        body: '',  
+    });
+
+    const [commentBody, setCommentBody] = useState('');
   
     const location = useLocation();
     const post_id = location.state.postID;
@@ -108,6 +112,20 @@ function Post () {
             console.log(post)
         })
     }
+    const addComment = async (e) => {
+            e.preventDefault();
+            const user_id = user.user_id;
+            const id = post_id;
+
+            const payload = {
+                ...values, user_id, post_id: id, body: commentBody
+            }
+            console.log(payload);
+            await axios.post(`${API_ENDPOINT}comment`,payload,{withCredentials: true})
+
+            setCommentBody('');
+            getPost();
+        }
     return (
     <>
         {
@@ -330,12 +348,14 @@ function Post () {
 
                         <Card style={{backgroundColor:'black'}}>
                             <Card.Body>
-                                <Form>
+                                <Form onSubmit={addComment}>
                                     <Form.Group>
                                         <div style={{position:'relative'}}>
                                             <div>
                                                 <Form.Control style={{borderRadius:'15px' , height:'60px'}}
-                                                placeholder='Write Comment'>
+                                                placeholder='Write Comment'
+                                                value={commentBody}
+                                                onChange={(e)=> setCommentBody(e.target.value)}>
                                                     
                                                 </Form.Control>
                                             </div>
@@ -359,7 +379,7 @@ function Post () {
                         <Card style={{backgroundColor:'black',color:'white'}}>
                                 <Card.Header>
                                     <div style={{marginBottom:'8px', backgroundColor:'#D3D3D3', height:'40px', borderRadius:'12px', padding:'8px', color:'black'}}>
-                                        <span>Comments</span>
+                                        <span>Comments {post.commentCount}</span>
                                     </div>
                                 </Card.Header>
                                 <Card.Body>
@@ -375,6 +395,7 @@ function Post () {
                                             <div>
                                                 {data.body}
                                             </div>
+                                            <hr/>
                                         </div>
                                         
                                     ))
@@ -384,9 +405,10 @@ function Post () {
                                     </>
                                 )
                             }
+                            
                             </div>
                             </div>
-                            <hr/>
+                            
                                 </Card.Body>
                             </Card>
                         
