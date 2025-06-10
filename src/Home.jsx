@@ -119,12 +119,13 @@ function Home () {
         : <div style={{
         backgroundColor:'black',
         fontFamily: 'Tahoma, sans-serif',
-        minWidth:'100vw',
-        display:'flex',
-        flexDirection:'column'
+        maxWidth:'100vw',
     }}>
-    <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', display:'flex', alignItems:'center', backgroundColor:'black'}}>
-        <Container fluid style={{height:'inherit'}}>
+    <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1}}>
+        <Container fluid style={{height:'inherit', padding:0}}>
+            <Row style={{width:'100%'}}>
+            
+            <Col lg={4} xs={5}>
             <div style={{display:'flex', alignItems:'center'}}>
                 <FaBell style={{color:'#ffac33', fontSize:'25px'}} />
                 <Navbar.Brand style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
@@ -133,20 +134,32 @@ function Home () {
                     </Nav.Link>
                     </Navbar.Brand>
             </div>
+            </Col>
 
-            <Nav className="me-auto"style={{width:'100%', display:'flex', justifyContent:'center'}}>
-                <div style={{width:'400px',minWidth:'100px', display:'flex', alignItems:'center', height:'100%'}}>
+            <Col lg={6} xs={2} style={{
+                translate:'-20px 0px'
+            }}>
+            <Nav className="me-auto"style={{width:'100%'}}>
+                <div style={{width:'400px', display:'flex', alignItems:'center', height:'100%'}}>
                     <FaMagnifyingGlass style={{
                     position: 'absolute',
                     color: 'gray',
                     pointerEvents: 'none',
                     translate: '10px 0px'}} />
                     
-                    <Form.Control placeholder='Search'style={{ borderRadius: '25px',paddingLeft:'40px'}} />
+                    <Row style={{width:'100%'}}>
+                        <Col lg={12} xs={1}>
+                        <Form.Control placeholder='Search'style={{ borderRadius: '25px',paddingLeft:'40px'}} />
+                        </Col>
+                    </Row>
                 </div>
             </Nav>
-
-                <Nav className='gap-2'>
+            </Col>
+            
+            <Col lg={2} xs={5} style={{
+                translate:'-25px 0px'
+            }}>
+                <Nav className='gap-3'style={{display:'flex', flexDirection:'row', width:'100%'}}>
                 <Nav.Link as={Link} to='/post'>
                 <div style={{cursor:'pointer',color:'white'}}>
                 Post
@@ -175,13 +188,22 @@ function Home () {
                     </Dropdown>
                 </div>
                 </Nav>
+            </Col>
+            </Row>
         </Container>
     </Navbar>
     
     <Row style={{paddingTop:'60px'}}>
     <Container className='mt-6'> 
         <Row>
-            <Col lg={2}>
+            <Col lg={2} >
+            
+            <Navbar expand="lg">
+            <Container fluid>
+            <Navbar.Toggle aria-controls="navbarScroll" style={{
+                translate:'420px -58px',zIndex:2,border:'none'
+            }} />
+            <Navbar.Collapse id="navbarScroll">
             <Nav className='ms-auto flex-column' style={{color:'white'}}>
                 <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
                 <span style={{color:'white'}}>
@@ -225,8 +247,11 @@ function Home () {
                  <span style={{fontWeight:'bold',color:'gray'}}>Miscellaneous</span>
                  <Nav.Link className='navLinkColor'>Help Desk</Nav.Link>
                 </Nav>
-
+            </Navbar.Collapse>
+            </Container>
+            </Navbar>
             </Col>
+
             <Col lg={8} className='colDivider'>
                 <div className='container'>
                 <br />

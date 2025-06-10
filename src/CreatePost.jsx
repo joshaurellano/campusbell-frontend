@@ -130,8 +130,11 @@ function CreatePost () {
                 backgroundColor:'black',
                 fontFamily: 'Tahoma, sans-serif',
                 minWidth:'100vw'}}>
-                    <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', display:'flex', alignItems:'center', backgroundColor:'black'}}>
-                            <Container fluid style={{height:'inherit'}}>
+                    <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1}}>
+                            <Container fluid style={{height:'inherit', padding:0}}>
+                                <Row style={{width:'100%'}}>
+                                
+                                <Col lg={4} xs={5}>
                                 <div style={{display:'flex', alignItems:'center'}}>
                                     <FaBell style={{color:'#ffac33', fontSize:'25px'}} />
                                     <Navbar.Brand style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
@@ -140,8 +143,12 @@ function CreatePost () {
                                         </Nav.Link>
                                         </Navbar.Brand>
                                 </div>
+                                </Col>
                     
-                                <Nav className="me-auto"style={{width:'100%', display:'flex', justifyContent:'center'}}>
+                                <Col lg={6} xs={2} style={{
+                                    translate:'-20px 0px'
+                                }}>
+                                <Nav className="me-auto"style={{width:'100%'}}>
                                     <div style={{width:'400px', display:'flex', alignItems:'center', height:'100%'}}>
                                         <FaMagnifyingGlass style={{
                                         position: 'absolute',
@@ -149,11 +156,19 @@ function CreatePost () {
                                         pointerEvents: 'none',
                                         translate: '10px 0px'}} />
                                         
-                                        <Form.Control placeholder='Search'style={{ borderRadius: '25px',paddingLeft:'40px'}} />
+                                        <Row style={{width:'100%'}}>
+                                            <Col lg={12} xs={1}>
+                                            <Form.Control placeholder='Search'style={{ borderRadius: '25px',paddingLeft:'40px'}} />
+                                            </Col>
+                                        </Row>
                                     </div>
                                 </Nav>
-                    
-                                    <Nav className='gap-2'>
+                                </Col>
+                                
+                                <Col lg={2} xs={5} style={{
+                                    translate:'-25px 0px'
+                                }}>
+                                    <Nav className='gap-3'style={{display:'flex', flexDirection:'row', width:'100%'}}>
                                     <Nav.Link as={Link} to='/post'>
                                     <div style={{cursor:'pointer',color:'white'}}>
                                     Post
@@ -182,54 +197,68 @@ function CreatePost () {
                                         </Dropdown>
                                     </div>
                                     </Nav>
+                                </Col>
+                                </Row>
                             </Container>
                         </Navbar>
                     
                         <Container fluid style={{paddingTop:'60px'}}> 
                             <Row>
-                                <Col lg={2}>
-                                <Nav className='ms-auto flex-column' style={{color:'white'}}>
-                                    <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
-                                    <span style={{color:'white'}}>
-                                        <strong>
-                                            Welcome {user ? `${user.username}`:'Guest'}
-                                            </strong>
-                                    </span>
-                                    </div>
-                                    <hr/>
-                                    <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/'>
-                                        <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
-                                        <FaHome style={{display:'flex', gap:'4'}} />
-                                        <span>
-                                        Home
-                                        </span>
-                                        </div>
-                                        </Nav.Link>
-                                        <hr/>
-                                    <span style={{fontWeight:'bold',color:'gray'}}>Topics</span>              
-                                    {
-                                        topics.length > 0 && (
-                                            topics.map((t)=>(
-                                                    <Nav.Link key={t.topic_id} className='navLinkColor'>
-                                                        {t.topic_name}
+                                <Col lg={2} >
+                                            
+                                            <Navbar expand="lg">
+                                            <Container fluid>
+                                            <Navbar.Toggle aria-controls="navbarScroll" style={{
+                                                translate:'420px -58px',zIndex:2,border:'none'
+                                            }} />
+                                            <Navbar.Collapse id="navbarScroll">
+                                            <Nav className='ms-auto flex-column' style={{color:'white'}}>
+                                                <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
+                                                <span style={{color:'white'}}>
+                                                    <strong>
+                                                        Welcome {user ? `${user.username}`:'Guest'}
+                                                        </strong>
+                                                </span>
+                                                </div>
+                                                <hr/>
+                                                <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/'>
+                                                    <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
+                                                    <FaHome style={{display:'flex', gap:'4'}} />
+                                                    <div>
+                                                    <span>
+                                                    Home
+                                                    </span>
+                                                    </div>
+                                                    </div>
                                                     </Nav.Link>
-                                            ))
-                                        )
-                                    }
-                                    <hr/>
-                                    <span style={{fontWeight:'bold',color:'gray'}}>Community</span>
-                                    
-                                    <Nav.Link className='navLinkColor'>
-                                    <div style={{display:'flex', alignItems:'center', gap:'2'}}>
-                                    <CiCirclePlus style={{fontSize:'20px'}} />
-                                        Create Community
-                                    </div>   
-                                        </Nav.Link>
-                                    <hr/>
-                                    <span style={{fontWeight:'bold',color:'gray'}}>Miscellaneous</span>
-                                    <Nav.Link className='navLinkColor'>Help Desk</Nav.Link>
-                                    </Nav>
-                                    </Col>
+                                                     <hr/>
+                                                <span style={{fontWeight:'bold',color:'gray'}}>Topics</span>              
+                                                {
+                                                    topics.length > 0 && (
+                                                        topics.map((t)=>(
+                                                                <Nav.Link key={t.topic_id} className='navLinkColor'>
+                                                                    {t.topic_name}
+                                                                </Nav.Link>
+                                                        ))
+                                                    )
+                                                }
+                                                <hr/>
+                                                <span style={{fontWeight:'bold',color:'gray'}}>Community</span>
+                                                
+                                                <Nav.Link className='navLinkColor'>
+                                                <div style={{display:'flex', alignItems:'center', gap:'2'}}>
+                                                <CiCirclePlus style={{fontSize:'20px'}} />
+                                                    Create Community
+                                                </div>   
+                                                    </Nav.Link>
+                                                 <hr/>
+                                                 <span style={{fontWeight:'bold',color:'gray'}}>Miscellaneous</span>
+                                                 <Nav.Link className='navLinkColor'>Help Desk</Nav.Link>
+                                                </Nav>
+                                            </Navbar.Collapse>
+                                            </Container>
+                                            </Navbar>
+                                            </Col>
 
                                     <Col>
                                         <div className='container' style={{color:'white'}}>
