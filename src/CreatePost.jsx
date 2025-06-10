@@ -130,77 +130,58 @@ function CreatePost () {
                 backgroundColor:'black',
                 fontFamily: 'Tahoma, sans-serif',
                 minWidth:'100vw'}}>
-                    <Navbar data-bs-theme='dark' style={{borderBottom:'solid', paddingTop:20, paddingBottom: 0, height:'60px'}}>
-                        <Container fluid>
-                            <Row className="w-100 align-items-center">
-                                <div className='d-flex justify-content-center' style={{height:'100%'}}>
-                                <Col>
+                    <Navbar collapseOnSelect expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', display:'flex', alignItems:'center'}}>
+                            <Container fluid style={{height:'inherit'}}>
                                 <div style={{display:'flex', alignItems:'center'}}>
-                                <FaBell style={{color:'#ffac33', fontSize:'25px'}} />
-                                <Navbar.Brand style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
-                                    <Nav.Link as={Link} to='/'>
-                                    Campus Bell
-                                    </Nav.Link>
-                                    </Navbar.Brand>
+                                    <FaBell style={{color:'#ffac33', fontSize:'25px'}} />
+                                    <Navbar.Brand style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
+                                        <Nav.Link as={Link} to='/'>
+                                        Campus Bell
+                                        </Nav.Link>
+                                        </Navbar.Brand>
                                 </div>
-                                </Col>
-                                
-                                <Col className="d-flex justify-content-center">
-                                <Nav>
-                                    <div style={{width:'400px', position:'relative', marginTop:'4px'}}>
+                    
+                                <Nav className="me-auto"style={{width:'100%', display:'flex', justifyContent:'center'}}>
+                                    <div style={{width:'400px', display:'flex', alignItems:'center', height:'100%'}}>
                                         <FaMagnifyingGlass style={{
                                         position: 'absolute',
-                                        left:'10px',
-                                        top: '50%',
-                                        transform: 'translateY(-120%)',
                                         color: 'gray',
-                                        pointerEvents: 'none'
-                                    }} />
-                                    <Form.Control placeholder='Search'style={{ borderRadius: '25px',paddingLeft:'40px'}} />
+                                        pointerEvents: 'none',
+                                        translate: '10px 0px'}} />
+                                        
+                                        <Form.Control placeholder='Search'style={{ borderRadius: '25px',paddingLeft:'40px'}} />
                                     </div>
                                 </Nav>
-                                </Col>
-
-                                    <Col className="d-flex justify-content-end align-items-center gap-4" style={{color:'white', paddingLeft:16,}}>
-                                        <div style={{display:'flex',alignItems:'center', justifyItems:'center'}}>
-                                        <Nav className="d-flex justify-content-end gap-2">
-                                        <Nav.Item>
-                                            <Nav.Link as={Link} to='/post'>
-                                                <div style={{cursor:'pointer',color:'white'}}>
-                                                Post
-                                                </div>
-                                            </Nav.Link>
-                                            </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link as={Link} to='/post'>
-                                        <BiSolidMessageRoundedDots style={{fontSize:'30px',cursor:'pointer',color:'white'}} />
-                                            </Nav.Link>
-                                            </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link as={Link} to='/post'>
-                                        <IoIosNotifications style={{fontSize:'30px',cursor:'pointer',color:'white'}} />
-                                            </Nav.Link>
-                                            </Nav.Item>
-                                        <Nav.Item>
-                                        <div style={{paddingTop:'8px'}}>
-                                        <FaUserCircle style={{fontSize:'30px', color:'green'}} />
-                                        <Dropdown style={{translate:'8px -25px', zIndex:1}}>
-                                        <Dropdown.Toggle id="dropdown-basic" style={{fontSize:'12px',border:'none', backgroundColor:'transparent'}}>
-                                        </Dropdown.Toggle>
                     
+                                    <Nav className='gap-2'>
+                                    <Nav.Link as={Link} to='/post'>
+                                    <div style={{cursor:'pointer',color:'white'}}>
+                                    Post
+                                    </div>
+                                    </Nav.Link>
+                    
+                                    <Nav.Link as={Link} to='/post'>
+                                        <BiSolidMessageRoundedDots style={{fontSize:'30px',cursor:'pointer',color:'white'}} />
+                                    </Nav.Link>
+                    
+                                     <Nav.Link as={Link} to='/post'>
+                                        <IoIosNotifications style={{fontSize:'30px',cursor:'pointer',color:'white'}} />
+                                    </Nav.Link>
+                    
+                                    <div style={{display:'flex', alignItems:'center'}}>
+                                        <FaUserCircle style={{fontSize:'30px', color:'green'}} />
+                                        <Dropdown style={{translate:'-18px 8px', zIndex:1}}>
+                                        <Dropdown.Toggle id="dropdown-basic" style={{fontSize:'12px',border:'none', backgroundColor:'transparent'}}>
+                                                            
+                                        </Dropdown.Toggle>
                                         <Dropdown.Menu style={{translate:'-128px 0px'}}>
-                                            <Dropdown.Item>Settings</Dropdown.Item>
-                                            <Dropdown.Item>Profile</Dropdown.Item>
-                                            <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
+                                        <Dropdown.Item>Settings</Dropdown.Item>
+                                        <Dropdown.Item>Profile</Dropdown.Item>
+                                        <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                                         </Dropdown.Menu>
                                         </Dropdown>
-                                        </div>
-                                        </Nav.Item>
-                                        </Nav>
-                                        </div>
-                                    </Col>
                                     </div>
-                            </Row>
+                                    </Nav>
                             </Container>
                         </Navbar>
                     
