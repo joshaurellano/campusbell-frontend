@@ -130,7 +130,7 @@ function CreatePost () {
                 backgroundColor:'black',
                 fontFamily: 'Tahoma, sans-serif',
                 minWidth:'100vw'}}>
-                    <Navbar collapseOnSelect expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', display:'flex', alignItems:'center'}}>
+                    <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', display:'flex', alignItems:'center', backgroundColor:'black'}}>
                             <Container fluid style={{height:'inherit'}}>
                                 <div style={{display:'flex', alignItems:'center'}}>
                                     <FaBell style={{color:'#ffac33', fontSize:'25px'}} />
@@ -185,7 +185,7 @@ function CreatePost () {
                             </Container>
                         </Navbar>
                     
-                        <Container fluid> 
+                        <Container fluid style={{paddingTop:'60px'}}> 
                             <Row>
                                 <Col lg={2}>
                                 <Nav className='ms-auto flex-column' style={{color:'white'}}>

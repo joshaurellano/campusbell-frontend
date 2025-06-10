@@ -119,9 +119,11 @@ function Home () {
         : <div style={{
         backgroundColor:'black',
         fontFamily: 'Tahoma, sans-serif',
-        minWidth:'100vw'
+        minWidth:'100vw',
+        display:'flex',
+        flexDirection:'column'
     }}>
-    <Navbar collapseOnSelect expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', display:'flex', alignItems:'center'}}>
+    <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', display:'flex', alignItems:'center', backgroundColor:'black'}}>
         <Container fluid style={{height:'inherit'}}>
             <div style={{display:'flex', alignItems:'center'}}>
                 <FaBell style={{color:'#ffac33', fontSize:'25px'}} />
@@ -133,7 +135,7 @@ function Home () {
             </div>
 
             <Nav className="me-auto"style={{width:'100%', display:'flex', justifyContent:'center'}}>
-                <div style={{width:'400px', display:'flex', alignItems:'center', height:'100%'}}>
+                <div style={{width:'400px',minWidth:'100px', display:'flex', alignItems:'center', height:'100%'}}>
                     <FaMagnifyingGlass style={{
                     position: 'absolute',
                     color: 'gray',
@@ -175,8 +177,9 @@ function Home () {
                 </Nav>
         </Container>
     </Navbar>
-
-    <Container fluid> 
+    
+    <Row style={{paddingTop:'60px'}}>
+    <Container className='mt-6'> 
         <Row>
             <Col lg={2}>
             <Nav className='ms-auto flex-column' style={{color:'white'}}>
@@ -441,7 +444,7 @@ function Home () {
             </Col>
             </Row>
         </Container>
-        
+        </Row>
         </div>
        
         }
