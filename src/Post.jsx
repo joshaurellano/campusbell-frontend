@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner} from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner,Offcanvas} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { CiCirclePlus } from "react-icons/ci";
@@ -17,6 +17,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import { TbShare3 } from "react-icons/tb";
 import { FaRegComment } from "react-icons/fa6";
 import { IoSendSharp } from "react-icons/io5";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 import ReactTimeAgo from 'react-time-ago'
 
@@ -37,7 +38,12 @@ function Post () {
     const [post, setPost] = useState([]);
 
     const [pageLoading, setPageLoading] = useState(false);
-    const [commentLoading, setCommentLoading] = useState(false)
+    const [commentLoading, setCommentLoading] = useState(false);
+
+    const [showSidebar, setShowSidebar] = useState(false);
+    
+    const handleCloseSidebar = () => setShowSidebar(false);
+    const handleShowSidebar = () => setShowSidebar(true);
 
     const navigate = useNavigate();
     //Check if user has session
@@ -141,141 +147,185 @@ function Post () {
             </div>
         </> 
         
-        : <div style={{
-        backgroundColor:'black',
-        fontFamily: 'Tahoma, sans-serif',
-        minWidth:'100vw'
-    }}>
-    <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1}}>
-            <Container fluid style={{height:'inherit', padding:0}}>
-                <Row style={{width:'100%'}}>
-                
-                <Col lg={4} xs={5}>
-                <div style={{display:'flex', alignItems:'center'}}>
-                    <FaBell style={{color:'#ffac33', fontSize:'25px'}} />
-                    <Navbar.Brand style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
-                        <Nav.Link as={Link} to='/'>
-                        Campus Bell
-                        </Nav.Link>
-                        </Navbar.Brand>
-                </div>
-                </Col>
-    
-                <Col lg={6} xs={2} style={{
-                    translate:'-20px 0px'
-                }}>
-                <Nav className="me-auto"style={{width:'100%'}}>
-                    <div style={{width:'400px', display:'flex', alignItems:'center', height:'100%'}}>
-                        <FaMagnifyingGlass style={{
-                        position: 'absolute',
-                        color: 'gray',
-                        pointerEvents: 'none',
-                        translate: '10px 0px'}} />
-                        
-                        <Row style={{width:'100%'}}>
-                            <Col lg={12} xs={1}>
-                            <Form.Control placeholder='Search'style={{ borderRadius: '25px',paddingLeft:'40px'}} />
-                            </Col>
-                        </Row>
-                    </div>
-                </Nav>
-                </Col>
-                
-                <Col lg={2} xs={5} style={{
-                    translate:'-25px 0px'
-                }}>
-                    <Nav className='gap-3'style={{display:'flex', flexDirection:'row', width:'100%'}}>
-                    <Nav.Link as={Link} to='/post'>
-                    <div style={{cursor:'pointer',color:'white'}}>
-                    Post
-                    </div>
-                    </Nav.Link>
-    
-                    <Nav.Link as={Link} to='/post'>
-                        <BiSolidMessageRoundedDots style={{fontSize:'30px',cursor:'pointer',color:'white'}} />
-                    </Nav.Link>
-    
-                     <Nav.Link as={Link} to='/post'>
-                        <IoIosNotifications style={{fontSize:'30px',cursor:'pointer',color:'white'}} />
-                    </Nav.Link>
-    
-                    <div style={{display:'flex', alignItems:'center'}}>
-                        <FaUserCircle style={{fontSize:'30px', color:'green'}} />
-                        <Dropdown style={{translate:'-18px 8px', zIndex:1}}>
-                        <Dropdown.Toggle id="dropdown-basic" style={{fontSize:'12px',border:'none', backgroundColor:'transparent'}}>
-                                            
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu style={{translate:'-128px 0px'}}>
-                        <Dropdown.Item>Settings</Dropdown.Item>
-                        <Dropdown.Item>Profile</Dropdown.Item>
-                        <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-                        </Dropdown.Menu>
-                        </Dropdown>
-                    </div>
-                    </Nav>
-                </Col>
-                </Row>
-            </Container>
-        </Navbar>
-
-    <Container fluid style={{paddingTop:'60px'}}> 
+        : <div className='page'>
         <Row>
-            <Col lg={2} >
-               <Navbar expand="lg">
-                <Container fluid>
-                <Navbar.Toggle aria-controls="navbarScroll" style={{
-                translate:'420px -58px',zIndex:2,border:'none'
-                }} />
-                <Navbar.Collapse id="navbarScroll">
-                <Nav className='ms-auto flex-column' style={{color:'white'}}>
-                <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
-                <span style={{color:'white'}}>
-                <strong>
-                Welcome {user ? `${user.username}`:'Guest'}
-                </strong>
-                </span>
-                </div>
-                <hr/>
-                <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/'>
-                    <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
-                    <FaHome style={{display:'flex', gap:'4'}} />
-                    <div>
-                    <span>
-                    Home
-                    </span>
-                    </div>
-                    </div>
-                    </Nav.Link>
-                        <hr/>
-                <span style={{fontWeight:'bold',color:'gray'}}>Topics</span>              
-                {
-                    topics.length > 0 && (
-                        topics.map((t)=>(
-                                <Nav.Link key={t.topic_id} className='navLinkColor'>
-                                    {t.topic_name}
+            <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1, display:'flex', alignItems:'center'}}>
+                    <Container fluid style={{height:'inherit', padding:0}}>
+                        <Row style={{width:'100%'}}>
+                        
+                        <Col lg={4} xs={5} style={{display:'flex',alignItems:'center'}}>
+                        <div className='brand' style={{display:'flex', alignItems:'center'}}>
+                            <div className='d-block d-sm-none'>
+                                <Button variant="primary" onClick={handleShowSidebar} style={{backgroundColor:'transparent', border:'none', translate: '0px -2px'}}>
+                                    {
+                                        <>
+                                            <GiHamburgerMenu />
+                                        </>
+                                    }
+                                </Button>
+                                </div>
+                            <FaBell style={{color:'#ffac33'}} />
+                            <Navbar.Brand className='brand' style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
+                                <Nav.Link as={Link} to='/'>
+                                Campus Bell
                                 </Nav.Link>
-                        ))
-                    )
-                }
-                <hr/>
-                <span style={{fontWeight:'bold',color:'gray'}}>Community</span>
-                
-                <Nav.Link className='navLinkColor'>
-                <div style={{display:'flex', alignItems:'center', gap:'2'}}>
-                <CiCirclePlus style={{fontSize:'20px'}} />
-                    Create Community
-                </div>   
-                    </Nav.Link>
-                    <hr/>
-                    <span style={{fontWeight:'bold',color:'gray'}}>Miscellaneous</span>
-                    <Nav.Link className='navLinkColor'>Help Desk</Nav.Link>
-                </Nav>
-                </Navbar.Collapse>
-                </Container>
-                    </Navbar>
+                                </Navbar.Brand>
+                        </div>
+                        </Col>
+            
+                        <Col lg={6} xs={2} style={{
+                            translate:'-20px 0px'
+                        }}>
+                        <Nav className="me-auto align-items-center"style={{width:'100%', height:'100%'}}>
+                            <div style={{display:'flex', alignItems:'center', height:'100%'}}>
+                                <FaMagnifyingGlass className='searchbar-icon' />
+                                
+                                <Row style={{width:'100%'}}>
+                                    <Col lg={12} xs={1}>
+                                    <Form.Control className='searchbar' placeholder='Search' />
+                                    </Col>
+                                </Row>
+                            </div>
+                        </Nav>
+                        </Col>
+                        
+                        <Col  lg={2} xs={5} style={{ display:'flex', alignItems:'center', height:'100%'
+                        }}>
+                            <Nav className='gap-3'style={{display:'flex', flexDirection:'row', width:'100%'}}>
+                            <Nav.Link className='top-menu' as={Link} to='/post'style={{cursor:'pointer',color:'white'}}>
+                            Post
+                            </Nav.Link>
+            
+                            <Nav.Link as={Link} to='/post'>
+                                <BiSolidMessageRoundedDots className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
+                            </Nav.Link>
+            
+                             <Nav.Link as={Link} to='/post'>
+                                <IoIosNotifications className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
+                            </Nav.Link>
+            
+                            <NavDropdown className="custom-nav-dropdown" title={<><FaUserCircle className='top-menu-icons' style={{color:'green'}} /></>} id="basic-nav-dropdown">
+                                <NavDropdown.Item>Settings</NavDropdown.Item>
+                                <NavDropdown.Item>Profile</NavDropdown.Item>
+                                <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                            </NavDropdown>
+                            </Nav>
+                        </Col>
+                        </Row>
+                    </Container>
+                </Navbar>
+        </Row>
+        
+        <Row style={{paddingTop:'50px', backgroundColor:'black'}}> 
+            <Container fluid>
+                <Row>
+                    <Col lg={2}>
+                    <Container fluid>
+                        <div className='d-none d-sm-block'>
+                        <Nav className='ms-auto flex-column' style={{color:'white'}}>
+                            <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
+                            <span style={{color:'white'}}>
+                                <strong>
+                                    Welcome {user ? `${user.username}`:'Guest'}
+                                    </strong>
+                            </span>
+                            </div>
+                            <hr/>
+                            <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/'>
+                                <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
+                                <FaHome style={{display:'flex', gap:'4'}} />
+                                <div>
+                                <span>
+                                Home
+                                </span>
+                                </div>
+                                </div>
+                                </Nav.Link>
+                                    <hr/>
+                            <span style={{fontWeight:'bold',color:'gray'}}>Topics</span>              
+                            {
+                                topics.length > 0 && (
+                                    topics.map((t)=>(
+                                            <Nav.Link key={t.topic_id} className='navLinkColor'>
+                                                {t.topic_name}
+                                            </Nav.Link>
+                                    ))
+                                )
+                            }
+                            <hr/>
+                            <span style={{fontWeight:'bold',color:'gray'}}>Community</span>
+                            
+                            <Nav.Link className='navLinkColor'>
+                            <div style={{display:'flex', alignItems:'center', gap:'2'}}>
+                            <CiCirclePlus style={{fontSize:'20px'}} />
+                                Create Community
+                            </div>   
+                                </Nav.Link>
+                                <hr/>
+                                <span style={{fontWeight:'bold',color:'gray'}}>Miscellaneous</span>
+                                <Nav.Link className='navLinkColor'>Help Desk</Nav.Link>
+                            </Nav>
+                            </div>
+        
+                            <div className='d-block d-sm-none'>
+                            <Offcanvas show={showSidebar} onHide={handleCloseSidebar} style={{backgroundColor:'black', width:'250px'}}>
+                                <Offcanvas.Header style={{color:'white'}} closeButton>
+                                <Offcanvas.Title>
+                                    <Nav>
+                                        <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
+                                            <span style={{color:'white'}}>
+                                                <strong>
+                                                    Welcome {user ? `${user.username}`:'Guest'}
+                                                    </strong>
+                                            </span>
+                                            </div>
+                                    </Nav>
+                                </Offcanvas.Title>
+                                </Offcanvas.Header>
+                                <hr style={{color:'white'}}/>
+                                <Offcanvas.Body>
+                                    <Nav className='ms-auto flex-column' style={{color:'white'}}>
+                                    <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/'>
+                                    <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
+                                        <FaHome style={{display:'flex', gap:'4'}} />
+                                        <div>
+                                            <span>
+                                            Home
+                                            </span>
+                                        </div>
+                                    </div>
+                                    </Nav.Link>
+                                        <hr/>
+                                <span style={{fontWeight:'bold',color:'gray'}}>Topics</span>              
+                            {
+                                topics.length > 0 && (
+                                    topics.map((t)=>(
+                                            <Nav.Link key={t.topic_id} className='navLinkColor'>
+                                                {t.topic_name}
+                                            </Nav.Link>
+                                    ))
+                                )
+                            }
+                            <hr/>
+                            <span style={{fontWeight:'bold',color:'gray'}}>Community</span>
+                            
+                            <Nav.Link className='navLinkColor'>
+                            <div style={{display:'flex', alignItems:'center', gap:'2'}}>
+                            <CiCirclePlus style={{fontSize:'20px'}} />
+                                Create Community
+                            </div>   
+                                </Nav.Link>
+                                <hr/>
+                                <span style={{fontWeight:'bold',color:'gray'}}>Miscellaneous</span>
+                                <Nav.Link className='navLinkColor'>Help Desk</Nav.Link>
+                            </Nav>
+                                </Offcanvas.Body>
+                            </Offcanvas>
+                            </div>
+                        </Container>
                     </Col>
 
-            <Col lg={8} className='colDivider'>
+                    <Col lg={8}>
                 <div className='container'>
                 <br />
                 {
@@ -313,13 +363,13 @@ function Post () {
                                 {post.topic_name}
                             </div>
                             <div>
-                            <span style={{fontSize:'30px',fontWeight:'bold',}}>{post.title}  </span><br />
+                            <span className='post-title'>{post.title}  </span><br />
                             </div>
                             
                             </Card.Header>
 
                             <Card.Body>
-                            <div className='container'>
+                            <div className='container post-content'>
                                 {post.content}
                             </div>
                             <div style={{marginTop:'20px',fontSize:'12px',display:'flex', flexDirection:'row', width:'100%', justifyContent:'start', gap:'40px'}}>
@@ -332,7 +382,6 @@ function Post () {
                                 <span>{post.commentCount}</span>
                                 </div>
                             </div>
-                            
                             
                             </Card.Body>
                             
@@ -372,7 +421,7 @@ function Post () {
                                     <Form.Group>
                                         <div style={{position:'relative'}}>
                                             <div>
-                                                <Form.Control style={{borderRadius:'15px' , height:'60px'}}
+                                                <Form.Control className='comment-box'
                                                 placeholder='Write Comment'
                                                 value={commentBody}
                                                 onChange={(e)=> setCommentBody(e.target.value)}>
@@ -380,13 +429,7 @@ function Post () {
                                                 </Form.Control>
                                             </div>
 
-                                            <div style={{display:'flex',
-                                                justifyContent:'end',
-                                                width:'100%', 
-                                                position:'absolute', 
-                                                translate:'-10px -50px', 
-                                                zIndex:'1', 
-                                                fontSize:'24px'}}>
+                                            <div className='comment-button'>
                                                 <button type='submit' style={{border:'none', backgroundColor:'transparent'}}>
                                                 {
                                                     commentLoading ? (
@@ -408,7 +451,7 @@ function Post () {
 
                         <Card style={{backgroundColor:'black',color:'white'}}>
                                 <Card.Header>
-                                    <div style={{marginBottom:'8px', backgroundColor:'#D3D3D3', height:'40px', borderRadius:'12px', padding:'8px', color:'black'}}>
+                                    <div className='comment-box-label'>
                                         <span>Comments {post.commentCount}</span>
                                     </div>
                                 </Card.Header>
@@ -421,17 +464,17 @@ function Post () {
                                         <div key={data.commentID} style={{marginBottom:'8px'}}>
                                             <div className='d-flex h-100 w-100 flex-row align-items-center'>
                                                 <div className='d-flex h-100 align-items-center'>
-                                                <FaUser style={{fontSize:'12px'}} />
-                                                <span style={{fontSize:'15px'}}>{data.username} </span> 
+                                                <FaUser className='comment-user-logo' />
+                                                <span className='comment-user'>{data.username} </span> 
                                                 </div>
-                                                <span style ={{marginLeft:'4px',fontSize:'12px'}}> 
+                                                <span className='comment-user-date'> 
                                                     {data?.date_posted && (<ReactTimeAgo
                                                     date={new Date(data.date_posted)}
                                                     locale="en-US"
                                                     timeStyle="twitter"/>)}
                                                 </span>
                                             </div>
-                                            <div style={{fontSize:'15px'}}>
+                                            <div className='comment-body'>
                                                 {data.body}
                                             </div>
                                             <hr/>
@@ -440,7 +483,7 @@ function Post () {
                                     ))
                                 ) : (
                                     <>
-                                        <span>No comments available yet</span>
+                                        <span className='no-comment-msg'>No comments available yet</span>
                                     </>
                                 )
                             }
@@ -458,12 +501,14 @@ function Post () {
             }
             <br />
                 </div>
-            </Col>
-            </Row>
-        </Container>
-        
+                    </Col>
+
+                    <Col lg={2}>
+                    </Col>
+                </Row>
+                </Container> 
+        </Row>
         </div>
-       
         }
     </>
     )
