@@ -21,6 +21,9 @@
       background: gray;
       border-radius:  50px;
       font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 #oval:hover {
       background: #0048fc;
@@ -40,4 +43,113 @@
     border-radius: 15px; 
     padding: 8px;
     cursor: pointer ;
+}
+.brand {
+    font-size: 1.5rem;
+}
+
+.page {
+    background-color: black;
+    font-family: Tahoma, sans-serif;
+    width: 100vw;
+    height: 100vh
+}
+
+
+.top-menu { 
+    font-size: 1.2rem;
+}
+
+.top-menu-icons { 
+    font-size: 1.5rem;
+}
+.searchbar {
+    border-radius: 25px;
+    padding-left: 40px;
+    width: 400px
+}
+.searchbar-icon {
+    position: absolute;
+    color: gray;
+    pointer-events: none;
+    translate: 16px 0px
+}
+.profile {
+    display: flex;
+    align-items: center;
+}
+.dropdown-menu {
+    z-index: 1000;
+}
+.custom-nav-dropdown .dropdown-menu {
+  left: auto !important;
+  right: 0 !important;
+  transform: translateX(-8px);
+}
+.post-title {
+    font-size:1.5rem;
+    font-weight:bold;
+}
+.post-content {
+    font-size:1rem
+}
+.action-tabs{
+    display:flex;
+    justify-content: start;
+}
+
+@media (max-width: 600px) {
+    .brand {
+        align-items: center;
+        font-size: .9rem;
+        margin: 0;
+        padding: 0
+    }
+    .background {
+    background-color: black;
+    font-family: Tahoma, sans-serif;
+    width: 100%;
+    height:100%
+    }
+    .top-menu {
+    font-size: .8rem;
+    }
+    .top-menu-icons {
+    font-size: 1rem;
+    transform: translateY(-4px); 
+    }
+    .searchbar{
+    display: none;
+    }
+    .searchbar-icon{
+    translate: 24px 0px;
+    }
+    .custom-nav-dropdown .dropdown-menu {
+    font-size: .8rem;
+    padding: 0;
+    min-width: 6rem;
+    
+    position: absolute !important;
+    z-index: 1050; 
+    }
+
+    .post-title {
+    font-size: 1rem;
+    }
+
+    .post-content {
+    font-size:.9rem
+    }
+    #oval {
+      width: 80px !important;
+      height: 30px !important;
+      font-size: 9px;
+    }
+    .action-tabs{
+    gap: 1rem !important;
+    overflow-wrap: normal;
+    justify-content: center !important;
+}
+
+    
 }

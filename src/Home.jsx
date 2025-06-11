@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner} from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner, Offcanvas} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { CiCirclePlus } from "react-icons/ci";
@@ -16,6 +16,7 @@ import { CiClock2 } from "react-icons/ci";
 import { AiOutlineLike } from "react-icons/ai";
 import { TbShare3 } from "react-icons/tb";
 import { FaRegComment } from "react-icons/fa6";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 import ReactTimeAgo from 'react-time-ago'
 
@@ -36,6 +37,11 @@ function Home () {
     const [post, setPost] = useState([]);
    
     const [pageLoading, setPageLoading] = useState(false);
+
+    const [showSidebar, setShowSidebar] = useState(false);
+
+    const handleCloseSidebar = () => setShowSidebar(false);
+    const handleShowSidebar = () => setShowSidebar(true);
 
     const navigate = useNavigate();
     //Check if user has session
@@ -116,19 +122,26 @@ function Home () {
             </div>
         </> 
         
-        : <div style={{
-        backgroundColor:'black',
-        fontFamily: 'Tahoma, sans-serif',
-        maxWidth:'100vw',
-    }}>
-    <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1}}>
+        : <div className='page'>
+    <Row>
+    
+    <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1, display:'flex', alignItems:'center'}}>
         <Container fluid style={{height:'inherit', padding:0}}>
             <Row style={{width:'100%'}}>
             
-            <Col lg={4} xs={5}>
-            <div style={{display:'flex', alignItems:'center'}}>
-                <FaBell style={{color:'#ffac33', fontSize:'25px'}} />
-                <Navbar.Brand style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
+            <Col lg={4} xs={5} style={{display:'flex',alignItems:'center'}}>
+            <div className='brand' style={{display:'flex', alignItems:'center'}}>
+                <div className='d-block d-sm-none'>
+                    <Button variant="primary" onClick={handleShowSidebar} style={{backgroundColor:'transparent', border:'none', translate: '0px -2px'}}>
+                        {
+                            <>
+                                <GiHamburgerMenu />
+                            </>
+                        }
+                    </Button>
+                    </div>
+                <FaBell style={{color:'#ffac33'}} />
+                <Navbar.Brand className='brand' style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
                     <Nav.Link as={Link} to='/'>
                     Campus Bell
                     </Nav.Link>
@@ -139,291 +152,327 @@ function Home () {
             <Col lg={6} xs={2} style={{
                 translate:'-20px 0px'
             }}>
-            <Nav className="me-auto"style={{width:'100%'}}>
-                <div style={{width:'400px', display:'flex', alignItems:'center', height:'100%'}}>
-                    <FaMagnifyingGlass style={{
-                    position: 'absolute',
-                    color: 'gray',
-                    pointerEvents: 'none',
-                    translate: '10px 0px'}} />
+            <Nav className="me-auto align-items-center"style={{width:'100%', height:'100%'}}>
+                <div style={{display:'flex', alignItems:'center', height:'100%'}}>
+                    <FaMagnifyingGlass className='searchbar-icon' />
                     
                     <Row style={{width:'100%'}}>
                         <Col lg={12} xs={1}>
-                        <Form.Control placeholder='Search'style={{ borderRadius: '25px',paddingLeft:'40px'}} />
+                        <Form.Control className='searchbar' placeholder='Search' />
                         </Col>
                     </Row>
                 </div>
             </Nav>
             </Col>
             
-            <Col lg={2} xs={5} style={{
-                translate:'-25px 0px'
+            <Col  lg={2} xs={5} style={{ display:'flex', alignItems:'center', height:'100%'
             }}>
                 <Nav className='gap-3'style={{display:'flex', flexDirection:'row', width:'100%'}}>
-                <Nav.Link as={Link} to='/post'>
-                <div style={{cursor:'pointer',color:'white'}}>
+                <Nav.Link className='top-menu' as={Link} to='/post'style={{cursor:'pointer',color:'white'}}>
                 Post
-                </div>
                 </Nav.Link>
 
                 <Nav.Link as={Link} to='/post'>
-                    <BiSolidMessageRoundedDots style={{fontSize:'30px',cursor:'pointer',color:'white'}} />
+                    <BiSolidMessageRoundedDots className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
                 </Nav.Link>
 
                  <Nav.Link as={Link} to='/post'>
-                    <IoIosNotifications style={{fontSize:'30px',cursor:'pointer',color:'white'}} />
+                    <IoIosNotifications className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
                 </Nav.Link>
 
-                <div style={{display:'flex', alignItems:'center'}}>
-                    <FaUserCircle style={{fontSize:'30px', color:'green'}} />
-                    <Dropdown style={{translate:'-18px 8px', zIndex:1}}>
-                    <Dropdown.Toggle id="dropdown-basic" style={{fontSize:'12px',border:'none', backgroundColor:'transparent'}}>
-                                        
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu style={{translate:'-128px 0px'}}>
-                    <Dropdown.Item>Settings</Dropdown.Item>
-                    <Dropdown.Item>Profile</Dropdown.Item>
-                    <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-                    </Dropdown.Menu>
-                    </Dropdown>
-                </div>
+                <NavDropdown className="custom-nav-dropdown" title={<><FaUserCircle className='top-menu-icons' style={{color:'green'}} /></>} id="basic-nav-dropdown">
+                    <NavDropdown.Item>Settings</NavDropdown.Item>
+                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                    <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                </NavDropdown>
                 </Nav>
             </Col>
             </Row>
         </Container>
     </Navbar>
-    
-    <Row style={{paddingTop:'60px'}}>
-    <Container className='mt-6'> 
-        <Row>
-            <Col lg={2} >
-            
-            <Navbar expand="lg">
-            <Container fluid>
-            <Navbar.Toggle aria-controls="navbarScroll" style={{
-                translate:'420px -58px',zIndex:2,border:'none'
-            }} />
-            <Navbar.Collapse id="navbarScroll">
-            <Nav className='ms-auto flex-column' style={{color:'white'}}>
-                <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
-                <span style={{color:'white'}}>
-                    <strong>
-                        Welcome {user ? `${user.username}`:'Guest'}
-                        </strong>
-                </span>
-                </div>
-                <hr/>
-                <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/'>
-                    <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
-                    <FaHome style={{display:'flex', gap:'4'}} />
-                    <div>
-                    <span>
-                    Home
+    </Row>
+
+    <Row style={{paddingTop:'68px', backgroundColor:'black'}}>
+        <Container fluid>
+            <Row>
+            <Col lg={2} style={{borderRight:'2px solid gray'}}>
+                <Container fluid>
+                <div className='d-none d-sm-block'>
+                <Nav className='ms-auto flex-column' style={{color:'white'}}>
+                    <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
+                    <span style={{color:'white'}}>
+                        <strong>
+                            Welcome {user ? `${user.username}`:'Guest'}
+                            </strong>
                     </span>
                     </div>
+                    <hr/>
+                    <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/'>
+                        <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
+                        <FaHome style={{display:'flex', gap:'4'}} />
+                        <div>
+                        <span>
+                        Home
+                        </span>
+                        </div>
+                        </div>
+                        </Nav.Link>
+                            <hr/>
+                    <span style={{fontWeight:'bold',color:'gray'}}>Topics</span>              
+                    {
+                        topics.length > 0 && (
+                            topics.map((t)=>(
+                                    <Nav.Link key={t.topic_id} className='navLinkColor'>
+                                        {t.topic_name}
+                                    </Nav.Link>
+                            ))
+                        )
+                    }
+                    <hr/>
+                    <span style={{fontWeight:'bold',color:'gray'}}>Community</span>
+                    
+                    <Nav.Link className='navLinkColor'>
+                    <div style={{display:'flex', alignItems:'center', gap:'2'}}>
+                    <CiCirclePlus style={{fontSize:'20px'}} />
+                        Create Community
+                    </div>   
+                        </Nav.Link>
+                        <hr/>
+                        <span style={{fontWeight:'bold',color:'gray'}}>Miscellaneous</span>
+                        <Nav.Link className='navLinkColor'>Help Desk</Nav.Link>
+                    </Nav>
                     </div>
-                    </Nav.Link>
-                     <hr/>
-                <span style={{fontWeight:'bold',color:'gray'}}>Topics</span>              
-                {
-                    topics.length > 0 && (
-                        topics.map((t)=>(
-                                <Nav.Link key={t.topic_id} className='navLinkColor'>
-                                    {t.topic_name}
-                                </Nav.Link>
-                        ))
-                    )
-                }
-                <hr/>
-                <span style={{fontWeight:'bold',color:'gray'}}>Community</span>
-                
-                <Nav.Link className='navLinkColor'>
-                <div style={{display:'flex', alignItems:'center', gap:'2'}}>
-                <CiCirclePlus style={{fontSize:'20px'}} />
-                    Create Community
-                </div>   
-                    </Nav.Link>
-                 <hr/>
-                 <span style={{fontWeight:'bold',color:'gray'}}>Miscellaneous</span>
-                 <Nav.Link className='navLinkColor'>Help Desk</Nav.Link>
-                </Nav>
-            </Navbar.Collapse>
-            </Container>
-            </Navbar>
-            </Col>
 
-            <Col lg={8} className='colDivider'>
-                <div className='container'>
-                <br />
-                {
-                    post.length > 0 && (
-                    post.slice(0,5).map((post)=>(
-                        <div key={post.postID}>
-                        <Card className='post-card' onClick={()=>viewPost(post.postID)}>
-                            <Card.Header>
-                            <div className='d-flex flex-row w-100' style={{flexGrow:1}}>
-                            <div style ={{fontSize:'12px'}}>
-                                <div className='d-flex align-items-center h-100'>
-                                    <FaUser  />
-                                    <span style ={{marginLeft:'4px'}}> {post.username}  
+                    <div className='d-block d-sm-none'>
+                    <Offcanvas show={showSidebar} onHide={handleCloseSidebar} style={{backgroundColor:'black', width:'250px'}}>
+                        <Offcanvas.Header style={{color:'white'}} closeButton>
+                        <Offcanvas.Title>
+                            <Nav>
+                                <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
+                                    <span style={{color:'white'}}>
+                                        <strong>
+                                            Welcome {user ? `${user.username}`:'Guest'}
+                                            </strong>
+                                    </span>
+                                    </div>
+                            </Nav>
+                        </Offcanvas.Title>
+                        </Offcanvas.Header>
+                        <hr style={{color:'white'}}/>
+                        <Offcanvas.Body>
+                            <Nav className='ms-auto flex-column' style={{color:'white'}}>
+                            <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/'>
+                            <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
+                                <FaHome style={{display:'flex', gap:'4'}} />
+                                <div>
+                                    <span>
+                                    Home
                                     </span>
                                 </div>
                             </div>
-                            <div style ={{fontSize:'12px', marginLeft:'4px', width:'100%'}}>
-                                <div className='d-flex align-items-center h-100 w-100'>
-                                    <CiClock2 />
-                                    <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
-                                    <span style ={{marginLeft:'4px'}}> <ReactTimeAgo date={new Date (post.date_posted)} locale="en-US" timeStyle="twitter"/></span>
-                                    </div>
-                                </div> 
+                            </Nav.Link>
+                                <hr/>
+                        <span style={{fontWeight:'bold',color:'gray'}}>Topics</span>              
+                    {
+                        topics.length > 0 && (
+                            topics.map((t)=>(
+                                    <Nav.Link key={t.topic_id} className='navLinkColor'>
+                                        {t.topic_name}
+                                    </Nav.Link>
+                            ))
+                        )
+                    }
+                    <hr/>
+                    <span style={{fontWeight:'bold',color:'gray'}}>Community</span>
+                    
+                    <Nav.Link className='navLinkColor'>
+                    <div style={{display:'flex', alignItems:'center', gap:'2'}}>
+                    <CiCirclePlus style={{fontSize:'20px'}} />
+                        Create Community
+                    </div>   
+                        </Nav.Link>
+                        <hr/>
+                        <span style={{fontWeight:'bold',color:'gray'}}>Miscellaneous</span>
+                        <Nav.Link className='navLinkColor'>Help Desk</Nav.Link>
+                    </Nav>
+                        </Offcanvas.Body>
+                    </Offcanvas>
+                    </div>
+                </Container>
+                </Col>
+
+            <Col lg={8} sm={12} xs={12}>
+            <div className='container'>
+            {
+                post.length > 0 && (
+                post.slice(0,5).map((post)=>(
+                    <div key={post.postID}>
+                    <Card className='post-card' onClick={()=>viewPost(post.postID)}>
+                        <Card.Header>
+                        <div className='d-flex flex-row w-100'>
+                        <div style ={{fontSize:'12px'}}>
+                            <div className='d-flex align-items-center h-100'>
+                                <FaUser  />
+                                <span style ={{marginLeft:'4px'}}> {post.username}  
+                                </span>
                             </div>
-                            <div style={{display:'flex',width:'100%',justifyContent:'end'}}>
-                                <IoIosMore />
+                        </div>
+                        <div style ={{fontSize:'12px', marginLeft:'4px', width:'100%'}}>
+                            <div className='d-flex align-items-center h-100 w-100'>
+                                <CiClock2 />
+                                <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
+                                <span style ={{marginLeft:'4px'}}> <ReactTimeAgo date={new Date (post.date_posted)} locale="en-US" timeStyle="twitter"/></span>
+                                </div>
+                            </div> 
+                        </div>
+                        <div style={{display:'flex',width:'100%',justifyContent:'end'}}>
+                            <IoIosMore />
+                        </div>
+                        </div>
+                        <div style ={{fontSize:'12px', marginTop:'4px'}}>
+                            {post.topic_name}
+                        </div>
+                        <div>
+                        <span className='post-title'>{post.title}  </span><br />
+                        </div>
+                        
+                        </Card.Header>
+
+                        <Card.Body>
+                        <div className='container post-content'>
+                            {(post.content).slice(0,500)}
+                        </div>
+                        <div style={{marginTop:'8px',fontSize:'12px',display:'flex', flexDirection:'row', width:'100%', justifyContent:'end', gap:'40px'}}>
+                            <div className='d-flex' style={{gap:'8px'}}>
+                            <span>Reacts</span>
+                            {/* <span>0</span> */}
                             </div>
+                            <div className='d-flex' style={{gap:'8px'}}>
+                            <span>Comments</span>
+                            <span>{post.commentCount}</span>
                             </div>
-                            <div style ={{fontSize:'12px', marginTop:'4px'}}>
-                                {post.topic_name}
+                        </div>
+                        
+                        </Card.Body>
+                        <Card.Footer style={{overflowWrap:'normal'}}>
+                            <div className='action-tabs gap-4'>
+                            <div>
+                            <div id='oval' style={{color:'white'}}>
+                                <div className='d-flex h-100 align-items-center'>
+                                <AiOutlineLike />
+                                <span style={{marginLeft:'4px'}}>React</span>
+                                </div>
+                            </div>
                             </div>
                             <div>
-                            <span style={{fontSize:'24px',fontWeight:'bold'}}>{post.title}  </span><br />
-                            </div>
-                            
-                            </Card.Header>
-
-                            <Card.Body>
-                            <div className='container' style={{fontSize:'16px'}}>
-                                {(post.content).slice(0,500)}
-                            </div>
-                            <div style={{marginTop:'8px',fontSize:'12px',display:'flex', flexDirection:'row', width:'100%', justifyContent:'end', gap:'40px'}}>
-                                <div className='d-flex' style={{gap:'8px'}}>
-                                <span>Reacts</span>
-                                {/* <span>0</span> */}
-                                </div>
-                                <div className='d-flex' style={{gap:'8px'}}>
-                                <span>Comments</span>
-                                <span>{post.commentCount}</span>
+                            <div id='oval' onClick={()=>viewPost(post.postID)} style={{color:'white', cursor:'pointer'}}>
+                                <div className='d-flex h-100 align-items-center'>
+                                <FaRegComment />
+                                <span style={{marginLeft:'4px'}}>Comments</span>
                                 </div>
                             </div>
-                            
-                            </Card.Body>
-                            <Card.Footer>
-                                <div className='d-flex justify-content-start gap-4'>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <AiOutlineLike />
-                                    <span style={{marginLeft:'4px'}}>React</span>
-                                    </div>
+                            </div>
+                            <div>
+                            <div id='oval' style={{color:'white'}}>
+                                <div className='d-flex h-100 align-items-center'>
+                                <TbShare3 />
+                                <span style={{marginLeft:'4px'}}>Share</span>
                                 </div>
-                                </div>
-                                <div>
-                                <div id='oval' onClick={()=>viewPost(post.postID)} className='d-flex justify-content-center align-items-center' style={{color:'white', cursor:'pointer'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <FaRegComment />
-                                    <span style={{marginLeft:'4px'}}>Comments</span>
-                                    </div>
-                                </div>
-                                </div>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <TbShare3 />
-                                    <span style={{marginLeft:'4px'}}>Share</span>
-                                    </div>
-                                </div>
-                                </div>
-                                </div>
-                            </Card.Footer>
-                        </Card>
-                        <hr/>
-                        </div>
-                    ))
-                )
-            }
-            <br />
-                        <Card style={{backgroundColor:'black', color:'gray'}}>
-                            <Card.Header>
-                                <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
-                            </Card.Header>
+                            </div>
+                            </div>
+                            </div>
+                        </Card.Footer>
+                    </Card>
+                    <hr/>
+                    </div>
+                ))
+            )
+        }
+        <br />
+                    <Card style={{backgroundColor:'black', color:'gray'}}>
+                        <Card.Header>
+                            <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
+                        </Card.Header>
 
-                            <Card.Body>
-                                <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
-                            </Card.Body>
+                        <Card.Body>
+                            <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
+                        </Card.Body>
 
-                            <Card.Footer>
-                                <div className='d-flex justify-content-start gap-4'>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <AiOutlineLike />
-                                    <span style={{marginLeft:'4px'}}>React</span>
-                                    </div>
+                        <Card.Footer>
+                            <div className='d-flex justify-content-start gap-4'>
+                            <div>
+                            <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                <div className='d-flex h-100 align-items-center'>
+                                <AiOutlineLike />
+                                <span style={{marginLeft:'4px'}}>React</span>
                                 </div>
+                            </div>
+                            </div>
+                            <div>
+                            <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                <div className='d-flex h-100 align-items-center'>
+                                <FaRegComment />
+                                <span style={{marginLeft:'4px'}}>Comments</span>
                                 </div>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <FaRegComment />
-                                    <span style={{marginLeft:'4px'}}>Comments</span>
-                                    </div>
+                            </div>
+                            </div>
+                            <div>
+                            <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                <div className='d-flex h-100 align-items-center'>
+                                <TbShare3 />
+                                <span style={{marginLeft:'4px'}}>Share</span>
                                 </div>
-                                </div>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <TbShare3 />
-                                    <span style={{marginLeft:'4px'}}>Share</span>
-                                    </div>
-                                </div>
-                                </div>
-                                </div>
-                            </Card.Footer>
-                        </Card>
-                        <br />
-                        <hr/>
-                        <Card style={{backgroundColor:'black', color:'white'}}>
-                            <Card.Header>
-                                <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
-                            </Card.Header>
+                            </div>
+                            </div>
+                            </div>
+                        </Card.Footer>
+                    </Card>
+                    <br />
+                    <hr/>
+                    <Card style={{backgroundColor:'black', color:'white'}}>
+                        <Card.Header>
+                            <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
+                        </Card.Header>
 
-                            <Card.Body>
-                                <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
-                            </Card.Body>
+                        <Card.Body>
+                            <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
+                        </Card.Body>
 
-                            <Card.Footer>
-                                <div className='d-flex justify-content-start gap-4'>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <AiOutlineLike />
-                                    <span style={{marginLeft:'4px'}}>React</span>
-                                    </div>
+                        <Card.Footer>
+                            <div className='d-flex justify-content-start gap-4'>
+                            <div>
+                            <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                <div className='d-flex h-100 align-items-center'>
+                                <AiOutlineLike />
+                                <span style={{marginLeft:'4px'}}>React</span>
                                 </div>
+                            </div>
+                            </div>
+                            <div>
+                            <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                <div className='d-flex h-100 align-items-center'>
+                                <FaRegComment />
+                                <span style={{marginLeft:'4px'}}>Comments</span>
                                 </div>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <FaRegComment />
-                                    <span style={{marginLeft:'4px'}}>Comments</span>
-                                    </div>
+                            </div>
+                            </div>
+                            <div>
+                            <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
+                                <div className='d-flex h-100 align-items-center'>
+                                <TbShare3 />
+                                <span style={{marginLeft:'4px'}}>Share</span>
                                 </div>
-                                </div>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <TbShare3 />
-                                    <span style={{marginLeft:'4px'}}>Share</span>
-                                    </div>
-                                </div>
-                                </div>
-                                </div>
-                            </Card.Footer>
-                        </Card>
-                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </Card.Footer>
+                    </Card>
+                    <br />
+            </div>
             </Col>
 
-            <Col lg={2}>
-                <div style={{width:'100%'}}>
+            <Col lg={2} className='d-none d-sm-block'>
+                 <div style={{width:'100%'}}>
                     <Card style={{backgroundColor:'black', width:'100%'}}>
                         <div className='d-flex flex-column '>
                         <span style={{fontWeight:'bold',color:'white'}}>New Post</span>
@@ -453,7 +502,7 @@ function Home () {
                         </div>
                     </Card>
                     <br />
-                     <Card style={{backgroundColor:'black'}}>
+                        <Card style={{backgroundColor:'black'}}>
                         <span style={{fontWeight:'bold',color:'gray'}}>Community Discussion</span>
                         <div>
                         <Placeholder className="w-100" /> <br />
@@ -469,9 +518,8 @@ function Home () {
             </Col>
             </Row>
         </Container>
-        </Row>
-        </div>
-       
+    </Row>
+        </div> 
         }
     </>
     )
