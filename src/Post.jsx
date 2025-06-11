@@ -419,17 +419,20 @@ function Post () {
                             <Card.Body>
                                 <Form onSubmit={addComment}>
                                     <Form.Group>
-                                        <div style={{position:'relative'}}>
-                                            <div>
+                                        
+                                            <div className='comment-box-wrapper'>
                                                 <Form.Control className='comment-box'
                                                 placeholder='Write Comment'
                                                 value={commentBody}
-                                                onChange={(e)=> setCommentBody(e.target.value)}>
+                                                onChange={(e)=> setCommentBody(e.target.value)} required>
                                                     
                                                 </Form.Control>
                                             </div>
 
-                                            <div className='comment-button'>
+                                            
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <div className='comment-button'>
                                                 <button type='submit' style={{border:'none', backgroundColor:'transparent'}}>
                                                 {
                                                     commentLoading ? (
@@ -443,7 +446,6 @@ function Post () {
                                                 }
                                                 </button>
                                             </div>
-                                        </div>
                                     </Form.Group>
                                 </Form>
                             </Card.Body>
