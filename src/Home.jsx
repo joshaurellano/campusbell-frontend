@@ -343,8 +343,19 @@ function Home () {
                         </Card.Header>
 
                         <Card.Body>
-                        <div className='container post-content'>
+                        <div className='post-content'>
                             {(post.content).slice(0,500)}
+                        </div>
+                        <div>
+                            { post.image && (
+                                <div style={{marginTop:'20px'}}>
+                                    <Card className='image-card' style={{display:'flex', justifyContent:'center',width:'100%',border:'1px solid white', backgroundColor:'black', marginTop:'0.5rem', borderRadius:'1.25rem'}}>
+                                        <Card.Body style={{display:'flex', justifyContent:'center', padding:'0'}}>
+                                        <Card.Img className='container post-image' src={post.image} />
+                                        </Card.Body>
+                                    </Card>
+                                </div>
+                                )}
                         </div>
                         <div style={{marginTop:'8px',fontSize:'12px',display:'flex', flexDirection:'row', width:'100%', justifyContent:'end', gap:'40px'}}>
                             <div className='d-flex' style={{gap:'8px'}}>

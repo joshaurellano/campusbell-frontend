@@ -331,7 +331,7 @@ function Post () {
                 {
                     post ? (
                         <div>
-                        <Card style={{backgroundColor:'black', color:'white'}}>
+                        <Card className='post-card' style={{backgroundColor:'black', color:'white'}}>
                             <Card.Header>
                             <div className='d-flex flex-row w-100' style={{flexGrow:1}}>
                             <div style ={{fontSize:'12px'}}>
@@ -369,7 +369,7 @@ function Post () {
                             </Card.Header>
 
                             <Card.Body>
-                            <div className='container post-content'>
+                            <div className='post-content'>
                                 {post.content}
                             </div>
                             <div style={{marginTop:'20px',fontSize:'12px',display:'flex', flexDirection:'row', width:'100%', justifyContent:'start', gap:'40px'}}>
@@ -382,37 +382,45 @@ function Post () {
                                 <span>{post.commentCount}</span>
                                 </div>
                             </div>
-                            
+                            { post.image && (
+                            <div style={{marginTop:'20px'}}>
+                                <Card className='image-card' style={{display:'flex', justifyContent:'center',width:'100%',border:'1px solid white', backgroundColor:'black', marginTop:'0.5rem', borderRadius:'1.25rem'}}>
+                                    <Card.Body style={{display:'flex', justifyContent:'center', padding:'0'}}>
+                                    <Card.Img className='container post-image' src={post.image} />
+                                    </Card.Body>
+                                </Card>
+                            </div>
+                            )}
+
                             </Card.Body>
-                            
-                            <Card.Footer>
-                                <div className='d-flex justify-content-start gap-4'>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <AiOutlineLike />
-                                    <span style={{marginLeft:'4px'}}>React</span>
+                                <Card.Footer style={{overflowWrap:'normal'}}>
+                                    <div className='action-tabs gap-4'>
+                                    <div>
+                                    <div id='oval' style={{color:'white'}}>
+                                        <div className='d-flex h-100 align-items-center'>
+                                        <AiOutlineLike />
+                                        <span style={{marginLeft:'4px'}}>React</span>
+                                        </div>
                                     </div>
-                                </div>
-                                </div>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <FaRegComment />
-                                    <span style={{marginLeft:'4px'}}>Comments</span>
                                     </div>
-                                </div>
-                                </div>
-                                <div>
-                                <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                    <div className='d-flex h-100 align-items-center'>
-                                    <TbShare3 />
-                                    <span style={{marginLeft:'4px'}}>Share</span>
+                                    <div>
+                                    <div id='oval' onClick={()=>viewPost(post.postID)} style={{color:'white', cursor:'pointer'}}>
+                                        <div className='d-flex h-100 align-items-center'>
+                                        <FaRegComment />
+                                        <span style={{marginLeft:'4px'}}>Comments</span>
+                                        </div>
                                     </div>
-                                </div>
-                                </div>
-                                </div>
-                            </Card.Footer>
+                                    </div>
+                                    <div>
+                                    <div id='oval' style={{color:'white'}}>
+                                        <div className='d-flex h-100 align-items-center'>
+                                        <TbShare3 />
+                                        <span style={{marginLeft:'4px'}}>Share</span>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                </Card.Footer>
                         </Card>
 
                         <Card style={{backgroundColor:'black'}}>
