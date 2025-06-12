@@ -395,6 +395,9 @@ function CreatePost () {
                                     </div>
 
                                     </div>
+                                    
+                                    {(title||body) && (
+                                    <div>
                                     <div style={{marginTop:'2rem',marginBottom:'2rem', color:'white'}}>
                                         <span>Preview</span>
                                     </div>
@@ -414,15 +417,19 @@ function CreatePost () {
                                             {body}
                                         </div>
                                         <div className='container'>
-                                        <Card className='image-card' style={{display:'flex', justifyContent:'center',width:'100%',border:'1px solid white', backgroundColor:'black', marginTop:'0.5rem', borderRadius:'1.25rem'}}>
+                                        {
+                                            postImg && (
+                                            <Card className='image-card' style={{display:'flex', justifyContent:'center',width:'100%',border:'1px solid white', backgroundColor:'black', marginTop:'0.5rem', borderRadius:'1.25rem'}}>
                                             <Card.Body>
                                             <Card.Img className='container post-image' src={postImg} />
                                             </Card.Body>
-                                        </Card>
+                                        </Card>)}
                                         </div>
                                         </Card.Body>
                                     </Card>
                                     </div>
+                                    </div>
+                                    )}
                                  </div>                               
                                 </Col>
                             </Row>

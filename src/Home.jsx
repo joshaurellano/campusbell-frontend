@@ -321,7 +321,11 @@ function Home () {
                             <div className='d-flex align-items-center h-100 w-100'>
                                 <CiClock2 />
                                 <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
-                                <span style ={{marginLeft:'4px'}}> <ReactTimeAgo date={new Date (post.date_posted)} locale="en-US" timeStyle="twitter"/></span>
+                                <span style ={{marginLeft:'4px'}}> {post?.date_posted && (<ReactTimeAgo
+                                        date={new Date(post.date_posted)}
+                                        locale="en-US"
+                                        timeStyle="twitter"
+                                        />)}</span>
                                 </div>
                             </div> 
                         </div>
