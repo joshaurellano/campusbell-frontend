@@ -120,8 +120,26 @@
     margin-top: .5rem;
 }
 #formFileSm{
-    width: 5.5rem;
+    width: 13rem;
     font-size: .75rem;
+    
+}
+.form-wrapper{
+position: relative; 
+}
+.rm-img-btn{
+    display: flex;
+    justify-content: center;
+    font-size: .75rem;
+    width: 1.7rem;
+    /* background-color: transparent; */
+    border: none;
+    /* top: 2rem; */
+    position: absolute;
+    top: 6px;
+    transform: translateX(180px) !important;
+    padding: 2px 8px;
+    z-index: 1;
 }
 
 @media (max-width: 600px) {

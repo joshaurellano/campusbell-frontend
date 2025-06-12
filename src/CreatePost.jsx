@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
@@ -37,11 +37,11 @@ function CreatePost () {
     // for post
     const[title, setTitle] = useState('');
     const[body, setBody] = useState('');
-    const [selectedTopic, setSelectedTopic] = useState([]);
+    const[selectedTopic, setSelectedTopic] = useState([]);
     const[postImg, setPostImg] = useState();
-    const [pageLoading, setPageLoading] = useState(false);
-    const [postButtonLoading, setpostButtonLoading] = useState(false);
-
+    const[prev, setPrev] = useState();
+    const[pageLoading, setPageLoading] = useState(false);
+    const[postButtonLoading, setpostButtonLoading] = useState(false);
     const [showSidebar, setShowSidebar] = useState(false);
     
     const handleCloseSidebar = () => setShowSidebar(false);
@@ -91,11 +91,6 @@ function CreatePost () {
         })
     }
 
-    const [values, setValues] = useState({
-        title:'',
-        body:'',
-    });
-
     const sample = (event) => {
         // setSelectedTopic(event.target.value);
         const selectedId = parseInt(event.target.value);
@@ -109,14 +104,33 @@ function CreatePost () {
         e.preventDefault();
         const user_id = user.user_id;
         const topic_id = selectedTopic.topic_id;
-        const payload = {
+        
+        try{
+            if(postImg){
+            const formData = new FormData();
+            formData.append('image', postImg);
+
+            const response = await axios.post(`${API_ENDPOINT}upload/images`,formData, {withCredentials: true, headers: {
+                    'Content-Type': 'multipart/form-data',
+                },})
+            console.log('Upload successful:');
+            
+            console.log(response.data.data.url);
+            const imageUrl = response.data.data.url;
+            // console.log(imageUrl)
+            const payload = {
             title,
             body, 
             user_id, 
-            topic_id
+            topic_id,
+            image:imageUrl||null
         }
-        console.log(payload);
-        await axios.post(`${API_ENDPOINT}post`,payload,{withCredentials: true})
+            await axios.post(`${API_ENDPOINT}post`,payload,{withCredentials: true})
+            }
+        } catch(error){
+            console.log(error)}
+        
+            setpostButtonLoading(false)
     }
     useEffect(() => {
             function simulateNetworkRequest() {
@@ -131,10 +145,38 @@ function CreatePost () {
             });
             }
         }, [postButtonLoading]);
-
+        
+        const fileInputRef = useRef();
         function getPostImage(event) {
-            setPostImg(URL.createObjectURL(event.target.files[0]))
+            const file = event.target.files[0];
+            setPostImg(file);
+            setPrev(URL.createObjectURL(file));
+            
         }
+        // const imageUpload = async () => {
+            
+            
+
+        //     if(postImg){
+        //         console.log(true)
+        //     }
+        //     try{
+        //         const response = await axios.post(`${API_ENDPOINT}upload/images`,formData, {withCredentials: true, headers: {
+        //             'Content-Type': 'multipart/form-data',
+        //         },})
+        //         // console.log(response)
+        //         console.log('Upload successful:',response.data);
+        //     } catch(error){
+        //         console.error('Upload failed:', error);
+        //     }
+        // }
+        function removeImg(){
+            URL.revokeObjectURL(postImg)
+            setPostImg(null);
+            setPrev(null);
+            fileInputRef.current.value = "";
+        }
+
     return (
         <>
                 <div className='page'>
@@ -388,15 +430,21 @@ function CreatePost () {
                                         <Form onChange={getPostImage}>
                                             <div style={{marginTop:'8px'}}>
                                                 <Form.Group controlId="formFileSm">
-                                                    <Form.Control type='file'></Form.Control>
+                                                    <div className='form-wrapper'>
+                                                    <Form.Control type='file'ref={fileInputRef}></Form.Control>
+                                                        <Button className='rm-img-btn' onClick={removeImg}>
+                                                            X
+                                                        </Button>
+                                                    </div>
                                                 </Form.Group>
+                                                
                                             </div>
                                         </Form>
                                     </div>
 
                                     </div>
                                     
-                                    {(title||body) && (
+                                    {(title||body||prev) && (
                                     <div>
                                     <div style={{marginTop:'2rem',marginBottom:'2rem', color:'white'}}>
                                         <span>Preview</span>
@@ -418,10 +466,10 @@ function CreatePost () {
                                         </div>
                                         <div className='container'>
                                         {
-                                            postImg && (
+                                            prev && (
                                             <Card className='image-card' style={{display:'flex', justifyContent:'center',width:'100%',border:'1px solid white', backgroundColor:'black', marginTop:'0.5rem', borderRadius:'1.25rem'}}>
                                             <Card.Body>
-                                            <Card.Img className='container post-image' src={postImg} />
+                                            <Card.Img className='container post-image' src={prev} />
                                             </Card.Body>
                                         </Card>)}
                                         </div>

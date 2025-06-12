@@ -322,7 +322,7 @@ function Home () {
                                 <CiClock2 />
                                 <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
                                 <span style ={{marginLeft:'4px'}}> {post?.date_posted && (<ReactTimeAgo
-                                        date={new Date(post.date_posted)}
+                                        date={new Date(post.date_posted).toISOString()}
                                         locale="en-US"
                                         timeStyle="twitter"
                                         />)}</span>
