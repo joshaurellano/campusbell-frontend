@@ -38,6 +38,7 @@ function CreatePost () {
     const[title, setTitle] = useState('');
     const[body, setBody] = useState('');
     const [selectedTopic, setSelectedTopic] = useState([]);
+    const[postImg, setPostImg] = useState();
     const [pageLoading, setPageLoading] = useState(false);
     const [postButtonLoading, setpostButtonLoading] = useState(false);
 
@@ -130,6 +131,10 @@ function CreatePost () {
             });
             }
         }, [postButtonLoading]);
+
+        function getPostImage(event) {
+            setPostImg(URL.createObjectURL(event.target.files[0]))
+        }
     return (
         <>
                 <div className='page'>
@@ -311,6 +316,7 @@ function CreatePost () {
                                 </Col>
 
                                 <Col lg={8}>
+                                    <div>
                                      <div className='container' style={{color:'white'}}>
                                         <div>
                                             <h3 style={{fontWeight:'600'}}>Create Post</h3>
@@ -318,7 +324,7 @@ function CreatePost () {
                                         <Form onSubmit={addPost} id='addPost'>
                                         <div style={{marginTop:'8px'}}>
                                             <Form.Select className='select-topic' onChange={sample}>
-                                                <option style={{backgroundColor:'black'}} disabled>--Select Topic--</option>
+                                                <option style={{backgroundColor:'black'}}>--Select Topic--</option>
                                                 {
                                                 topics.length > 0 && (
                                                     topics.map((t)=>(
@@ -362,11 +368,6 @@ function CreatePost () {
                                                     </div>
 
                                                     <div style={{marginTop:'8px'}}>
-                                                        <Form.Group controlId="formFileSm">
-                                                            <Form.Control type='file'></Form.Control>
-                                                        </Form.Group>
-                                                    </div>
-                                                    <div style={{marginTop:'8px'}}>
                                                         <Form.Group>
                                                             <Button className='post-button' type='submit' variant='success'>
                                                                 {
@@ -383,6 +384,16 @@ function CreatePost () {
                                                 </div>
                                                 
                                             </Form>
+                                    <div>
+                                        <Form onChange={getPostImage}>
+                                            <div style={{marginTop:'8px'}}>
+                                                <Form.Group controlId="formFileSm">
+                                                    <Form.Control type='file'></Form.Control>
+                                                </Form.Group>
+                                            </div>
+                                        </Form>
+                                    </div>
+
                                     </div>
                                     <div style={{marginTop:'2rem',marginBottom:'2rem', color:'white'}}>
                                         <span>Preview</span>
@@ -402,10 +413,17 @@ function CreatePost () {
                                         <div className='container post-content'>
                                             {body}
                                         </div>
+                                        <div className='container'>
+                                        <Card className='image-card' style={{display:'flex', justifyContent:'center',width:'100%',border:'1px solid white', backgroundColor:'black', marginTop:'0.5rem', borderRadius:'1.25rem'}}>
+                                            <Card.Body>
+                                            <Card.Img className='container post-image' src={postImg} />
+                                            </Card.Body>
+                                        </Card>
+                                        </div>
                                         </Card.Body>
                                     </Card>
                                     </div>
-
+                                 </div>                               
                                 </Col>
                             </Row>
                         </Container>

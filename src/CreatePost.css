@@ -111,6 +111,14 @@
     border-radius:.938rem;
     width:7.5rem;
 }
+.post-image {
+    display: flex;
+    justify-content: center;
+    max-width: 90%;
+    height: auto;
+    max-height: 400px;
+    margin-top: .5rem;
+}
 #formFileSm{
     width: 5.5rem;
     font-size: .75rem;
@@ -195,5 +203,5 @@ h3 {
     height: 1.8rem;
     font-size: .75rem;
 }
-    
+
 }
