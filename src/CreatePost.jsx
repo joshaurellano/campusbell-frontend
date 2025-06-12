@@ -106,17 +106,18 @@ function CreatePost () {
         const topic_id = selectedTopic.topic_id;
         
         try{
-            if(postImg){
-            const formData = new FormData();
-            formData.append('image', postImg);
+        let imageUrl = null;
+            if(postImg)
+                {const formData = new FormData();
+                formData.append('image', postImg);
 
-            const response = await axios.post(`${API_ENDPOINT}upload/images`,formData, {withCredentials: true, headers: {
-                    'Content-Type': 'multipart/form-data',
-                },})
-            console.log('Upload successful:');
+                const response = await axios.post(`${API_ENDPOINT}upload/images`,formData, {withCredentials: true, headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },})
+                console.log('Upload successful:');
             
             console.log(response.data.data.url);
-            const imageUrl = response.data.data.url;
+            imageUrl = response.data.data.url;}
             // console.log(imageUrl)
             const payload = {
             title,
@@ -125,8 +126,9 @@ function CreatePost () {
             topic_id,
             image:imageUrl||null
         }
-            await axios.post(`${API_ENDPOINT}post`,payload,{withCredentials: true})
-            }
+         await axios.post(`${API_ENDPOINT}post`,payload,{withCredentials: true})
+           
+            
         } catch(error){
             console.log(error)}
         
@@ -153,23 +155,7 @@ function CreatePost () {
             setPrev(URL.createObjectURL(file));
             
         }
-        // const imageUpload = async () => {
-            
-            
-
-        //     if(postImg){
-        //         console.log(true)
-        //     }
-        //     try{
-        //         const response = await axios.post(`${API_ENDPOINT}upload/images`,formData, {withCredentials: true, headers: {
-        //             'Content-Type': 'multipart/form-data',
-        //         },})
-        //         // console.log(response)
-        //         console.log('Upload successful:',response.data);
-        //     } catch(error){
-        //         console.error('Upload failed:', error);
-        //     }
-        // }
+       
         function removeImg(){
             URL.revokeObjectURL(postImg)
             setPostImg(null);
