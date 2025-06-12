@@ -305,7 +305,7 @@ function Home () {
             <div className='container'>
             {
                 post.length > 0 && (
-                post.slice(0,5).map((post)=>(
+                post.slice(0,10).map((post)=>(
                     <div key={post.postID}>
                     <Card className='post-card' onClick={()=>viewPost(post.postID)}>
                         <Card.Header>
