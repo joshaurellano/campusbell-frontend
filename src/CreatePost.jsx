@@ -35,6 +35,8 @@ function CreatePost () {
     // for topics
     const [topics, setTopics] = useState([]);
     // for post
+    const[title, setTitle] = useState('');
+    const[body, setBody] = useState('');
     const [selectedTopic, setSelectedTopic] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
     const [postButtonLoading, setpostButtonLoading] = useState(false);
@@ -94,7 +96,10 @@ function CreatePost () {
     });
 
     const sample = (event) => {
-        setSelectedTopic(event.target.value);
+        // setSelectedTopic(event.target.value);
+        const selectedId = parseInt(event.target.value);
+        const topic = topics.find(t => t.topic_id === selectedId);
+        setSelectedTopic(topic);
     }
   
     const addPost = async (e) => {
@@ -102,9 +107,12 @@ function CreatePost () {
 
         e.preventDefault();
         const user_id = user.user_id;
-        const topic_id = selectedTopic;
+        const topic_id = selectedTopic.topic_id;
         const payload = {
-            ...values, user_id, topic_id
+            title,
+            body, 
+            user_id, 
+            topic_id
         }
         console.log(payload);
         await axios.post(`${API_ENDPOINT}post`,payload,{withCredentials: true})
@@ -327,8 +335,13 @@ function CreatePost () {
                                                     <Form.Label>
                                                         Title
                                                     </Form.Label>
-                                                        <Form.Control className='title-area' placeholder='Title'
+                                                        {/* <Form.Control className='title-area' placeholder='Title'
                                                             onChange={(e)=>setValues({...values,title: e.target.value})} required>
+                                                                
+                                                            </Form.Control> */}
+                                                        <Form.Control className='title-area' placeholder='Title'
+                                                            value={title}
+                                                            onChange={(e)=>setTitle(e.target.value)} required>
                                                                 
                                                             </Form.Control>
                                                     </Form.Group>
@@ -337,11 +350,21 @@ function CreatePost () {
                                                         <Form.Label>
                                                             Body
                                                         </Form.Label>
-                                                        <Form.Control className='post-area' as="textarea"
+                                                        {/* <Form.Control className='post-area' as="textarea"
                                                         onChange={(e)=>setValues({...values,body:e.target.value})} required>
+                                                                
+                                                            </Form.Control> */}
+                                                        <Form.Control className='post-area' as="textarea" value={body}
+                                                        onChange={(e)=>setBody(e.target.value)} required>
                                                                 
                                                             </Form.Control>
                                                     </Form.Group>
+                                                    </div>
+
+                                                    <div style={{marginTop:'8px'}}>
+                                                        <Form.Group controlId="formFileSm">
+                                                            <Form.Control type='file'></Form.Control>
+                                                        </Form.Group>
                                                     </div>
                                                     <div style={{marginTop:'8px'}}>
                                                         <Form.Group>
@@ -358,7 +381,29 @@ function CreatePost () {
                                                         </Form.Group>
                                                     </div>
                                                 </div>
+                                                
                                             </Form>
+                                    </div>
+                                    <div style={{marginTop:'2rem',marginBottom:'2rem', color:'white'}}>
+                                        <span>Preview</span>
+                                    </div>
+
+                                    <div style={{marginTop:'8px'}}>
+                                    <Card style={{backgroundColor:'black', color:'white', border:'1px solid gray', borderRadius:'15px', minHeight:'250px'}}> 
+                                        <Card.Header>
+                                                <div>
+                                                    <span style={{fontSize:'12px'}}>{selectedTopic.topic_name}</span>
+                                                </div>
+                                                <div>
+                                                <span className='post-title'>{title}</span><br />
+                                                </div>
+                                        </Card.Header>
+                                        <Card.Body>
+                                        <div className='container post-content'>
+                                            {body}
+                                        </div>
+                                        </Card.Body>
+                                    </Card>
                                     </div>
 
                                 </Col>

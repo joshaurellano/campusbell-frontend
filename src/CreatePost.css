@@ -111,6 +111,10 @@
     border-radius:.938rem;
     width:7.5rem;
 }
+#formFileSm{
+    width: 5.5rem;
+    font-size: .75rem;
+}
 
 @media (max-width: 600px) {
     .brand {
