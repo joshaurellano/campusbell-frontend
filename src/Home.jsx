@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner, Offcanvas} from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner, Offcanvas,Alert} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { CiCirclePlus } from "react-icons/ci";
@@ -42,6 +42,8 @@ function Home () {
 
     const handleCloseSidebar = () => setShowSidebar(false);
     const handleShowSidebar = () => setShowSidebar(true);
+
+    const[alert, setAlert] = useState(true);
 
     const navigate = useNavigate();
     //Check if user has session
@@ -123,7 +125,15 @@ function Home () {
         </> 
         
         : <div className='page'>
-    <Row>
+    <Row>{ alert? (
+        <div>
+                <Alert variant="warning" onClose={() => setAlert(false)} dismissible>
+                <p>
+                    Currently open to gmail users for testing purposes. 
+                </p>
+            </Alert>
+            </div>
+    ):( <>
     
     <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1, display:'flex', alignItems:'center'}}>
         <Container fluid style={{height:'inherit', padding:0}}>
@@ -190,6 +200,7 @@ function Home () {
             </Row>
         </Container>
     </Navbar>
+    </>)}
     </Row>
 
     <Row style={{paddingTop:'68px', backgroundColor:'black'}}>
