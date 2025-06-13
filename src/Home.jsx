@@ -112,6 +112,11 @@ function Home () {
             postID
         }});
     }
+    const viewProfile = (userId) => {
+        navigate('/profile', {state: {
+            userId
+        }});
+    }
     return (
     <>
         {
@@ -192,7 +197,7 @@ function Home () {
 
                 <NavDropdown className="custom-nav-dropdown" title={<><FaUserCircle className='top-menu-icons' style={{color:'green'}} /></>} id="basic-nav-dropdown">
                     <NavDropdown.Item>Settings</NavDropdown.Item>
-                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                    <NavDropdown.Item onClick={()=>viewProfile(user.user_id)}>Profile</NavDropdown.Item>
                     <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
                 </NavDropdown>
                 </Nav>
