@@ -4,7 +4,7 @@ import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 import Cookies from 'js-cookie';
 
-import {Navbar,Nav,Container,Button,Form,Row,Col,Spinner,Card} from 'react-bootstrap';
+import {Navbar,Nav,Container,Button,Form,Row,Col,Spinner,Card,Alert} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
@@ -27,6 +27,8 @@ function Registration () {
     const [phoneNumberError, setPhoneNumberError] = useState('');
     const [firstNameError, setFirstNameError] = useState('');
     const [lastNameError, setLastNameError] = useState('');    
+    const[alertShow, setAlertShow] = useState(false);
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         setValidated(true);
@@ -104,19 +106,19 @@ function Registration () {
 
         <Container>
             <Row className = 'justify-content-md-center'>
-                <Col md={6} sm={12} style={{color:'white',}}>
+                <Col xs={12} lg={6} style={{color:'white',}}>
                 <div className='d-flex flex-column' style={{
                     gap:'16px',
-                    height:'100vh',
+                    height:'100%',
                     justifyContent:'center'}}>
                     <br />
                     <div>
                         <h2 style={{fontWeight:'bold', fontSize:'32px',textShadow: '1px 1px black'}}>Helping each students Grow and Build Together</h2>
                     </div>
                     <div style={{marginTop:'8px'}}>
-                        <span style={{fontWeight:'600', fontSize:'20px',textShadow: '1px 1px black'}}>Built for students. By students</span>
+                        <span className='message-1'>Built for students. By students</span>
                     </div>
-                    <div style={{marginTop:'8px', fontSize:'18px',textShadow: '1px 1px black'}} >
+                    <div className='message-2'>
                         <span>
                             Find Answers 
                         </span>
@@ -130,26 +132,27 @@ function Registration () {
                         </span>
                     </div>
                     <div style={{marginTop:'8px'}}>
-                        <span style={{fontWeight:'600', fontSize:'20px',textShadow: '1px 1px black'}}>
+                        <span className='message-3'>
                             A safe space to ask anything. Let your thoughts be heard
                         </span>
                     </div>
                     <div style={{marginTop:'8px',textShadow: '1px 1px black'}}>
-                        <span>
+                        <span className='message-4'>
                             Already have an Account? Login <span style={{textShadow:'none'}}><Link to={'/login'}> Here </Link></span>
                         </span>
                     </div>
                 </div>
                 </Col>
-                <Col md={6} sm={12}>
+                <Col xs={12} lg={6}>
                 <div>
                     <div className='container'>
-                        <div>
                             <br />
-                            <Card style={{borderRadius:'15px', boxShadow:'2px 2px 2px black'}}>
+                            <Card className='registration-card'>
                                 <Card.Body>
-                                <span style={{display:'flex',justifyContent:'center',fontSize:'24px'}}>Register</span>
-                                <span style={{display:'flex',justifyContent:'center',fontWeight:'bold',fontSize:'30px'}}>Campus Bell</span> <br/>
+                                <div style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',width:'100%'}}>
+                                <span className='form-heading-1'>Register</span>
+                                <span className='form-heading-2'>Campus Bell</span> <br/>
+                                </div>
                                 <div>
                                 <Form noValidate validated={validated}onSubmit={handleSubmit}>
                                 <Form.Group controlId = 'formUsername'>
@@ -240,7 +243,6 @@ function Registration () {
                             </div>
                                 </Card.Body>
                             </Card>
-                        </div>
                     </div>
                 </div>
             </Col>

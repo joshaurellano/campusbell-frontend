@@ -7,3 +7,70 @@
   background-color: rgba(0, 0, 0, 0.4); /* Dark transparent layer */
   z-index: 1;
 }
+.message-1 {
+  font-weight:600;
+  font-size:1.25rem;
+  text-shadow: 1px 1px black
+}
+.message-2 {
+  margin-top: .5rem; 
+  font-size: 1.125rem;
+  text-shadow: 1px 1px black
+}
+.message-3 {
+  font-weight: 600;
+  font-size: 1.25rem;
+  text-shadow: 1px 1px black
+}
+.registration-card{
+  border-radius: 15px;
+  box-shadow: 2px 2px 2px black
+}
+.form-heading-1{
+  font-size: 1.5rem;
+}
+.form-heading-2{
+  font-weight: bold;
+  font-size: 1.875rem;
+}
+
+@media (max-width: 600px) {
+  h2 {
+    font-size: 1.3rem !important;
+}
+  .message-1 {
+  font-size:1rem;
+}
+  .message-2 {
+  font-size:.9rem;
+}
+.message-3 {
+  font-size: 1rem;
+}
+.message-4 {
+  font-size: .8rem;
+}
+.registration-card{
+  margin-top: 8px;
+}
+.form-heading-1{
+  font-size: 1.25rem;
+}
+.form-heading-2{
+  font-size: 1.75rem;
+}
+.registration-card .form-label{
+  font-size: .8rem !important;
+}
+.registration-card .form-control{
+  font-size: .9rem !important;
+}
+.registration-card .btn{
+  font-size: .9rem;
+  line-height: 1rem
+}
+.reg-form-wrapper{
+  margin-top: 8px;
+  height: 100%;
+}
+}
