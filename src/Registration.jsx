@@ -27,8 +27,9 @@ function Registration () {
     const [phoneNumberError, setPhoneNumberError] = useState('');
     const [firstNameError, setFirstNameError] = useState('');
     const [lastNameError, setLastNameError] = useState('');    
-    const[alertShow, setAlertShow] = useState(false);
-    
+    const[successAlertShow, setSuccessAlertShow] = useState(false);
+    const[errorAlertShow, setErrorAlertShow] = useState(false);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setValidated(true);
@@ -55,9 +56,10 @@ function Registration () {
             // set loading state to false after operation
             setLoading(false)
             setError('');
+            setSuccessAlertShow(true);
             //if no error, go back to login page
-            navigate('/login');
         } catch(error) {
+            setErrorAlertShow(true);
             console.error(error.response.data.message)
             if(error.response.data.message.includes("Username")){
                 setUserNameError(error.response.data.message)
@@ -83,6 +85,11 @@ function Registration () {
             // setError(error.response.data.message);
         }
     };
+    function closeAlert (){
+        setSuccessAlertShow(false)
+        navigate('/login');
+    }
+    
 
     return (
         <div style={{
@@ -147,6 +154,31 @@ function Registration () {
                 <div>
                     <div className='container'>
                             <br />
+                            <div>
+                                {
+                                    successAlertShow && (
+                                        <Alert variant="success" onClose={() => closeAlert()} dismissible>
+                                        <Alert.Heading>Success!</Alert.Heading>
+                                        <p>
+                                        Please check your email for OTP code.
+                                        Close this alert go back to login
+                                        </p>
+                                    </Alert>
+                                    )
+                                }
+                            </div>
+                            <div>
+                                {
+                                    errorAlertShow && (
+                                        <Alert variant="danger" onClose={() => setErrorAlertShow(false)} dismissible>
+                                        <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+                                        <p>
+                                        This can happen somethimes. Check your details first and try again
+                                        </p>
+                                    </Alert>
+                                    )
+                                }
+                            </div>
                             <Card className='registration-card'>
                                 <Card.Body>
                                 <div style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',width:'100%'}}>
