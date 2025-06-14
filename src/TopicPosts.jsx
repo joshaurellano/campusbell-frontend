@@ -24,17 +24,18 @@ import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
 
-import './Home.css';
+import './TopicPosts.css';
 
 axios.defaults.withCredentials = true;
 
-function Home () {
+function TopicPosts () {
     // const for user fetching
     const [user, setUser] = useState(null);
     // for topics
     const [topics, setTopics] = useState([]);
     // for post
     const [post, setPost] = useState([]);
+    const [topicNo, setTopicNo] = useState('');
    
     const [pageLoading, setPageLoading] = useState(false);
 
@@ -89,20 +90,26 @@ function Home () {
         }
     }
     useEffect(() =>{
-        getTopics()
-        getPosts()
-        
-    })
+        getTopicPosts()
+    },[topicNo])
+    useEffect(() =>{
+         getTopics()
+         setTopicNo(topic_id);
+    },[])
     
     const getTopics = async () => {
             await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
             setTopics(data.result)
             // console.log(data.result)
-        })
+        });
     }
+    const location = useLocation();
+    let topic_id = location.state.topicId;
   
-    const getPosts = async () => {
-        await axios.get(`${API_ENDPOINT}post`,{withCredentials: true}).then(({data})=>{
+    const getTopicPosts = async (e) => {
+        const id = topicNo || topic_id
+        console.log(id)
+        await axios.get(`${API_ENDPOINT}post/topic/${id}`,{withCredentials: true}).then(({data})=>{
             setPost(data.result)
             console.log(data.result)
         })
@@ -117,11 +124,11 @@ function Home () {
             userId
         }});
     }
-    const handleTopicPosts = (topicId) =>{
-        navigate('/topic', {state: {
-            topicId
-        }})
+    const handleSelected = (e) =>{
+        topic_id = e.target.value
+        setTopicNo(topic_id)
     }
+      
     return (
     <>
         {
@@ -135,15 +142,7 @@ function Home () {
         </> 
         
         : <div className='page'>
-    <Row>{ alert? (
-        <div>
-                <Alert variant="warning" onClose={() => setAlert(false)} dismissible>
-                <p>
-                    Currently open to gmail users for testing purposes. 
-                </p>
-            </Alert>
-            </div>
-    ):( <>
+    <Row>
     
     <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1, display:'flex', alignItems:'center'}}>
         <Container fluid style={{height:'inherit', padding:0}}>
@@ -210,7 +209,6 @@ function Home () {
             </Row>
         </Container>
     </Navbar>
-    </>)}
     </Row>
 
     <Row style={{paddingTop:'68px', backgroundColor:'black'}}>
@@ -243,7 +241,7 @@ function Home () {
                     {
                         topics.length > 0 && (
                             topics.map((t)=>(
-                                    <Nav.Link onClick={()=>handleTopicPosts(t.topic_id)} key={t.topic_id} className='navLinkColor'>
+                                    <Nav.Link key={t.topic_id} className='navLinkColor'>
                                         {t.topic_name}
                                     </Nav.Link>
                             ))
@@ -324,6 +322,19 @@ function Home () {
 
             <Col lg={8} sm={12} xs={12}>
             <div className='container'>
+            <div>
+                <Form.Select value={topicNo} onChange={handleSelected} className='topic' style={{marginBottom:'8px'}}>
+                   {
+                    topics.length > 0 && (
+                        topics.map((t)=>(
+                                <option style={{backgroundColor:'black'}} value={t.topic_id}key={t.topic_id}>   
+                                    {t.topic_name}
+                                </option>
+                            ))
+                        )
+                    }
+                </Form.Select>
+            </div>
             {
                 post.length > 0 && (
                 post.slice(0,10).map((post)=>(
@@ -561,4 +572,4 @@ function Home () {
     )
 }
 
-export default Home
+export default TopicPosts

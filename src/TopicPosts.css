@@ -35,7 +35,6 @@
     border-radius: 15px; 
     padding: 8px;
     cursor: pointer ;
-    margin-bottom: 8px;
 }
 .post-card:hover {
     background-color: hsl(43 0% 12.8%); 
@@ -98,18 +97,14 @@
     display:flex;
     justify-content: start;
 }
-.user-info-label{
-    font-weight: 500;
+.topic{
+    color: white;
+    width: 180px;
+    background-color: transparent;
+    /* font-size: .9rem; */
+    border-radius: 1.8rem;
+    /* height: 3rem; */
 }
-.user-info{
-    font-size: 14px;
-}
-.header-info-1{
-    font-size: 1.5rem; 
-    font-weight: bold;
-    width:100%
-}
- 
 
 @media (max-width: 600px) {
     .brand {
@@ -163,28 +158,6 @@
     overflow-wrap: normal;
     justify-content: center !important;
 }
-.header-info-1{
-    font-size: 1rem !important;
 
-}
-.profile-img{
-    width: 75px;
-    height: 75px;
-}
-.profile-col{
-    width: auto;
-}
-.header-info-col {
-    width: auto;
-}
-.header-info-2{
-    font-size: .9rem !important;
-}
-.user-info-label{
-    font-size: .9rem;
-}
-.user-info{
-    font-size: 12px;
-}
     
 }

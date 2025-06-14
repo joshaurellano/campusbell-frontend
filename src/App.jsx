@@ -8,6 +8,7 @@ import Register from './Registration';
 import CreatePost from './CreatePost';
 import EmailConfirmation from './EmailConfirmation';
 import Profile from './Profile';
+import TopicPosts from './TopicPosts';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/login' element={<Login key="login"/>} />
           <Route path='/post' element={<CreatePost />} />
           <Route path='/view' element={<Post />} />
+          <Route path='/topic' element={<TopicPosts />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/verify' element={<EmailConfirmation />} />
           <Route path='/register' element={<Register key="register"/>} />
