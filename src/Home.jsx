@@ -401,7 +401,7 @@ function Home () {
                         </div>
                         
                         </Card.Body>
-                        <Card.Footer style={{overflowWrap:'normal', pointerEvents:'none'}}>
+                        <Card.Footer style={{overflowWrap:'normal'}}>
                             <div className='action-tabs gap-4'>
                             <div>
                             <div id='oval' onClick={()=>handleReact(post.postID, user.user_id)} style={{color:'white'}}>
