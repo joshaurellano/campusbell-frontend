@@ -24,6 +24,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      z-index: 1000;
+      position: relative;
     }
 #oval:hover {
       background: #0048fc;
@@ -94,8 +96,10 @@
     font-size:1rem
 }
 .action-tabs{
+    position: relative;
     display:flex;
     justify-content: start;
+    z-index: 1000;
 }
 
 @media (max-width: 600px) {

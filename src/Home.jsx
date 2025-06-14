@@ -122,6 +122,17 @@ function Home () {
             topicId
         }})
     }
+  
+    const handleReact = async (postID, userID) => {
+        console.log('clicked')
+        const payload = {
+            post_id:postID,
+            user_id:userID
+        }
+        console.log(payload)
+        await axios.post(`${API_ENDPOINT}react`,payload,{withCredentials:true})
+        getPosts()
+    }
     return (
     <>
         {
@@ -328,7 +339,7 @@ function Home () {
                 post.length > 0 && (
                 post.slice(0,10).map((post)=>(
                     <div key={post.postID}>
-                    <Card className='post-card' onClick={()=>viewPost(post.postID)}>
+                    <Card className='post-card'>
                         <Card.Header>
                         <div className='d-flex flex-row w-100'>
                         <div style ={{fontSize:'12px'}}>
@@ -363,7 +374,7 @@ function Home () {
                         
                         </Card.Header>
 
-                        <Card.Body>
+                        <Card.Body  onClick={()=>viewPost(post.postID)}>
                         <div className='post-content'>
                             {(post.content).slice(0,500)}
                         </div>
@@ -381,7 +392,7 @@ function Home () {
                         <div style={{marginTop:'8px',fontSize:'12px',display:'flex', flexDirection:'row', width:'100%', justifyContent:'end', gap:'40px'}}>
                             <div className='d-flex' style={{gap:'8px'}}>
                             <span>Reacts</span>
-                            {/* <span>0</span> */}
+                            <span>{post.reactCount}</span>
                             </div>
                             <div className='d-flex' style={{gap:'8px'}}>
                             <span>Comments</span>
@@ -390,10 +401,10 @@ function Home () {
                         </div>
                         
                         </Card.Body>
-                        <Card.Footer style={{overflowWrap:'normal'}}>
+                        <Card.Footer style={{overflowWrap:'normal', pointerEvents:'none'}}>
                             <div className='action-tabs gap-4'>
                             <div>
-                            <div id='oval' style={{color:'white'}}>
+                            <div id='oval' onClick={()=>handleReact(post.postID, user.user_id)} style={{color:'white'}}>
                                 <div className='d-flex h-100 align-items-center'>
                                 <AiOutlineLike />
                                 <span style={{marginLeft:'4px'}}>React</span>
