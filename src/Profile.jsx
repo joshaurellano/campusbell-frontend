@@ -34,11 +34,20 @@ function Profile () {
     const [userData, setUserData] = useState([]);
     // for topics
     const [topics, setTopics] = useState([]);
+    const [selected, setSelected] = useState('');
    
     const [showSidebar, setShowSidebar] = useState(false);
 
     const handleCloseSidebar = () => setShowSidebar(false);
     const handleShowSidebar = () => setShowSidebar(true);
+
+    const handleSelected = (eventKey) => {
+        if(eventKey === '1'){
+            setSelected('1');
+        } else if(eventKey === '2'){
+            setSelected('2')
+        }
+    }
 
     const navigate = useNavigate();
     //Check if user has session
@@ -272,7 +281,7 @@ function Profile () {
                 </Container>
                 </Col>
 
-            <Col lg={7} sm={12} xs={12}>
+            <Col lg={7}>
                 <div className='container-fluid'>
                 
                     <Row>
@@ -281,9 +290,9 @@ function Profile () {
                     {
                         userData && (
                         <>
-                            <Col lg={3} style={{height:'100%', alignItems:'center'}}>
-                            <div>
-                                <Image
+                            <Col className='profile-col' lg={3} style={{height:'100%', alignItems:'center'}}>
+                            <div className='profile-img'>
+                                <Image 
                                     width={150}
                                     height={150}
                                     alt="profile_image"
@@ -294,11 +303,11 @@ function Profile () {
                             </div>
                             </Col>
 
-                            <Col lg={9} style={{color:'white',height:'100%',display:'flex',justifyContent:'center', flexDirection:'column'}}>
+                            <Col className='header-info-col' lg={9} style={{color:'white',height:'100%',display:'flex',justifyContent:'center', flexDirection:'column'}}>
                             <div>
-                                <span style={{ fontSize:'1.5rem', fontWeight:'bold',width:'100%'}}>{userData.first_name} {userData.last_name}</span>
+                                <span className='header-info-1'>{userData.first_name} {userData.last_name}</span>
                                 </div>
-                            <div>
+                            <div className='header-info-2'>
                                 <span>{userData.username}</span>
                             </div>
                             </Col>
@@ -314,7 +323,7 @@ function Profile () {
                     </Row>
 
                     <Row>
-                        <Col>
+                        <Col className='d-none d-sm-block'>
                             <div>
                                 <span style={{fontWeight:'500', color:'white', fontSize:'1.2rem'}}>Posts</span>
                             </div>
@@ -353,7 +362,7 @@ function Profile () {
                 </div>
             </Col>
 
-            <Col lg={3} className='container'>
+            <Col lg={3} xs={10} className='container d-none d-sm-block'>
                 <Container>
                  <Card style={{border:'solid 1px gray', borderRadius:'15px', backgroundColor:'black', color:'white'}}>
                     <Card.Header>
@@ -415,6 +424,126 @@ function Profile () {
                     </Card.Body>
                  </Card>
                  </Container>
+            </Col>
+
+            <Col className='d-block d-sm-none container-fluid container'>
+                <Card style={{border:'1px solid gray',minHeight:'250px', backgroundColor:'black'}}>
+                    <Card.Body>
+                <div>
+                    
+                    <Nav variant='tabs' style={{color:'white'}} onSelect={handleSelected}>
+                        <Nav.Item>
+                            <Nav.Link eventKey='1' style={{color:'gray'}}>
+                            Posts
+                            </Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link eventKey='2' style={{color:'gray'}}>
+                            User Information
+                            </Nav.Link>
+                        </Nav.Item>
+                    </Nav>
+
+                    <div>
+                        
+                        {
+                            selected === '1' ? (
+                                <>
+                            <div style={{marginTop:'8px'}}>
+                            {
+                            userData.posts ? (
+                            userData.posts &&(userData.posts).map(data=>(
+                                <div key={data.postId}>
+                                    <Card className='post-card' style={{backgroundColor:'black', color:'white'}}>
+                                        <Card.Header>
+                                        <div>
+                                        <span className='post-title'>{data.post_title}</span>
+                                        </div>
+                                        </Card.Header>
+                                        
+                                        <Card.Body>
+                                            <span className='post-content'>
+                                                {data.post_content}
+                                            </span>
+                                        </Card.Body>
+                                    </Card>
+
+                                </div>
+                                ))
+                                    
+                                ) :(
+                                    <>
+                                    <span>No Post yet</span>
+                                    </>
+                                )
+                            }
+                            </div>
+                                </>
+                            ) : selected === '2' ? (
+                                <div style={{color:'white'}}>
+                                <div>
+                                    <span className='user-info-label'>Basic Information</span>
+                                    </div>
+                                    <div className='user-info'>
+                                        <span>Name : </span>
+                                        <span>{userData.first_name} {userData.last_name}</span>
+                                    </div>
+                                    <div className='user-info'>
+                                        <span>Username: </span>
+                                        <span>{userData.username}</span>
+                                    </div>
+                                    <hr />
+                                    <div>
+                                        <span className='user-info-label'>Contact Information</span>
+                                    </div>
+                                    <div className='user-info'>
+                                        <span>Email : </span>
+                                        <span>{userData.email}</span>
+                                    </div>
+                                    <div className='user-info'>
+                                        <span>Phone Number : </span>
+                                        <span>{userData.phone_number}</span>
+                                    </div>
+                                    <hr />
+                                    <div>
+                                        <span className='user-info-label'>Academic Information</span>
+                                    </div>
+                                    <div className='user-info'>
+                                        <span>Program </span> 
+                                        
+                                    </div>
+                                    <div className='user-info'>
+                                        <span>Year Level : </span>
+                                        <span>{userData.yr_level}</span>
+                                    </div>
+                                    <hr />
+                                    <div>
+                                        <span className='user-info-label'>Address</span>
+                                    </div>
+                                    <div className='user-info'>
+                                        <span>Province : </span>
+                                        <span>{userData.province}</span>
+                                    </div>
+                                    <div className='user-info'>
+                                        <span>City : </span>
+                                        <span>{userData.city}</span>
+                                    </div>
+                                    <div className='user-info'>
+                                        <span>Barangay : </span>
+                                        <span>{userData.barangay}</span>
+                                    </div>
+                                </div>
+                            ) : (
+                                <>
+                                <span> </span>
+                                </>
+                            )
+                        }
+                        
+                    </div>
+                </div>
+                </Card.Body>
+                        </Card>
             </Col>
             </Row>
         </Container>
