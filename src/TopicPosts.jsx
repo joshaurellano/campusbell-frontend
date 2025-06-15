@@ -216,7 +216,7 @@ function TopicPosts () {
             <Row>
             <Col lg={2} style={{borderRight:'2px solid gray'}}>
                 <Container fluid>
-                <div className='d-none d-sm-block d-md-none'>
+                <div className='d-none d-sm-block d-md-none d-lg-block'>
                 <Nav className='ms-auto flex-column' style={{color:'white'}}>
                     <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
                     <span style={{color:'white'}}>

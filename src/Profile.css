@@ -113,6 +113,13 @@
     color: white;
     background-color: blue !important;
 }
+.pr-img{
+    position: relative;
+}
+.profile-edit{
+    position: absolute;
+    translate: -10px 120px;
+}
 
 @media (max-width: 600px) {
     .brand {

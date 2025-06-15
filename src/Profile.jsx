@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {useNavigate,useLocation} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner,Offcanvas,Alert,Figure,Image} from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner,Offcanvas,Alert,Figure,Image,Modal} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { CiCirclePlus } from "react-icons/ci";
@@ -17,6 +17,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import { TbShare3 } from "react-icons/tb";
 import { FaRegComment } from "react-icons/fa6";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { FaCamera } from "react-icons/fa";
 
 import ReactTimeAgo from 'react-time-ago'
 
@@ -35,11 +36,21 @@ function Profile () {
     // for topics
     const [topics, setTopics] = useState([]);
     const [selected, setSelected] = useState('');
-   
+    const[imgFile, setImgFile] = useState('');
+    const[prevImg, setPrevImg] = useState('');
+
     const [showSidebar, setShowSidebar] = useState(false);
 
     const handleCloseSidebar = () => setShowSidebar(false);
     const handleShowSidebar = () => setShowSidebar(true);
+
+    const [showProfileModal, setShowProfileModal] = useState(false);
+
+    const handleCloseProfileModal = () => {
+        setShowProfileModal(false)
+        removeImgPreview();
+    };
+    const handleShowProfileModal = () => setShowProfileModal(true);
 
     const handleSelected = (eventKey) => {
         if(eventKey === '1'){
@@ -80,8 +91,13 @@ function Profile () {
     }
     useEffect(() =>{
         getTopics()
+        fetchUserData()
+    },[])
+     useEffect(() =>{
+        if(user?.user_id)
         fetchUserData()  
-    })
+    },[])
+
 
     const getTopics = async () => {
             await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
@@ -99,8 +115,42 @@ function Profile () {
         }
         )
         console.log(userData)
+    }  
+    
+    const uploadImage = async () => {
+    let imageUrl = null
+    const formData = new FormData();
+    formData.append('image', imgFile);
+        try{
+            const response = await axios.post(`${API_ENDPOINT}upload/images`,formData, {withCredentials: true, headers: {
+                                'Content-Type': 'multipart/form-data',
+                            },})
+            console.log('Upload successful:');
+            console.log(response.data.data.url);
+            imageUrl = response.data.data.url
+            
+            const payload = {
+                img_link:imageUrl,
+                user_id:user.user_id
+            }
+
+            const updateImg = await axios.put(`${API_ENDPOINT}user/profile-image`,payload,{withCredentials:true})
+            fetchUserData()
+            handleCloseProfileModal()
+
+            } catch (error){
+                console.error(error)
+            }
     }
-  
+    const displayImgPreview = (e) => {
+        const file = e.target.files[0];
+        setPrevImg(URL.createObjectURL(file))
+        setImgFile(file)
+    }
+    const removeImgPreview = () => {
+        URL.revokeObjectURL(prevImg)
+        setPrevImg('');
+    }
     return (
     <div className='page'>
     <Row>
@@ -292,15 +342,72 @@ function Profile () {
                         <>
                             <Col className='profile-col' lg={3} style={{height:'100%', alignItems:'center'}}>
                             <div className='profile-img'>
-                                <Image 
+                                <Image className='pr-img'
                                     width={150}
                                     height={150}
                                     alt="profile_image"
                                     src={userData.profile_image}
                                     roundedCircle	
-                                    fluid 
                                 />
-                            </div>
+                                <FaCamera className='profile-edit'onClick={handleShowProfileModal} />
+
+                                <Modal show={showProfileModal} onHide={handleCloseProfileModal}>
+                                    <Modal.Header closeButton>
+                                    <Modal.Title>Change Profile Image</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <div style={{display:'flex',justifyContent:'center'}}>
+                                        { 
+                                        prevImg?
+                                        prevImg && (
+                                            <>
+                                                <Image className='pr-img'
+                                            width={150}
+                                            height={150}
+                                            alt="profile_image"
+                                            src={prevImg}
+                                            roundedCircle	
+                                        />
+                                            </>
+
+                                        ) : (
+                                            <>
+                                            <Image className='pr-img'
+                                            width={150}
+                                            height={150}
+                                            alt="profile_image"
+                                            src={userData.profile_image}
+                                            roundedCircle	
+                                            fluid 
+                                        />
+                                            </>
+                                            )}
+                                        </div>
+
+                                <Form onChange={displayImgPreview} id='form-img-upload'>
+                                    <Form.Group className="mb-3">
+                                    <Form.Control type="file" size="sm" />
+                                </Form.Group>
+
+                                <Form.Group>
+                                     <Button disabled form='form-img-upload' variant="secondary">
+                                        Upload
+                                    </Button>
+                                </Form.Group>
+                                    
+                                </Form>
+                                </Modal.Body>
+                                    <Modal.Footer>
+                                    <Button onClick={uploadImage} variant="secondary">
+                                        Save
+                                    </Button>
+                                    <Button variant="primary" onClick={handleCloseProfileModal}>
+                                        Save Changes
+                                    </Button>
+                                    </Modal.Footer>
+                                </Modal>
+                                
+                            </div> 
                             </Col>
 
                             <Col className='header-info-col' lg={9} style={{color:'white',height:'100%',display:'flex',justifyContent:'center', flexDirection:'column'}}>
