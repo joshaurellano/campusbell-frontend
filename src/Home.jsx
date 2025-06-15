@@ -17,6 +17,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import { TbShare3 } from "react-icons/tb";
 import { FaRegComment } from "react-icons/fa6";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { AiFillLike } from "react-icons/ai";
 
 import ReactTimeAgo from 'react-time-ago'
 
@@ -407,14 +408,28 @@ function Home () {
                         </Card.Body>
                         <Card.Footer style={{overflowWrap:'normal'}}>
                             <div className='action-tabs gap-4'>
+                            
                             <div>
-                            <div id='oval' onClick={()=>handleReact(post.postID, user.user_id)} style={{color:'white'}}>
+                            { post.reacted === true ? (
+                                post.reacted &&
+                            <div className='like-button' id='oval' onClick={()=>handleReact(post.postID, user.user_id)}>
                                 <div className='d-flex h-100 align-items-center'>
-                                <AiOutlineLike />
-                                <span style={{marginLeft:'4px'}}>React</span>
+                                    <AiFillLike   />
+                                    <span style={{marginLeft:'4px'}}>React</span>
+                                </div>
+                            </div>) : (
+                                <>
+                                    <div id='oval' onClick={()=>handleReact(post.postID, user.user_id)} style={{color:'white'}}>
+                                <div className='d-flex h-100 align-items-center'>
+                                    <AiOutlineLike />
+                                    <span style={{marginLeft:'4px'}}>React</span>
                                 </div>
                             </div>
+                                </>
+                            )
+                            }
                             </div>
+
                             <div>
                             <div id='oval' onClick={()=>viewPost(post.postID)} style={{color:'white', cursor:'pointer'}}>
                                 <div className='d-flex h-100 align-items-center'>

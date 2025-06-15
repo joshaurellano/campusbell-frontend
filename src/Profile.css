@@ -109,7 +109,10 @@
     font-weight: bold;
     width:100%
 }
- 
+.like-button{
+    color: white;
+    background-color: blue !important;
+}
 
 @media (max-width: 600px) {
     .brand {
