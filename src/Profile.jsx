@@ -110,7 +110,7 @@ function Profile () {
             
             <Col lg={4} xs={5} style={{display:'flex',alignItems:'center'}}>
             <div className='brand' style={{display:'flex', alignItems:'center'}}>
-                <div className='d-block d-sm-none'>
+                <div className='d-block d-md-block d-sm-none d-lg-none'>
                     <Button variant="primary" onClick={handleShowSidebar} style={{backgroundColor:'transparent', border:'none', translate: '0px -2px'}}>
                         {
                             <>
@@ -177,7 +177,7 @@ function Profile () {
             <Row>
             <Col lg={2} style={{borderRight:'2px solid gray'}}>
                 <Container fluid>
-                <div className='d-none d-sm-block'>
+                <div className='d-none d-md-none d-lg-block'>
                 <Nav className='ms-auto flex-column' style={{color:'white'}}>
                     <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
                     <span style={{color:'white'}}>
@@ -323,7 +323,7 @@ function Profile () {
                     </Row>
 
                     <Row>
-                        <Col className='d-none d-sm-block'>
+                        <Col className='d-none d-sm-block d-md-none'>
                             <div>
                                 <span style={{fontWeight:'500', color:'white', fontSize:'1.2rem'}}>Posts</span>
                             </div>
@@ -362,7 +362,7 @@ function Profile () {
                 </div>
             </Col>
 
-            <Col lg={3} xs={10} className='container d-none d-sm-block'>
+            <Col lg={3} xs={10} className='container d-none d-sm-block d-md-none'>
                 <Container>
                  <Card style={{border:'solid 1px gray', borderRadius:'15px', backgroundColor:'black', color:'white'}}>
                     <Card.Header>
@@ -426,7 +426,7 @@ function Profile () {
                  </Container>
             </Col>
 
-            <Col className='d-block d-sm-none container-fluid container'>
+            <Col className='d-block d-sm-none d-md-block container-fluid container'>
                 <Card style={{border:'1px solid gray',minHeight:'250px', backgroundColor:'black'}}>
                     <Card.Body>
                 <div>

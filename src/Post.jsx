@@ -155,7 +155,7 @@ function Post () {
                         
                         <Col lg={4} xs={5} style={{display:'flex',alignItems:'center'}}>
                         <div className='brand' style={{display:'flex', alignItems:'center'}}>
-                            <div className='d-block d-sm-none'>
+                            <div className='d-block d-md-block d-sm-none d-lg-none'>
                                 <Button variant="primary" onClick={handleShowSidebar} style={{backgroundColor:'transparent', border:'none', translate: '0px -2px'}}>
                                     {
                                         <>
@@ -221,7 +221,7 @@ function Post () {
                 <Row>
                     <Col lg={2}>
                     <Container fluid>
-                        <div className='d-none d-sm-block'>
+                        <div className='d-none d-md-none d-lg-block'>
                         <Nav className='ms-auto flex-column' style={{color:'white'}}>
                             <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
                             <span style={{color:'white'}}>

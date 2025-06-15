@@ -161,6 +161,14 @@ justify-content: center !important;
 .navbar-nav {
     justify-content: end;
 }
+.custom-nav-dropdown .dropdown-menu {
+    font-size: .9rem;
+    padding: 0;
+    min-width: 7rem;
+
+    position: absolute !important;
+    z-index: 1050; 
+}
 }
 @media (width: 1024px) {
 .searchbar{
