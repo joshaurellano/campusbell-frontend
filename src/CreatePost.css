@@ -223,3 +223,8 @@ h3 {
 }
 
 }
+@media (max-width: 768px){
+.head-msg{
+    width: 40%;
+}
+}

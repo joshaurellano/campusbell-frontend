@@ -150,7 +150,7 @@ function TopicPosts () {
             
             <Col lg={4} xs={5} style={{display:'flex',alignItems:'center'}}>
             <div className='brand' style={{display:'flex', alignItems:'center'}}>
-                <div className='d-block d-sm-none'>
+                <div className='d-block d-sm-none d-md-block'>
                     <Button variant="primary" onClick={handleShowSidebar} style={{backgroundColor:'transparent', border:'none', translate: '0px -2px'}}>
                         {
                             <>
@@ -216,7 +216,7 @@ function TopicPosts () {
             <Row>
             <Col lg={2} style={{borderRight:'2px solid gray'}}>
                 <Container fluid>
-                <div className='d-none d-sm-block'>
+                <div className='d-none d-sm-block d-md-none'>
                 <Nav className='ms-auto flex-column' style={{color:'white'}}>
                     <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
                     <span style={{color:'white'}}>
@@ -518,7 +518,7 @@ function TopicPosts () {
             </div>
             </Col>
 
-            <Col lg={2} className='d-none d-sm-block'>
+            <Col lg={2} className='d-none d-sm-block d-md-none'>
                  <div style={{width:'100%'}}>
                     <Card style={{backgroundColor:'black', width:'100%'}}>
                         <div className='d-flex flex-column '>

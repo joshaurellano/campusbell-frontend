@@ -239,7 +239,7 @@ function CreatePost () {
                             <Row>
                                 <Col lg={2} style={{borderRight:'2px solid gray'}}>
                                 <Container fluid>
-                                    <div className='d-none d-sm-block d-md-none'>
+                                    <div className='d-none d-sm-block d-md-none d-lg-block'>
                                     <Nav className='ms-auto flex-column' style={{color:'white'}}>
                                         <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
                                         <span style={{color:'white'}}>
@@ -346,7 +346,7 @@ function CreatePost () {
                                 <Col lg={8}>
                                     <div>
                                      <div className='container' style={{color:'white'}}>
-                                        <div>
+                                        <div className='head-msg'>
                                             <h3 style={{fontWeight:'600'}}>Create Post</h3>
                                         </div>
                                         <Form onSubmit={addPost} id='addPost'>

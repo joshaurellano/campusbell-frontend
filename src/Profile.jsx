@@ -323,7 +323,7 @@ function Profile () {
                     </Row>
 
                     <Row>
-                        <Col className='d-none d-sm-block d-md-none'>
+                        <Col className='d-none d-sm-block d-md-none d-lg-block'>
                             <div>
                                 <span style={{fontWeight:'500', color:'white', fontSize:'1.2rem'}}>Posts</span>
                             </div>
@@ -362,7 +362,7 @@ function Profile () {
                 </div>
             </Col>
 
-            <Col lg={3} xs={10} className='container d-none d-sm-block d-md-none'>
+            <Col lg={3} xs={10} className='container d-none d-sm-block d-md-none d-lg-block'>
                 <Container>
                  <Card style={{border:'solid 1px gray', borderRadius:'15px', backgroundColor:'black', color:'white'}}>
                     <Card.Header>
@@ -425,7 +425,7 @@ function Profile () {
                  </Card>
                  </Container>
             </Col>
-
+{/* 3rd Column Block */}
             <Col className='d-block d-sm-none d-md-block container-fluid container'>
                 <Card style={{border:'1px solid gray',minHeight:'250px', backgroundColor:'black'}}>
                     <Card.Body>
