@@ -18,7 +18,7 @@ function Registration () {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState([]);
     const [loading, setLoading] = useState(false);
     const [validated, setValidated] = useState(false);
     const [userNameError,setUserNameError] = useState('');
@@ -46,7 +46,7 @@ function Registration () {
                 last_name:lastName,
                 phone_number:phoneNumber
             });
-            console.log(response);
+            // console.log(response);
             const otpGen = await axios.post(`${API_ENDPOINT}otp/generate`,{
                 email:response.data.email,
                 user_id:response.data.id_number,
@@ -82,7 +82,7 @@ function Registration () {
             
             setLoading(false);
 
-            // setError(error.response.data.message);
+            setError(error.response.data.message);
         }
     };
     function closeAlert (){
@@ -254,8 +254,18 @@ function Registration () {
                                 </Form.Group> <br/>
 
                             <Form.Group controlId='formButton'>
-                                {error && <p style={{color:'red'}}>{error}</p>}
-
+                                {/* {error && <p style={{color:'red'}}>{error}<br /></p>} */}
+                                {error.length > 0 && (
+                                    error.map((error) =>(
+                                    <>
+                                    <span style={{color:'red'}}>{error}</span>
+                                    <br />
+                                    </>
+                                    ))
+                                    
+                                )
+                                
+                                }
                                 <Button variant='success' style={{borderRadius:'10px', width:'100%'}} 
                                 block='block' type='submit' disabled={loading}>
                                     {loading ? (
