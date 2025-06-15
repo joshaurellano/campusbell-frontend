@@ -90,10 +90,13 @@ function Home () {
     }
     useEffect(() =>{
         getTopics()
-        getPosts()
-        
-    })
-    
+    },[])
+   useEffect(() => {
+    if (user?.user_id) {
+        getPosts();
+    }
+}, [user]);
+
     const getTopics = async () => {
             await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
             setTopics(data.result)
@@ -102,8 +105,10 @@ function Home () {
     }
   
     const getPosts = async () => {
-        await axios.get(`${API_ENDPOINT}post`,{withCredentials: true}).then(({data})=>{
+        const id = user.user_id
+        await axios.get(`${API_ENDPOINT}post/all/${id}`,{withCredentials: true}).then(({data})=>{
             setPost(data.result)
+            getPosts()
             console.log(data.result)
         })
     }
@@ -124,7 +129,6 @@ function Home () {
     }
   
     const handleReact = async (postID, userID) => {
-        console.log('clicked')
         const payload = {
             post_id:postID,
             user_id:userID
