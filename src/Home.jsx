@@ -167,7 +167,7 @@ function Home () {
             
             <Col lg={4} xs={5} style={{display:'flex',alignItems:'center'}}>
             <div className='brand' style={{display:'flex', alignItems:'center'}}>
-                <div className='d-block d-sm-none'>
+                <div className='d-block d-md-block d-sm-none d-lg-none'>
                     <Button variant="primary" onClick={handleShowSidebar} style={{backgroundColor:'transparent', border:'none', translate: '0px -2px'}}>
                         {
                             <>
@@ -234,7 +234,7 @@ function Home () {
             <Row>
             <Col lg={2} style={{borderRight:'2px solid gray'}}>
                 <Container fluid>
-                <div className='d-none d-sm-block'>
+                <div className='d-none d-md-none d-lg-block'>
                 <Nav className='ms-auto flex-column' style={{color:'white'}}>
                     <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
                     <span style={{color:'white'}}>
@@ -280,7 +280,7 @@ function Home () {
                     </Nav>
                     </div>
 
-                    <div className='d-block d-sm-none'>
+                    <div className='d-block d-lg-none d-md-block d-sm-none'>
                     <Offcanvas show={showSidebar} onHide={handleCloseSidebar} style={{backgroundColor:'black', width:'250px'}}>
                         <Offcanvas.Header style={{color:'white'}} closeButton>
                         <Offcanvas.Title>
