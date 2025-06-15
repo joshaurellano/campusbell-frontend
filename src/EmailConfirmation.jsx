@@ -9,10 +9,11 @@ import {Link} from 'react-router-dom';
 
 import { FaUserAlt } from "react-icons/fa";
 import { FaKey } from "react-icons/fa";
+import { FaBell } from "react-icons/fa";
 
 import {API_ENDPOINT} from './Api';
 
-import './Login.css';
+import './EmailConfirmation.css';
 
 function EmailConfirmation () {
     const navigate = useNavigate();
@@ -39,21 +40,24 @@ const otpVerify = async (e) => {
         setOtp('');
 
         navigate('/login');
-    } catch(error) {
+    } catch(error) {div
         setButtonLoading(false);
         setError(error.response.data.message)
     }
 }
 
     return (
-       <>
+       <div className='page-bg'>
         <Navbar data-bs-theme='dark'>
             <Container>
-                <Navbar.Brand>
-                <Nav.Link as={Link} to='/login' style={{color:'black',textShadow:'1px 1px white',fontWeight:'bold'}}>
-                Campus Bell
-                </Nav.Link>
-                </Navbar.Brand>
+                <div className='brand' style={{display:'flex', alignItems:'center'}}>
+                <FaBell style={{color:'#ffac33'}} />
+                <Navbar.Brand className='brand' style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
+                    <Nav.Link as={Link} to='/'>
+                    Campus Bell
+                    </Nav.Link>
+                    </Navbar.Brand>
+                    </div>
                 </Container>
             </Navbar>
             
@@ -65,9 +69,9 @@ const otpVerify = async (e) => {
             justifyContent:'center'
                 }}>
 
-           <Card style={{minHeight:'250px', width:'400px', boxShadow:'black 1px 1px', borderRadius:'15px', padding:'8px'}}>
+           <Card className='otp-card'>
             <Card.Body>
-                <div>
+                <div className='top-message'>
                     <span>Please check the email sent to you </span>
                 </div>
                 <div style={{
@@ -101,7 +105,7 @@ const otpVerify = async (e) => {
 
                     <div style={{marginTop:'8px'}}>
                     <Form.Group>
-                        <Button disabled={buttonLoading} style={{borderRadius:'20px', width:'120px'}} type='submit'>
+                        <Button className='otp-button' disabled={buttonLoading} type='submit'>
                           {
                             buttonLoading ? (
                                 <div>
@@ -127,7 +131,7 @@ const otpVerify = async (e) => {
             </Card.Body>
             </Card> 
         </div>
-        </>
+        </div>
     )
 }
 export default EmailConfirmation;

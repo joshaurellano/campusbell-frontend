@@ -1,0 +1,33 @@
+.otp-card {
+    min-height: 250px;
+    width: 400px;
+    box-shadow: black 1px 1px; 
+    border-radius:15px;
+    padding: 8px
+}
+.page-bg{
+    background-color: black;
+}
+.otp-card {
+    background-color: black;
+    color: white;    
+}
+.otp-button{
+    border-radius:1.25rem; 
+    width:7.5rem;
+}
+@media (max-width: 600px) {
+.otp-card {
+    width:250px
+}
+.top-message{
+    font-size: .8rem !important;
+}
+.form-control{
+    font-size: .8rem;
+}
+.otp-button{
+    font-size: .8rem;
+    width:7rem
+}
+}
