@@ -258,9 +258,9 @@ const handleLogout = async () => {
                                     {
                                         selectedMember && selectedMember ?(
                                             <div>
-                                                <Card>
+                                                <Card style={{backgroundColor:'black', color:'white'}}>
                                                     <Card.Header>{selectedMember.username}</Card.Header>
-                                                    <Card.Body style={{height:'300px'}}>
+                                                    <Card.Body style={{minHeight:'300px'}}>                                                            
                                                         {
                                                             chatMessages.map((msg, index) => (
                                                                 <div key={index} style={{ 
@@ -271,7 +271,6 @@ const handleLogout = async () => {
                                                                 </div>
                                                             ))
                                                         }
-                                                                    
                                                     <Card className='message-card' style={{border:'none'}}>
                                                         <Form>
                                                             <Form.Group>
@@ -279,7 +278,7 @@ const handleLogout = async () => {
 
                                                                 </Form.Control>
                                                             </Form.Group>
-                                                            <br />
+                                                            <br /> <br />
                                                             <Form.Group>
                                                                 <Button onClick={sendMessage}>
                                                                     Send

@@ -108,6 +108,8 @@
     display: flex;
     justify-content: end;
     height: 100%;
+    background-color: black;
+    color: white;
 }
 .chat-box{
     height: 80px;
