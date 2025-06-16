@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {useNavigate, useLocation} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner, Offcanvas,Alert} from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Image,Spinner, Offcanvas,Alert} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { CiCirclePlus } from "react-icons/ci";
@@ -36,6 +36,7 @@ function Home () {
     const [topics, setTopics] = useState([]);
     // for post
     const [post, setPost] = useState([]);
+    const[userData, setUserData] = useState([]);
    
     const [pageLoading, setPageLoading] = useState(false);
 
@@ -52,9 +53,10 @@ function Home () {
         const checkUserSession = async () => {
             setPageLoading(true);
             try {
-                await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
+                const userInfo = await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
                     setUser(data.result);
                 })
+                console.log(userInfo)
             } catch(error) {
                 //go back to login in case if error
                 navigate ('/login');
@@ -94,6 +96,7 @@ function Home () {
     },[])
    useEffect(() => {
     if (user?.user_id) {
+        fetchUserData();
         getPosts();
     }
 }, [user]);
@@ -138,6 +141,15 @@ function Home () {
         await axios.post(`${API_ENDPOINT}react`,payload,{withCredentials:true})
         getPosts()
     }
+     const fetchUserData = async () => {
+
+            const id = user.user_id;
+            await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
+            setUserData(data.result)
+            }
+            )
+            console.log(userData)
+        } 
     return (
     <>
         {
@@ -216,7 +228,7 @@ function Home () {
                     <IoIosNotifications className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
                 </Nav.Link>
 
-                <NavDropdown className="custom-nav-dropdown" title={<><FaUserCircle className='top-menu-icons' style={{color:'green'}} /></>} id="basic-nav-dropdown">
+                <NavDropdown className="custom-nav-dropdown" title={<><Image src={userData.profile_image} className='pfp-icon' roundedCircle /></>} id="basic-nav-dropdown">
                     <NavDropdown.Item>Settings</NavDropdown.Item>
                     <NavDropdown.Item onClick={()=>viewProfile(user.user_id)}>Profile</NavDropdown.Item>
                     <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
@@ -239,7 +251,7 @@ function Home () {
                     <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
                     <span style={{color:'white'}}>
                         <strong>
-                            Welcome {user ? `${user.username}`:'Guest'}
+                           <Image src={userData.profile_image} className='pfp-icon' roundedCircle /> Welcome {user ? `${user.username}`:'Guest'}
                             </strong>
                     </span>
                     </div>

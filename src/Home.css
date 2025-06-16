@@ -79,6 +79,10 @@
     display: flex;
     align-items: center;
 }
+.pfp-icon{
+    height:1.5rem; 
+    width:1.5rem;
+}
 .dropdown-menu {
     z-index: 1000;
 }
@@ -119,13 +123,25 @@ font-size: .8rem;
 }
 .top-menu-icons {
 font-size: 1rem;
-transform: translateY(-4px); 
+align-items: center;
+translate: 0px 4px;
+}
+.nav-link{
+    height: 100%;
+    align-items: center;
+    
+}
+.pfp-icon{
+height: .9rem;
+width: .9rem;
+translate: 0px -2px; 
 }
 .searchbar{
 display: none;
 }
 .searchbar-icon{
 translate: 24px 0px;
+font-size: .8rem;
 }
 .custom-nav-dropdown .dropdown-menu {
 font-size: .8rem;
@@ -152,6 +168,10 @@ font-size:.9rem
 gap: 1rem !important;
 overflow-wrap: normal;
 justify-content: center !important;
+}
+.navbar-nav {
+    align-items: center;
+    justify-content: end;
 }
 }
 @media (max-width: 768px) {

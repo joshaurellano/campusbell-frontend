@@ -351,7 +351,7 @@ function Profile () {
                                 />
                                 <FaCamera className='profile-edit'onClick={handleShowProfileModal} />
 
-                                <Modal show={showProfileModal} onHide={handleCloseProfileModal}>
+                                <Modal className='update-img-modal' show={showProfileModal} onHide={handleCloseProfileModal}>
                                     <Modal.Header closeButton>
                                     <Modal.Title>Change Profile Image</Modal.Title>
                                     </Modal.Header>
@@ -383,25 +383,17 @@ function Profile () {
                                             </>
                                             )}
                                         </div>
-
+                                
+                                <br />
                                 <Form onChange={displayImgPreview} id='form-img-upload'>
                                     <Form.Group className="mb-3">
                                     <Form.Control type="file" size="sm" />
                                 </Form.Group>
 
-                                <Form.Group>
-                                     <Button disabled form='form-img-upload' variant="secondary">
-                                        Upload
-                                    </Button>
-                                </Form.Group>
-                                    
                                 </Form>
                                 </Modal.Body>
                                     <Modal.Footer>
-                                    <Button onClick={uploadImage} variant="secondary">
-                                        Save
-                                    </Button>
-                                    <Button variant="primary" onClick={handleCloseProfileModal}>
+                                    <Button size='sm' className='modal-btn' variant="primary" onClick={uploadImage}>
                                         Save Changes
                                     </Button>
                                     </Modal.Footer>

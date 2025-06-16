@@ -115,10 +115,12 @@
 }
 .pr-img{
     position: relative;
+
 }
 .profile-edit{
     position: absolute;
     translate: -10px 120px;
+    color: white;
 }
 
 @media (max-width: 600px) {
@@ -181,6 +183,15 @@
     width: 75px;
     height: 75px;
 }
+.pr-img{
+    width: 75px;
+    height: 75px;
+}
+.profile-edit{
+    font-size: .7rem;
+    translate: 0px 60px;
+    color: white;
+}
 .profile-col{
     width: auto;
 }
@@ -196,7 +207,13 @@
 .user-info{
     font-size: 12px;
 }
-    
+.update-img-modal{
+    width: auto;
+}
+.modal-title{
+    font-size: 1rem;
+}
+
 }
 @media (max-width: 768px) {
     .profile-col{
