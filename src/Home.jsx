@@ -220,7 +220,7 @@ function Home () {
                 Post
                 </Nav.Link>
 
-                <Nav.Link as={Link} to='/post'>
+                <Nav.Link as={Link} to='/chat'>
                     <BiSolidMessageRoundedDots className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
                 </Nav.Link>
 
