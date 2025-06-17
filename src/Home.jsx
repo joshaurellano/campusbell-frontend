@@ -227,7 +227,7 @@ function Home () {
             
             <Col  lg={2} xs={5} style={{ display:'flex', alignItems:'center', height:'100%'
             }}>
-                <Nav className='gap-3'style={{display:'flex', flexDirection:'row', width:'100%'}}>
+                <Nav className='gap-3'style={{display:'flex', flexDirection:'row', width:'100%', justifyContent:'end'}}>
                 <Nav.Link className='top-menu' as={Link} to='/post'style={{cursor:'pointer',color:'white'}}>
                 Post
                 </Nav.Link>
@@ -238,7 +238,7 @@ function Home () {
 
                  <NavDropdown
                     className="notif-dropdown"
-                    title={<><IoIosNotifications /></>}
+                    title={<><IoIosNotifications className='top-menu-icons' /></>}
                     id="basic-nav-dropdown">
                    
                    {alertData && alertData.length > 0 ?(
@@ -472,7 +472,7 @@ function Home () {
                         </div>
                         
                         </Card.Body>
-                        <Card.Footer style={{overflowWrap:'normal'}}>
+                        <Card.Footer style={{overflowWrap:'normal', zIndex:0}}>
                             <div className='action-tabs gap-4'>
                             
                             <div>
