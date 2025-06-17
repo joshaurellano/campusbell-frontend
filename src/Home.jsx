@@ -240,36 +240,47 @@ function Home () {
                     className="custom-nav-dropdown"
                     title={<><IoIosNotifications /></>}
                     id="basic-nav-dropdown">
-                    {alertData ? (
-                        <>
-                        <NavDropdown.Item>{alertData.reactAlert ? 
-                            (alertData.reactAlert && Object.values(alertData.reactAlert).map(reactData =>(
-                                <div key={reactData.alertID}>{reactData.reactorusername} reacted to your post {alertData.title}</div>
-                            ))
+                   
+                   {alertData && alertData.length > 0 ?(
+                    alertData.map((data, index)=>(
+                        <div key={index}>
+                            { data.reactAlert ? (
+                                data.reactAlert && Object.values(data.reactAlert).map(reactData=>(
+                                    <NavDropdown.Item key={reactData.alertID}>{reactData.reactorusername} reacted to your post {data.title}</NavDropdown.Item>
+                                ))
+                            ):(
+                                <>
+                                <span></span>
+                                </>
+                            )}
+                            {
+                                data.commentAlert ? (
+                                    data.commentAlert && Object.values(data.commentAlert).map(commentData=>(
+                                        <NavDropdown.Item key={commentData.alertID}>{commentData.commenterusername} commented on your post {data.title}</NavDropdown.Item>
+                                    ))
+                                ) : (
+                                    <>
+                                    <span></span>
+                                    </>
+                                )
+                            }
+                        </div>
+                    ))
 
-                        ) : (<>
-                            <span></span>
-                        </>)
-                        }</NavDropdown.Item>
-                        
-                        <NavDropdown.Item>{alertData.commentAlert ? 
-                            (alertData.commentAlert && Object.values(alertData.commentAlert).map(commentData =>(
-                                <div key={commentData.alertID}>{commentData.commenterusername} commented to your post {alertData.title}</div>
-                            ))
-                        ) : (<>
-                            <span></span>
-                        </>)
-                            }</NavDropdown.Item>
-                    </>) : (
-                        <NavDropdown.Item> No notification yet</NavDropdown.Item>
+
+                   ) : (
+                        <NavDropdown.Item>No notification yet</NavDropdown.Item>
                     )
-                    }
+                   }
+                        
                     </NavDropdown>
                  
                 <NavDropdown className="custom-nav-dropdown" title={<><Image src={userData.profile_image} className='pfp-icon' roundedCircle /></>} id="basic-nav-dropdown">
+                    <div>
                     <NavDropdown.Item>Settings</NavDropdown.Item>
                     <NavDropdown.Item onClick={()=>viewProfile(user.user_id)}>Profile</NavDropdown.Item>
                     <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                    </div>
                 </NavDropdown>
 
                
