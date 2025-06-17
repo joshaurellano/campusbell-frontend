@@ -237,7 +237,7 @@ function Home () {
                 </Nav.Link>
 
                  <NavDropdown
-                    className="custom-nav-dropdown"
+                    className="notif-dropdown"
                     title={<><IoIosNotifications /></>}
                     id="basic-nav-dropdown">
                    
@@ -246,7 +246,10 @@ function Home () {
                         <div key={index}>
                             { data.reactAlert ? (
                                 data.reactAlert && Object.values(data.reactAlert).map(reactData=>(
-                                    <NavDropdown.Item key={reactData.alertID}>{reactData.reactorusername} reacted to your post {data.title}</NavDropdown.Item>
+                                    <NavDropdown.Item key={reactData.alertID}>
+                                        <span style={{fontWeight:'bold'}}>{reactData.reactorusername}</span> 
+                                        <span> reacted to your post</span> <span style={{fontWeight:'bold'}}> {data.title}
+                                            </span></NavDropdown.Item>
                                 ))
                             ):(
                                 <>
