@@ -47,7 +47,13 @@
 .brand {
     font-size: 1.5rem;
 }
-
+.navbar-nav {
+    display: flex; 
+    flex-direction: row; 
+    width:100%; 
+    justify-content: end;
+    gap: 5px
+}
 .page {
     background-color: black;
     font-family: Tahoma, sans-serif;
@@ -146,12 +152,12 @@ translate: 0px 4px;
 .nav-link{
     height: 100%;
     align-items: center;
+    display: flex;
     
 }
 .pfp-icon{
 height: .9rem;
 width: .9rem;
-translate: 0px -2px; 
 }
 .searchbar{
 display: none;
@@ -206,6 +212,7 @@ justify-content: center !important;
 .navbar-nav {
     align-items: center;
     justify-content: end;
+    gap: 8px !important;
 }
 }
 @media (max-width: 768px) {

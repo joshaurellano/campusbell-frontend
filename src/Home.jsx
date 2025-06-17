@@ -187,7 +187,7 @@ function Home () {
     
     <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1, display:'flex', alignItems:'center'}}>
         <Container fluid style={{height:'inherit', padding:0}}>
-            <Row style={{width:'100%'}}>
+            <Row style={{width:'100%',display:'flex',alignItems:'center'}}>
             
             <Col lg={4} xs={5} style={{display:'flex',alignItems:'center'}}>
             <div className='brand' style={{display:'flex', alignItems:'center'}}>
@@ -212,7 +212,7 @@ function Home () {
             <Col lg={6} xs={2} style={{
                 translate:'-20px 0px'
             }}>
-            <Nav className="me-auto align-items-center"style={{width:'100%', height:'100%'}}>
+            <Nav className="me-auto align-items-center"style={{width:'100%', height:'100%', display:'flex', justifyContent:'start'}}>
                 <div style={{display:'flex', alignItems:'center', height:'100%'}}>
                     <FaMagnifyingGlass className='searchbar-icon' />
                     
@@ -227,7 +227,7 @@ function Home () {
             
             <Col  lg={2} xs={5} style={{ display:'flex', alignItems:'center', height:'100%'
             }}>
-                <Nav className='gap-3'style={{display:'flex', flexDirection:'row', width:'100%', justifyContent:'end'}}>
+                <Nav>
                 <Nav.Link className='top-menu' as={Link} to='/post'style={{cursor:'pointer',color:'white'}}>
                 Post
                 </Nav.Link>
