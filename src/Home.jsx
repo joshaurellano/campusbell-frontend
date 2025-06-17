@@ -36,8 +36,9 @@ function Home () {
     const [topics, setTopics] = useState([]);
     // for post
     const [post, setPost] = useState([]);
-    const[userData, setUserData] = useState([]);
-   
+    const [userData, setUserData] = useState([]);
+    const [alertData, setAlertData] = useState(null);
+
     const [pageLoading, setPageLoading] = useState(false);
 
     const [showSidebar, setShowSidebar] = useState(false);
@@ -98,8 +99,10 @@ function Home () {
     if (user?.user_id) {
         fetchUserData();
         getPosts();
+        fetchAlerts()
     }
 }, [user]);
+
 
     const getTopics = async () => {
             await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
@@ -113,7 +116,7 @@ function Home () {
         await axios.get(`${API_ENDPOINT}post/all/${id}`,{withCredentials: true}).then(({data})=>{
             setPost(data.result)
             getPosts()
-            console.log(data.result)
+            // console.log(data.result)
         })
     }
     const viewPost = (postID) => {
@@ -146,10 +149,19 @@ function Home () {
             const id = user.user_id;
             await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
             setUserData(data.result)
-            }
-            )
-            console.log(userData)
-        } 
+            })
+            
+            // console.log(userData)
+        }
+        
+    const fetchAlerts = async () => {
+        const id = user.user_id;
+        await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
+            setAlertData(data.result)
+            console.log(data.result)
+        })
+    }
+
     return (
     <>
         {
@@ -224,15 +236,43 @@ function Home () {
                     <BiSolidMessageRoundedDots className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
                 </Nav.Link>
 
-                 <Nav.Link as={Link} to='/post'>
-                    <IoIosNotifications className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
-                </Nav.Link>
+                 <NavDropdown
+                    className="custom-nav-dropdown"
+                    title={<><IoIosNotifications /></>}
+                    id="basic-nav-dropdown">
+                    {alertData ? (
+                        <>
+                        <NavDropdown.Item>{alertData.reactAlert ? 
+                            (alertData.reactAlert && Object.values(alertData.reactAlert).map(reactData =>(
+                                <div key={reactData.alertID}>{reactData.reactorusername} reacted to your post {alertData.title}</div>
+                            ))
 
+                        ) : (<>
+                            <span></span>
+                        </>)
+                        }</NavDropdown.Item>
+                        
+                        <NavDropdown.Item>{alertData.commentAlert ? 
+                            (alertData.commentAlert && Object.values(alertData.commentAlert).map(commentData =>(
+                                <div key={commentData.alertID}>{commentData.commenterusername} commented to your post {alertData.title}</div>
+                            ))
+                        ) : (<>
+                            <span></span>
+                        </>)
+                            }</NavDropdown.Item>
+                    </>) : (
+                        <NavDropdown.Item> No notification yet</NavDropdown.Item>
+                    )
+                    }
+                    </NavDropdown>
+                 
                 <NavDropdown className="custom-nav-dropdown" title={<><Image src={userData.profile_image} className='pfp-icon' roundedCircle /></>} id="basic-nav-dropdown">
                     <NavDropdown.Item>Settings</NavDropdown.Item>
                     <NavDropdown.Item onClick={()=>viewProfile(user.user_id)}>Profile</NavDropdown.Item>
                     <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
                 </NavDropdown>
+
+               
                 </Nav>
             </Col>
             </Row>
