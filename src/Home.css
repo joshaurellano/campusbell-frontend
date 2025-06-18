@@ -182,8 +182,11 @@ z-index: 1050;
     padding: 0;
     position: absolute !important;
     z-index: 1050; 
-    width: 12rem;
+    width: 15rem;
     font-size: .6rem;
+}
+#notification-header{
+    font-size: .7rem;
 }
 .notif-dropdown .dropdown-item {
     height: auto;
@@ -192,7 +195,7 @@ z-index: 1050;
     white-space: normal;
     padding: 0.5rem 1rem;
     border-bottom: 1px solid black;
-    width: 12rem;
+    width: 15rem;
 }
 .post-title {
 font-size: 1rem;
