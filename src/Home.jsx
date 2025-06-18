@@ -233,7 +233,7 @@ function Home () {
                     <BiSolidMessageRoundedDots className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
                 </Nav.Link>
 
-                 <NavDropdown
+                 {/* <NavDropdown
                     className="notif-dropdown"
                     title={<><IoIosNotifications className='top-menu-icons' /></>}
                     id="basic-nav-dropdown">
@@ -274,6 +274,65 @@ function Home () {
                    }
                         
                     </NavDropdown>
+                 
+                <NavDropdown className="custom-nav-dropdown" title={<><Image src={userData.profile_image} className='pfp-icon' roundedCircle /></>} id="basic-nav-dropdown">
+                    <div>
+                    <NavDropdown.Item>Settings</NavDropdown.Item>
+                    <NavDropdown.Item onClick={()=>viewProfile(user.user_id)}>Profile</NavDropdown.Item>
+                    <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                    </div>
+                </NavDropdown> */}
+
+                <NavDropdown
+                    className="notif-dropdown"
+                    title={<><IoIosNotifications className='top-menu-icons' /></>}
+                    id="basic-nav-dropdown">
+                    <NavDropdown.Item id='notification-header'>Notifications</NavDropdown.Item>
+                  {
+                    alertData && alertData.length > 0 ? (
+                        alertData.map(data =>(
+                            <div key={data.notification_id}>
+                                {
+                                    data.description === 'react' ?(
+                                        <NavDropdown.Item>
+                                            <span style={{fontSize:'bold'}}>{data.notifier}</span>
+                                            <span> reacted on your post </span>
+                                            <span style={{fontSize:'bold'}}>{data.title}</span>
+                                            <span style={{fontSize:'bold'}}>{data.title}</span>
+                                            <div>
+                                            <span> {data?.created_at && (<ReactTimeAgo
+                                            date={new Date(data.created_at).toISOString()}
+                                            locale="en-US"
+                                            timeStyle="round"
+                                        />)}</span>
+                                            </div></NavDropdown.Item>
+                                    ) : data.description === 'comment' ?(
+                                        <NavDropdown.Item>
+                                             <span style={{fontSize:'bold'}}>{data.notifier}</span>
+                                            <span> commented on your post </span>
+                                            <span style={{fontSize:'bold'}}>{data.title}</span>
+                                            <div>
+                                            <span> {data?.created_at && (<ReactTimeAgo
+                                            date={new Date(data.created_at).toISOString()}
+                                            locale="en-US"
+                                            timeStyle="round"
+                                        />)}</span>
+                                        </div>
+                                            </NavDropdown.Item>
+                                            ) :(
+                                        <>
+                                        <span></span>
+                                        </>
+                                 )
+                                }
+                            </div>
+                        ))
+                    ) : (<NavDropdown.Item>
+                        No notification yet
+                    </NavDropdown.Item>)
+                  }
+                  
+                  </NavDropdown>
                  
                 <NavDropdown className="custom-nav-dropdown" title={<><Image src={userData.profile_image} className='pfp-icon' roundedCircle /></>} id="basic-nav-dropdown">
                     <div>

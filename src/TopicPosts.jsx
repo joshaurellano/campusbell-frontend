@@ -218,45 +218,55 @@ function TopicPosts () {
                 </Nav.Link>
 
                  <NavDropdown
-                    className="notif-dropdown"
-                    title={<><IoIosNotifications className='top-menu-icons' /></>}
-                    id="basic-nav-dropdown">
-                   
-                   {alertData && alertData.length > 0 ?(
-                    alertData.map((data, index)=>(
-                        <div key={index}>
-                            { data.reactAlert ? (
-                                data.reactAlert && Object.values(data.reactAlert).map(reactData=>(
-                                    <NavDropdown.Item key={reactData.alertID}>
-                                        <span style={{fontWeight:'bold'}}>{reactData.reactorusername}</span> 
-                                        <span> reacted to your post</span> <span style={{fontWeight:'bold'}}> {data.title}
-                                            </span></NavDropdown.Item>
-                                ))
-                            ):(
-                                <>
-                                <span></span>
-                                </>
-                            )}
-                            {
-                                data.commentAlert ? (
-                                    data.commentAlert && Object.values(data.commentAlert).map(commentData=>(
-                                        <NavDropdown.Item key={commentData.alertID}>{commentData.commenterusername} commented on your post {data.title}</NavDropdown.Item>
-                                    ))
-                                ) : (
-                                    <>
-                                    <span></span>
-                                    </>
-                                )
-                            }
-                        </div>
-                    ))
-
-
-                   ) : (
-                        <NavDropdown.Item>No notification yet</NavDropdown.Item>
-                    )
-                   }
-                    </NavDropdown>
+                                     className="notif-dropdown"
+                                     title={<><IoIosNotifications className='top-menu-icons' /></>}
+                                     id="basic-nav-dropdown">
+                                     <NavDropdown.Item id='notification-header'>Notifications</NavDropdown.Item>
+                                   {
+                                     alertData && alertData.length > 0 ? (
+                                         alertData.map(data =>(
+                                             <div key={data.notification_id}>
+                                                 {
+                                                     data.description === 'react' ?(
+                                                         <NavDropdown.Item>
+                                                             <span style={{fontSize:'bold'}}>{data.notifier}</span>
+                                                             <span> reacted on your post </span>
+                                                             <span style={{fontSize:'bold'}}>{data.title}</span>
+                                                             <span style={{fontSize:'bold'}}>{data.title}</span>
+                                                             <div>
+                                                             <span> {data?.created_at && (<ReactTimeAgo
+                                                             date={new Date(data.created_at).toISOString()}
+                                                             locale="en-US"
+                                                             timeStyle="round"
+                                                         />)}</span>
+                                                             </div></NavDropdown.Item>
+                                                     ) : data.description === 'comment' ?(
+                                                         <NavDropdown.Item>
+                                                              <span style={{fontSize:'bold'}}>{data.notifier}</span>
+                                                             <span> commented on your post </span>
+                                                             <span style={{fontSize:'bold'}}>{data.title}</span>
+                                                             <div>
+                                                             <span> {data?.created_at && (<ReactTimeAgo
+                                                             date={new Date(data.created_at).toISOString()}
+                                                             locale="en-US"
+                                                             timeStyle="round"
+                                                         />)}</span>
+                                                         </div>
+                                                             </NavDropdown.Item>
+                                                             ) :(
+                                                         <>
+                                                         <span></span>
+                                                         </>
+                                                  )
+                                                 }
+                                             </div>
+                                         ))
+                                     ) : (<NavDropdown.Item>
+                                         No notification yet
+                                     </NavDropdown.Item>)
+                                   }
+                                   
+                                   </NavDropdown>
                  
                 <NavDropdown className="custom-nav-dropdown" title={<><Image src={userData.profile_image} className='pfp-icon' roundedCircle /></>} id="basic-nav-dropdown">
                     <div>
