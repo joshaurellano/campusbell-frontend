@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner,Offcanvas} from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Image,Spinner,Offcanvas} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { CiCirclePlus } from "react-icons/ci";
@@ -36,7 +36,8 @@ function Post () {
     const [topics, setTopics] = useState([]);
     // for post
     const [post, setPost] = useState([]);
-
+    const [userData, setUserData] = useState([]);
+    const [alertData, setAlertData] = useState(null);
     const [pageLoading, setPageLoading] = useState(false);
     const [commentLoading, setCommentLoading] = useState(false);
 
@@ -88,17 +89,42 @@ function Post () {
             console.error('Logout failed',error)
         }
     }
+
+    useEffect(() => {
+        if (user?.user_id) {
+            fetchUserData();
+            fetchAlerts();
+        }
+    }, [user]);
     useEffect(() =>{
         getTopics()
         getPost()
         
     },[])
+const fetchAlerts = async () => {
+        const id = user.user_id;
+        await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
+            setAlertData(data.result)
+            console.log(data.result)
+        })
+    }
     
     const getTopics = async () => {
             await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
             setTopics(data.result)
             // console.log(data.result)
         })
+    }
+    const fetchUserData = async () => {
+            const id = user.user_id;
+            await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
+            setUserData(data.result)
+            })
+        }
+    const handleTopicPosts = (topicId) =>{
+        navigate('/topic', {state: {
+            topicId
+        }})
     }
 
     const [values, setValues] = useState({
@@ -149,84 +175,122 @@ function Post () {
         
         : <div className='page'>
         <Row>
-            <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1, display:'flex', alignItems:'center'}}>
-                    <Container fluid style={{height:'inherit', padding:0}}>
-                        <Row style={{width:'100%'}}>
-                        
-                        <Col lg={4} xs={5} style={{display:'flex',alignItems:'center'}}>
-                        <div className='brand' style={{display:'flex', alignItems:'center'}}>
-                            <div className='d-block d-md-block d-sm-none d-lg-none'>
-                                <Button variant="primary" onClick={handleShowSidebar} style={{backgroundColor:'transparent', border:'none', translate: '0px -2px'}}>
-                                    {
-                                        <>
-                                            <GiHamburgerMenu />
-                                        </>
-                                    }
-                                </Button>
-                                </div>
-                            <FaBell style={{color:'#ffac33'}} />
-                            <Navbar.Brand className='brand' style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
-                                <Nav.Link as={Link} to='/'>
-                                Campus Bell
-                                </Nav.Link>
-                                </Navbar.Brand>
-                        </div>
-                        </Col>
-            
-                        <Col lg={6} xs={2} style={{
-                            translate:'-20px 0px'
-                        }}>
-                        <Nav className="me-auto align-items-center"style={{width:'100%', height:'100%'}}>
-                            <div style={{display:'flex', alignItems:'center', height:'100%'}}>
-                                <FaMagnifyingGlass className='searchbar-icon' />
-                                
-                                <Row style={{width:'100%'}}>
-                                    <Col lg={12} xs={1}>
-                                    <Form.Control className='searchbar' placeholder='Search' />
-                                    </Col>
-                                </Row>
-                            </div>
-                        </Nav>
-                        </Col>
-                        
-                        <Col  lg={2} xs={5} style={{ display:'flex', alignItems:'center', height:'100%'
-                        }}>
-                            <Nav className='gap-3'style={{display:'flex', flexDirection:'row', width:'100%'}}>
-                            <Nav.Link className='top-menu' as={Link} to='/post'style={{cursor:'pointer',color:'white'}}>
-                            Post
-                            </Nav.Link>
-            
-                            <Nav.Link as={Link} to='/post'>
-                                <BiSolidMessageRoundedDots className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
-                            </Nav.Link>
-            
-                             <Nav.Link as={Link} to='/post'>
-                                <IoIosNotifications className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
-                            </Nav.Link>
-            
-                            <NavDropdown className="custom-nav-dropdown" title={<><FaUserCircle className='top-menu-icons' style={{color:'green'}} /></>} id="basic-nav-dropdown">
-                                <NavDropdown.Item>Settings</NavDropdown.Item>
-                                <NavDropdown.Item>Profile</NavDropdown.Item>
-                                <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-                            </NavDropdown>
-                            </Nav>
-                        </Col>
-                        </Row>
-                    </Container>
-                </Navbar>
+    <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1, display:'flex', alignItems:'center'}}>
+         <Container fluid style={{height:'inherit', padding:0}}>
+             <Row style={{width:'100%',display:'flex',alignItems:'center'}}>
+             
+             <Col lg={4} xs={5} style={{display:'flex',alignItems:'center'}}>
+             <div className='brand' style={{display:'flex', alignItems:'center'}}>
+                 <div className='d-block d-md-block d-sm-block d-lg-none'>
+                     <Button variant="primary" onClick={handleShowSidebar} style={{backgroundColor:'transparent', border:'none', translate: '0px -2px'}}>
+                         {
+                             <>
+                                 <GiHamburgerMenu />
+                             </>
+                         }
+                     </Button>
+                     </div>
+                 <FaBell style={{color:'#ffac33'}} />
+                 <Navbar.Brand className='brand' style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
+                     <Nav.Link as={Link} to='/'>
+                     Campus Bell
+                     </Nav.Link>
+                     </Navbar.Brand>
+             </div>
+             </Col>
+ 
+             <Col lg={6} xs={2} style={{
+                 translate:'-20px 0px'
+             }}>
+             <Nav className="me-auto align-items-center"style={{width:'100%', height:'100%', display:'flex', justifyContent:'start'}}>
+                 <div style={{display:'flex', alignItems:'center', height:'100%'}}>
+                     <FaMagnifyingGlass className='searchbar-icon' />
+                     
+                     <Row style={{width:'100%'}}>
+                         <Col lg={12} xs={1}>
+                         <Form.Control className='searchbar' placeholder='Search' />
+                         </Col>
+                     </Row>
+                 </div>
+             </Nav>
+             </Col>
+             
+             <Col  lg={2} xs={5} style={{ display:'flex', alignItems:'center', height:'100%'
+             }}>
+                 <Nav>
+                 <Nav.Link className='top-menu' as={Link} to='/post'style={{cursor:'pointer',color:'white'}}>
+                 Post
+                 </Nav.Link>
+ 
+                 <Nav.Link as={Link} to='/chat'>
+                     <BiSolidMessageRoundedDots className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
+                 </Nav.Link>
+ 
+                  <NavDropdown
+                     className="notif-dropdown"
+                     title={<><IoIosNotifications className='top-menu-icons' /></>}
+                     id="basic-nav-dropdown">
+                    
+                    {alertData && alertData.length > 0 ?(
+                     alertData.map((data, index)=>(
+                         <div key={index}>
+                             { data.reactAlert ? (
+                                 data.reactAlert && Object.values(data.reactAlert).map(reactData=>(
+                                     <NavDropdown.Item key={reactData.alertID}>
+                                         <span style={{fontWeight:'bold'}}>{reactData.reactorusername}</span> 
+                                         <span> reacted to your post</span> <span style={{fontWeight:'bold'}}> {data.title}
+                                             </span></NavDropdown.Item>
+                                 ))
+                             ):(
+                                 <>
+                                 <span></span>
+                                 </>
+                             )}
+                             {
+                                 data.commentAlert ? (
+                                     data.commentAlert && Object.values(data.commentAlert).map(commentData=>(
+                                         <NavDropdown.Item key={commentData.alertID}>{commentData.commenterusername} commented on your post {data.title}</NavDropdown.Item>
+                                     ))
+                                 ) : (
+                                     <>
+                                     <span></span>
+                                     </>
+                                 )
+                             }
+                         </div>
+                     ))
+                    ) : (
+                         <NavDropdown.Item>No notification yet</NavDropdown.Item>
+                     )
+                    }
+                     </NavDropdown>
+                  
+                 <NavDropdown className="custom-nav-dropdown" title={<><Image src={userData.profile_image} className='pfp-icon' roundedCircle /></>} id="basic-nav-dropdown">
+                     <div>
+                     <NavDropdown.Item>Settings</NavDropdown.Item>
+                     <NavDropdown.Item onClick={()=>viewProfile(user.user_id)}>Profile</NavDropdown.Item>
+                     <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                     </div>
+                 </NavDropdown>
+ 
+                 </Nav>
+             </Col>
+             </Row>
+         </Container>
+     </Navbar>
         </Row>
         
         <Row style={{paddingTop:'50px', backgroundColor:'black'}}> 
             <Container fluid>
                 <Row>
-                    <Col lg={2}>
-                    <Container fluid>
+                    <Col lg={2} style={{borderRight:'2px solid gray'}}>
+                        <Container fluid>
                         <div className='d-none d-md-none d-lg-block'>
                         <Nav className='ms-auto flex-column' style={{color:'white'}}>
                             <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
                             <span style={{color:'white'}}>
                                 <strong>
-                                    Welcome {user ? `${user.username}`:'Guest'}
+                                    <Image src={userData.profile_image} className='pfp-icon' roundedCircle /> Welcome {user ? `${user.username}`:'Guest'}
                                     </strong>
                             </span>
                             </div>
@@ -246,7 +310,7 @@ function Post () {
                             {
                                 topics.length > 0 && (
                                     topics.map((t)=>(
-                                            <Nav.Link key={t.topic_id} className='navLinkColor'>
+                                            <Nav.Link onClick={()=>handleTopicPosts(t.topic_id)} key={t.topic_id} className='navLinkColor'>
                                                 {t.topic_name}
                                             </Nav.Link>
                                     ))
@@ -267,7 +331,7 @@ function Post () {
                             </Nav>
                             </div>
         
-                            <div className='d-block d-sm-none'>
+                            <div className='d-block d-lg-none d-md-block d-sm-none'>
                             <Offcanvas show={showSidebar} onHide={handleCloseSidebar} style={{backgroundColor:'black', width:'250px'}}>
                                 <Offcanvas.Header style={{color:'white'}} closeButton>
                                 <Offcanvas.Title>
@@ -300,7 +364,7 @@ function Post () {
                             {
                                 topics.length > 0 && (
                                     topics.map((t)=>(
-                                            <Nav.Link key={t.topic_id} className='navLinkColor'>
+                                            <Nav.Link onClick={()=>handleTopicPosts(t.topic_id)}key={t.topic_id} className='navLinkColor'>
                                                 {t.topic_name}
                                             </Nav.Link>
                                     ))
@@ -323,7 +387,7 @@ function Post () {
                             </Offcanvas>
                             </div>
                         </Container>
-                    </Col>
+                        </Col>
 
                     <Col lg={8}>
                 <div className='container'>

@@ -144,15 +144,12 @@ function Home () {
         await axios.post(`${API_ENDPOINT}react`,payload,{withCredentials:true})
         getPosts()
     }
-     const fetchUserData = async () => {
-
-            const id = user.user_id;
-            await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
-            setUserData(data.result)
-            })
-            
-            // console.log(userData)
-        }
+    const fetchUserData = async () => {
+        const id = user.user_id;
+        await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
+        setUserData(data.result)
+        })
+    }
         
     const fetchAlerts = async () => {
         const id = user.user_id;
@@ -191,7 +188,7 @@ function Home () {
             
             <Col lg={4} xs={5} style={{display:'flex',alignItems:'center'}}>
             <div className='brand' style={{display:'flex', alignItems:'center'}}>
-                <div className='d-block d-md-block d-sm-none d-lg-none'>
+                <div className='d-block d-md-block d-sm-block d-lg-none'>
                     <Button variant="primary" onClick={handleShowSidebar} style={{backgroundColor:'transparent', border:'none', translate: '0px -2px'}}>
                         {
                             <>
@@ -379,7 +376,7 @@ function Home () {
                     {
                         topics.length > 0 && (
                             topics.map((t)=>(
-                                    <Nav.Link key={t.topic_id} className='navLinkColor'>
+                                    <Nav.Link onClick={()=>handleTopicPosts(t.topic_id)}key={t.topic_id} className='navLinkColor'>
                                         {t.topic_name}
                                     </Nav.Link>
                             ))
