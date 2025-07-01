@@ -47,7 +47,19 @@ function Home () {
     const handleShowSidebar = () => setShowSidebar(true);
 
     const [alert, setAlert] = useState(true);
+    const [notDisplayed, setNotDisplayed] = useState(true)
     
+    const closeAlert = () => {
+        setAlert(false)
+        sessionStorage.setItem('displayed', 'true')
+    }
+    
+    useEffect(() =>{
+        const displayed = sessionStorage.getItem('displayed')
+        if(displayed === 'true') {
+            setAlert(false)
+        }
+    },[])
     const navigate = useNavigate();
     //Check if user has session
     useEffect(() =>{
@@ -57,7 +69,7 @@ function Home () {
                 const userInfo = await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
                     setUser(data.result);
                 })
-                console.log(userInfo)
+                // console.log(userInfo)
             setPageLoading(false);
 
             } catch(error) {
@@ -129,7 +141,7 @@ function Home () {
             post_id:postID,
             user_id:userID
         }
-        console.log(payload)
+        // console.log(payload)
         await axios.post(`${API_ENDPOINT}react`,payload,{withCredentials:true})
         getPosts()
     }
@@ -144,7 +156,7 @@ function Home () {
         const id = user.user_id;
         await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
             setAlertData(data.result)
-            console.log(data.result)
+            // console.log(data.result)
         })
     }
 
@@ -161,9 +173,9 @@ function Home () {
         </> 
         
         : <div className='page'>
-    <Row>{ alert? (
-        <div>
-                <Alert variant="warning" onClose={() => setAlert(false)} dismissible>
+    <Row>{ alert ? (
+            <div>
+                <Alert variant="warning" onClose={() => closeAlert()} dismissible>
                 <p>
                     Currently open to gmail users for testing purposes. 
                 </p>
