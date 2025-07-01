@@ -46,8 +46,8 @@ function Home () {
     const handleCloseSidebar = () => setShowSidebar(false);
     const handleShowSidebar = () => setShowSidebar(true);
 
-    const[alert, setAlert] = useState(true);
-
+    const [alert, setAlert] = useState(true);
+    
     const navigate = useNavigate();
     //Check if user has session
     useEffect(() =>{
@@ -58,6 +58,8 @@ function Home () {
                     setUser(data.result);
                 })
                 console.log(userInfo)
+            setPageLoading(false);
+
             } catch(error) {
                 //go back to login in case if error
                 navigate ('/login');
@@ -65,19 +67,6 @@ function Home () {
         };
         checkUserSession();
     }, []);
-     useEffect(() => {
-        function simulateNetworkRequest() {
-        return new Promise(resolve => {
-            setTimeout(resolve, 2000);
-        });
-        }
-        if (pageLoading) {
-        simulateNetworkRequest().then(() => {
-            setPageLoading(false);
-        });
-        }
-    }, [pageLoading]);
-
 
     //function to handle logout
     const handleLogout = async () => {
