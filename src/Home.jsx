@@ -172,7 +172,7 @@ function Home () {
             </div>
         </> 
         
-        : <div className='page'>
+        : <div className='page overflow-hidden'>
     <Row>{ alert ? (
             <div>
                 <Alert variant="warning" onClose={() => closeAlert()} dismissible>
@@ -234,56 +234,6 @@ function Home () {
                     <BiSolidMessageRoundedDots className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
                 </Nav.Link>
 
-                 {/* <NavDropdown
-                    className="notif-dropdown"
-                    title={<><IoIosNotifications className='top-menu-icons' /></>}
-                    id="basic-nav-dropdown">
-                   
-                   {alertData && alertData.length > 0 ?(
-                    alertData.map((data, index)=>(
-                        <div key={index}>
-                            { data.reactAlert ? (
-                                data.reactAlert && Object.values(data.reactAlert).map(reactData=>(
-                                    <NavDropdown.Item key={reactData.alertID}>
-                                        <span style={{fontWeight:'bold'}}>{reactData.reactorusername}</span> 
-                                        <span> reacted to your post</span> <span style={{fontWeight:'bold'}}> {data.title}
-                                            </span></NavDropdown.Item>
-                                ))
-                            ):(
-                                <>
-                                <span></span>
-                                </>
-                            )}
-                            {
-                                data.commentAlert ? (
-                                    data.commentAlert && Object.values(data.commentAlert).map(commentData=>(
-                                        <NavDropdown.Item key={commentData.alertID}>{commentData.commenterusername} commented on your post {data.title}</NavDropdown.Item>
-                                    ))
-                                ) : (
-                                    <>
-                                    <span></span>
-                                    </>
-                                )
-                            }
-                        </div>
-                    ))
-
-
-                   ) : (
-                        <NavDropdown.Item>No notification yet</NavDropdown.Item>
-                    )
-                   }
-                        
-                    </NavDropdown>
-                 
-                <NavDropdown className="custom-nav-dropdown" title={<><Image src={userData.profile_image} className='pfp-icon' roundedCircle /></>} id="basic-nav-dropdown">
-                    <div>
-                    <NavDropdown.Item>Settings</NavDropdown.Item>
-                    <NavDropdown.Item onClick={()=>viewProfile(user.user_id)}>Profile</NavDropdown.Item>
-                    <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-                    </div>
-                </NavDropdown> */}
-
                 <NavDropdown
                     className="notif-dropdown"
                     title={<><IoIosNotifications className='top-menu-icons' /></>}
@@ -332,7 +282,6 @@ function Home () {
                         No notification yet
                     </NavDropdown.Item>)
                   }
-                  
                   </NavDropdown>
                  
                 <NavDropdown className="custom-nav-dropdown" title={<><Image src={userData.profile_image} className='pfp-icon' roundedCircle /></>} id="basic-nav-dropdown">
@@ -342,7 +291,6 @@ function Home () {
                     <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
                     </div>
                 </NavDropdown>
-
                
                 </Nav>
             </Col>
@@ -353,9 +301,9 @@ function Home () {
     </Row>
 
     <Row style={{paddingTop:'68px', backgroundColor:'black'}}>
-        <Container fluid>
+        <Container fluid >
             <Row>
-            <Col lg={2} style={{borderRight:'2px solid gray'}}>
+            <Col lg={2} className='topic-col'>
                 <Container fluid>
                 <div className='d-none d-md-none d-lg-block'>
                 <Nav className='ms-auto flex-column' style={{color:'white'}}>
@@ -461,7 +409,7 @@ function Home () {
                 </Container>
                 </Col>
 
-            <Col lg={8} sm={12} xs={12}>
+            <Col lg={8} sm={12} xs={12} style={{height:'100vh', overflow:'scroll'}}>
             <div className='container'>
             {
                 post.length > 0 && (

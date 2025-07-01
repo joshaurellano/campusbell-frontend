@@ -14,7 +14,11 @@
 .titleDesign {
     font-weight: bold;
 }
-
+.topic-col {
+    height: 100vh;
+    overflow: scroll;
+    border-right:2px solid gray
+}
 #oval {
       width: 120px;
       height: 40px;
@@ -220,6 +224,9 @@ justify-content: center !important;
     justify-content: end;
     gap: 8px !important;
 }
+.topic-col {
+    height:auto
+}
 }
 @media (max-width: 768px) {
 .searchbar{
@@ -257,6 +264,9 @@ justify-content: center !important;
     align-items: center;
     justify-content: end;
     gap: 12px !important;
+}
+.topic-col {
+    height:auto
 }
 }
 @media (width: 1024px) {
