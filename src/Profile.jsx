@@ -674,7 +674,8 @@ const fetchAlerts = async () => {
                                         <span className='user-info-label'>Academic Information</span>
                                     </div>
                                     <div className='user-info'>
-                                        <span>Program </span> 
+                                        <span>Program </span>
+                                        <span>{userData.program}</span> 
                                         
                                     </div>
                                     <div className='user-info'>
@@ -691,11 +692,19 @@ const fetchAlerts = async () => {
                                     </div>
                                     <div className='user-info'>
                                         <span>City : </span>
-                                        <span>{userData.city}</span>
-                                    </div>
+                                        <span>{userData.city || userData.town}</span>
+                                    </div> 
                                     <div className='user-info'>
                                         <span>Barangay : </span>
                                         <span>{userData.barangay}</span>
+                                    </div>
+                                    <div className='user-info'>
+                                        <span>Street : </span>
+                                        <span>{userData.street}</span>
+                                    </div>
+                                    <div className='user-info'>
+                                        <span>House No. : </span>
+                                        <span>{userData.house_no}</span>
                                     </div>
                                 </div>
                             ) : (
