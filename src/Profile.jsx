@@ -102,7 +102,6 @@ const fetchAlerts = async () => {
         const id = user.user_id;
         await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
             setAlertData(data.result)
-            console.log(data.result)
         })
     }
     const handleTopicPosts = (topicId) =>{
@@ -122,10 +121,8 @@ const fetchAlerts = async () => {
     const fetchUserData = async () => {
         const id = user_id;
         await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
-        setUserData(data.result)
-        }
-        )
-        console.log(userData)
+        setUserData(data.result[0])
+        })
     }  
     
     const uploadImage = async () => {

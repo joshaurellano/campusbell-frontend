@@ -120,7 +120,6 @@ function TopicPosts () {
   
     const getTopicPosts = async (e) => {
         const id = topicNo || topic_id
-        console.log(id)
         await axios.get(`${API_ENDPOINT}post/topic/${id}`,{withCredentials: true}).then(({data})=>{
             setPost(data.result)
             console.log(data.result)
@@ -143,7 +142,7 @@ function TopicPosts () {
     const fetchUserData = async () => {
         const id = user.user_id;
         await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
-        setUserData(data.result)
+        setUserData(data.result[0])
         })
     }
     const handleTopicPosts = (topicId) =>{

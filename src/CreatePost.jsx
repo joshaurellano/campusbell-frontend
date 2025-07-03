@@ -55,7 +55,6 @@ function CreatePost () {
             try {
                 await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
                     setUser(data.result);
-                    console.log(data.result);
                 })
             } catch(error) {
                 //go back to login in case if error
@@ -167,7 +166,7 @@ const handleTopicPosts = (topicId) =>{
 const fetchUserData = async () => {
         const id = user.user_id;
         await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
-        setUserData(data.result)
+        setUserData(data.result[0])
         })
 }
     return (

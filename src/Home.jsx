@@ -148,7 +148,7 @@ function Home () {
     const fetchUserData = async () => {
         const id = user.user_id;
         await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
-        setUserData(data.result)
+            setUserData(data.result[0])
         })
     }
         
