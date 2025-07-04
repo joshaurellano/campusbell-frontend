@@ -18,6 +18,8 @@ import { TbShare3 } from "react-icons/tb";
 import { FaRegComment } from "react-icons/fa6";
 import { IoSendSharp } from "react-icons/io5";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { AiFillLike } from "react-icons/ai";
+
 
 import ReactTimeAgo from 'react-time-ago'
 
@@ -93,13 +95,12 @@ function Post () {
     useEffect(() => {
         if (user?.user_id) {
             fetchUserData();
+            getPost();
             fetchAlerts();
         }
     }, [user]);
     useEffect(() =>{
         getTopics()
-        getPost()
-        
     },[])
 const fetchAlerts = async () => {
         const id = user.user_id;
@@ -140,9 +141,11 @@ const fetchAlerts = async () => {
     
     const getPost = async () => {
         const id = post_id;
-        await axios.get(`${API_ENDPOINT}post/${id}`,{withCredentials: true}).then(({data})=>{
-            setPost(data.result)
-            console.log(post)
+        const user_id = user.user_id
+        await axios.get(`${API_ENDPOINT}post/${id}/user/${user_id}`,{withCredentials: true}).then(({data})=>{
+            // console.log(data.result[0])
+            setPost(data.result[0])
+            
         })
     }
     const addComment = async (e) => {
@@ -472,12 +475,24 @@ const fetchAlerts = async () => {
                                 <Card.Footer style={{overflowWrap:'normal'}}>
                                     <div className='action-tabs gap-4'>
                                     <div>
-                                    <div id='oval' style={{color:'white'}}>
+                                    { post.reacted === true ? (
+                                        post.reacted &&
+                                    <div className='like-button' id='oval' onClick={()=>handleReact(post.postID, user.user_id)}>
                                         <div className='d-flex h-100 align-items-center'>
-                                        <AiOutlineLike />
-                                        <span style={{marginLeft:'4px'}}>React</span>
+                                            <AiFillLike   />
+                                            <span style={{marginLeft:'4px'}}>React</span>
+                                        </div>
+                                    </div>) : (
+                                        <>
+                                            <div id='oval' onClick={()=>handleReact(post.postID, user.user_id)} style={{color:'white'}}>
+                                        <div className='d-flex h-100 align-items-center'>
+                                            <AiOutlineLike />
+                                            <span style={{marginLeft:'4px'}}>React</span>
                                         </div>
                                     </div>
+                                        </>
+                                    )
+                                    }
                                     </div>
                                     <div>
                                     <div id='oval' onClick={()=>viewPost(post.postID)} style={{color:'white', cursor:'pointer'}}>
