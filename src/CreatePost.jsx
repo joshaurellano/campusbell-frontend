@@ -137,11 +137,10 @@ function CreatePost () {
             image:imageUrl||null
         }
          await axios.post(`${API_ENDPOINT}post`,payload,{withCredentials: true})
-           
+           navigate('/');
             
         } catch(error){
             console.log(error)}
-        
             setpostButtonLoading(false)
     }
         const fileInputRef = useRef();
@@ -238,7 +237,6 @@ const fetchUserData = async () => {
                                         <NavDropdown.Item>
                                             <span style={{fontSize:'bold'}}>{data.notifier}</span>
                                             <span> reacted on your post </span>
-                                            <span style={{fontSize:'bold'}}>{data.title}</span>
                                             <span style={{fontSize:'bold'}}>{data.title}</span>
                                             <div>
                                             <span> {data?.created_at && (<ReactTimeAgo

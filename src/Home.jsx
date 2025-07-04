@@ -249,7 +249,6 @@ function Home () {
                                             <span style={{fontSize:'bold'}}>{data.notifier}</span>
                                             <span> reacted on your post </span>
                                             <span style={{fontSize:'bold'}}>{data.title}</span>
-                                            <span style={{fontSize:'bold'}}>{data.title}</span>
                                             <div>
                                             <span> {data?.created_at && (<ReactTimeAgo
                                             date={new Date(data.created_at).toISOString()}
