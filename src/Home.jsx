@@ -18,6 +18,7 @@ import { TbShare3 } from "react-icons/tb";
 import { FaRegComment } from "react-icons/fa6";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiFillLike } from "react-icons/ai";
+import { IoChatbubble } from "react-icons/io5";
 
 import ReactTimeAgo from 'react-time-ago'
 
@@ -172,7 +173,7 @@ function Home () {
             </div>
         </> 
         
-        : <div className='page overflow-hidden'>
+        : <div>
     <Row>{ alert ? (
             <div>
                 <Alert variant="warning" onClose={() => closeAlert()} dismissible>
@@ -320,6 +321,17 @@ function Home () {
                         <div>
                         <span>
                         Home
+                        </span>
+                        </div>
+                        </div>
+                        </Nav.Link>
+                            <hr/>
+                     <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/'>
+                        <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
+                        <IoChatbubble style={{display:'flex', gap:'4'}} />
+                        <div>
+                        <span>
+                        Freedom Wall
                         </span>
                         </div>
                         </div>
