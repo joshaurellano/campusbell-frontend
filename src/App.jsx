@@ -10,6 +10,7 @@ import EmailConfirmation from './EmailConfirmation';
 import Profile from './Profile';
 import TopicPosts from './TopicPosts';
 import Messages from './Messages';
+import Freedomwall from './Freedomwall';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/verify' element={<EmailConfirmation />} />
           <Route path='/chat' element={<Messages />} />
+          <Route path='/wall' element={<Freedomwall />} />
           <Route path='/register' element={<Register key="register"/>} />
         </Routes>
       </Router>

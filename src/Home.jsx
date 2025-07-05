@@ -326,7 +326,7 @@ function Home () {
                         </div>
                         </Nav.Link>
                             <hr/>
-                     <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/'>
+                     <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/wall'>
                         <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
                         <IoChatbubble style={{display:'flex', gap:'4'}} />
                         <div>
