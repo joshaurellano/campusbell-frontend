@@ -39,6 +39,7 @@ function freedomwall() {
     const [userData, setUserData] = useState([]);
     const [alertData, setAlertData] = useState(null);
     const [notes, setNotes] = useState('');
+    const [noteBody, setNoteBody] = useState('');
 
     const [pageLoading, setPageLoading] = useState(false);
 
@@ -133,6 +134,22 @@ function freedomwall() {
         await axios.get(`${API_ENDPOINT}freedomwall/`,{withCredentials: true}).then(({data})=>{
             setNotes(data.result)
         })
+    }
+    const notePost = async (e) => {
+        e.preventDefault();
+        const userId = user.user_id;
+
+        const payload = {
+            user_id:userId,
+            body:noteBody
+        }
+        try{
+        await axios.post(`${API_ENDPOINT}freedomwall/`,payload,{withCredentials: true})
+        } catch(error){
+            console.error(error)
+        }
+        setNoteBody('')
+        fetchNotes();
     }
     return(
         <div>
@@ -378,7 +395,7 @@ function freedomwall() {
                         <span style={{display:'flex', justifyContent:'center',fontSize:'2rem', color:'white', fontWeight:'bold'}}>FREEDOM WALL</span>
                     </div>
                     <div>
-                        <Card style={{height:'100vh'}}>
+                        <Card style={{height:'100%'}}>
                             <Card.Body>
                                 <Row style={{height:'100%'}}>
                                     <Col lg={3} style={{borderRight:'gray 1px solid', height:'100%'}}>
@@ -425,16 +442,18 @@ function freedomwall() {
 
                             </Card.Body>
                             <Card.Footer>
-                                <Form>
+                                <Form onSubmit={notePost}>
                                     <Form.Group style={{marginBottom:'1rem'}}>
-                                        <Form.Control style={{minHeight:'5rem'}}>
+                                        <Form.Control style={{minHeight:'5rem'}} 
+                                        value={noteBody}
+                                        onChange={(e) =>setNoteBody(e.target.value)}>
 
                                         </Form.Control>
                                         
                                     </Form.Group>
                                    
                                     <Form.Group>                                        
-                                        <Button>Post Note</Button>
+                                        <Button type='submit'>Post Note</Button>
                                     </Form.Group>
                                 </Form>
                             </Card.Footer>
