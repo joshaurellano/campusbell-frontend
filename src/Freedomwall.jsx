@@ -36,9 +36,9 @@ function freedomwall() {
     // for topics
     const [topics, setTopics] = useState([]);
     // for post
-    const [post, setPost] = useState([]);
     const [userData, setUserData] = useState([]);
     const [alertData, setAlertData] = useState(null);
+    const [notes, setNotes] = useState('');
 
     const [pageLoading, setPageLoading] = useState(false);
 
@@ -47,20 +47,6 @@ function freedomwall() {
     const handleCloseSidebar = () => setShowSidebar(false);
     const handleShowSidebar = () => setShowSidebar(true);
 
-    const [alert, setAlert] = useState(true);
-    const [notDisplayed, setNotDisplayed] = useState(true)
-    
-    const closeAlert = () => {
-        setAlert(false)
-        sessionStorage.setItem('displayed', 'true')
-    }
-    
-    useEffect(() =>{
-        const displayed = sessionStorage.getItem('displayed')
-        if(displayed === 'true') {
-            setAlert(false)
-        }
-    },[])
     const navigate = useNavigate();
     //Check if user has session
     useEffect(() =>{
@@ -95,12 +81,12 @@ function freedomwall() {
         }
     }
     useEffect(() =>{
-        getTopics()
+        getTopics();
+        fetchNotes();
     },[])
    useEffect(() => {
     if (user?.user_id) {
         fetchUserData();
-        getPosts();
         fetchAlerts()
     }
 }, [user]);
@@ -113,14 +99,6 @@ function freedomwall() {
         })
     }
   
-    const getPosts = async () => {
-        const user_id = user.user_id
-        await axios.get(`${API_ENDPOINT}post/all/${user_id}`,{withCredentials: true}).then(({data})=>{
-            setPost(data.result)
-            getPosts()
-            // console.log(data.result)
-        })
-    }
     const viewPost = (postID) => {
         navigate('/view', {state: {
             postID
@@ -137,15 +115,6 @@ function freedomwall() {
         }})
     }
   
-    const handleReact = async (postID, userID) => {
-        const payload = {
-            post_id:postID,
-            user_id:userID
-        }
-        // console.log(payload)
-        await axios.post(`${API_ENDPOINT}react`,payload,{withCredentials:true})
-        getPosts()
-    }
     const fetchUserData = async () => {
         const id = user.user_id;
         await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
@@ -158,6 +127,11 @@ function freedomwall() {
         await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
             setAlertData(data.result)
             // console.log(data.result)
+        })
+    }
+    const fetchNotes = async () => {
+        await axios.get(`${API_ENDPOINT}freedomwall/`,{withCredentials: true}).then(({data})=>{
+            setNotes(data.result)
         })
     }
     return(
@@ -416,6 +390,35 @@ function freedomwall() {
                                         <span>
                                             Notes
                                         </span>
+                                        
+                                        <div>
+                                            {
+                                                notes && notes.length > 0 ? (
+                                                    notes.map(data => (
+                                                        
+                                                            <Card key={data.id} style={{marginBottom: '8px'}}>
+                                                                <Card.Body>
+                                                                    <div>
+                                                                    {data.username}
+                                                                    </div>
+                                                                    
+                                                                    <div>
+                                                                    {data.body}
+                                                                    </div>
+                                                                </Card.Body>
+                                                            </Card>
+                                                      
+                                                    ))
+                                                ) : (
+                                                    <>
+                                                    <span>
+                                                        No notes yet
+                                                    </span>
+                                                    </>
+                                                )
+                                                
+                                            }
+                                        </div>
                                     
                                     </Col>
                                 </Row>
