@@ -141,8 +141,7 @@ const fetchAlerts = async () => {
     
     const getPost = async () => {
         const id = post_id;
-        const user_id = user.user_id
-        await axios.get(`${API_ENDPOINT}post/${id}/user/${user_id}`,{withCredentials: true}).then(({data})=>{
+        await axios.get(`${API_ENDPOINT}post/${id}`,{withCredentials: true}).then(({data})=>{
             // console.log(data.result[0])
             setPost(data.result[0])
             

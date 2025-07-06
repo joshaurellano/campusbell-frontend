@@ -114,8 +114,7 @@ function Home () {
     }
   
     const getPosts = async () => {
-        const user_id = user.user_id
-        await axios.get(`${API_ENDPOINT}post/all/${user_id}`,{withCredentials: true}).then(({data})=>{
+        await axios.get(`${API_ENDPOINT}post/`,{withCredentials: true}).then(({data})=>{
             setPost(data.result)
             getPosts()
             // console.log(data.result)
