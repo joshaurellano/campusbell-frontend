@@ -11,14 +11,16 @@ import Profile from './Profile';
 import TopicPosts from './TopicPosts';
 import Messages from './Messages';
 import Freedomwall from './Freedomwall';
+import ForgotPassword from './ForgotPassword';
 
 function App() {
   return (
     <>
       <Router>
         <Routes>
-        <Route path='/' element={<Home />} />
+          <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login key="login"/>} />
+          <Route path='/register' element={<Register key="register"/>} />
           <Route path='/post' element={<CreatePost />} />
           <Route path='/view' element={<Post />} />
           <Route path='/topic' element={<TopicPosts />} />
@@ -26,7 +28,8 @@ function App() {
           <Route path='/verify' element={<EmailConfirmation />} />
           <Route path='/chat' element={<Messages />} />
           <Route path='/wall' element={<Freedomwall />} />
-          <Route path='/register' element={<Register key="register"/>} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+          
         </Routes>
       </Router>
     </>

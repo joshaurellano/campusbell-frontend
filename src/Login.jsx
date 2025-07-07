@@ -212,7 +212,7 @@ function Login () {
                             <div style={{marginTop:'16px'}}>
                              <Form.Group>
                                 <span style={{fontSize:'12px'}}>
-                                    Forgot Password? <Link>Click Here</Link>
+                                    Forgot Password? <Link to ='/forgot-password'>Click Here</Link>
                                 </span>
                             </Form.Group>
                             </div>
