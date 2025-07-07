@@ -98,9 +98,10 @@ function Profile () {
         fetchUserData()
     },[])
      useEffect(() =>{
-        if(user?.user_id)
-        fetchUserData();
-        fetchAlerts();
+        if(user?.user_id){
+            fetchUserData();
+            fetchAlerts();
+        }
     },[user])
 const fetchAlerts = async () => {
         const id = user.user_id;
