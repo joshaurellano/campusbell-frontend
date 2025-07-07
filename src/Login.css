@@ -17,3 +17,11 @@
   background-color: #4c9a47;
   transform: scale(1.03);
 }
+.eye-icon {
+  position: absolute;
+  right: 26px;
+  top: 208px
+}
+.password-box {
+  position: relative;
+}

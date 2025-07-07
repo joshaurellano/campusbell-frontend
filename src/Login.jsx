@@ -9,6 +9,8 @@ import {Link} from 'react-router-dom';
 
 import { FaUserAlt } from "react-icons/fa";
 import { FaKey } from "react-icons/fa";
+import { IoEye } from "react-icons/io5";
+import { IoEyeOff } from "react-icons/io5";
 
 import {API_ENDPOINT} from './Api';
 
@@ -22,10 +24,12 @@ function Login () {
     const [validated, setValidated] = useState(false);
     const [error, setError] = useState('');
     const [usernameError, setUsernameError] = useState('');
-    const[passwordError, setPasswordError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
     const [loading, setLoading] = useState(false)
+    const [showPassword, setShowPassword] = useState(false);
 
-
+    const onShowPassword = () => setShowPassword(true)
+    const onHidePassword = () => setShowPassword(false)
     //check first if user is already logged in
     useEffect(() =>{
         const fetchUser = async () => {
@@ -155,6 +159,8 @@ function Login () {
 
                             <div style={{marginTop:'20px'}}>
                             <Form.Group controlId='formPassword'>
+                               { showPassword ? (
+                                <>
                                 <FloatingLabel style={{fontSize:'12px'}}
                                     label={
                                         <>
@@ -165,6 +171,31 @@ function Login () {
                                     }
                                     controlId="floatingPassword">
                                 <Form.Control
+                                        className='password-box'
+                                        type='text'
+                                        placeholder=''
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}isInvalid={!!passwordError} 
+                                        style={{borderRadius:'10px', fontSize:'12px'}}
+                                        required />
+                                        <Form.Control.Feedback type='invalid'>{passwordError}</Form.Control.Feedback>
+                                </FloatingLabel>
+                                        <IoEye className='eye-icon' onClick={onHidePassword}/>
+                          </>
+                                ):(
+                                <>
+                                <FloatingLabel style={{fontSize:'12px'}}
+                                    label={
+                                        <>
+                                            <div>
+                                            <FaKey style={{color:'#eda305'}}/> Password
+                                            </div>
+                                        </>
+                                    }
+                                    controlId="floatingPassword">
+                                <Form.Control
+                                
+                                        className='password-box'
                                         type='password'
                                         placeholder=''
                                         value={password}
@@ -173,6 +204,9 @@ function Login () {
                                         required />
                                         <Form.Control.Feedback type='invalid'>{passwordError}</Form.Control.Feedback>
                                 </FloatingLabel>
+                                        <IoEyeOff className='eye-icon' onClick={onShowPassword}/>
+                                        </>
+                                )}
                             </Form.Group>
                             </div>
                             <div style={{marginTop:'16px'}}>
