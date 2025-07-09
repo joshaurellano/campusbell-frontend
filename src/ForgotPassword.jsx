@@ -1,5 +1,5 @@
 import React from 'react'
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 
 import {Nav,Navbar,Container,Button,Form,Row,Col,Spinner,Card,FloatingLabel} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
@@ -7,9 +7,9 @@ import {Link} from 'react-router-dom';
 import {API_ENDPOINT} from './Api';
 
 function ForgotPassword() {
-
+const { token } = useParams();
 const navigate = useNavigate();
-
+console.log(token)
   return (
     <div style={{ height:'100vh',width:'100vw',display:'flex', justifyContent:'center',alignItems:'center'}}>
         <Card style={{width:'300px',height:'300px'}}>

@@ -28,7 +28,7 @@ function App() {
           <Route path='/verify' element={<EmailConfirmation />} />
           <Route path='/chat' element={<Messages />} />
           <Route path='/wall' element={<Freedomwall />} />
-          <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/password-reset/:token' element={<ForgotPassword />} />
           
         </Routes>
       </Router>
