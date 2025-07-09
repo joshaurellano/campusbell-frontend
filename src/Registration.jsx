@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useRef } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 import Cookies from 'js-cookie';
 
-import {Navbar,Nav,Container,Button,Form,Row,Col,Spinner,Card,Alert} from 'react-bootstrap';
+import {Navbar,Nav,Container,Button,Form,Row,Col,Spinner,Card,Alert,Popover, OverlayTrigger,Overlay, Tooltip} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
+
+import { FiInfo } from "react-icons/fi";
+
 import './Registration.css';
 
 function Registration () {
@@ -17,7 +20,16 @@ function Registration () {
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [firstName, setFirstName] = useState('');
+    const [middleName, setMiddleName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [program, setProgram] = useState('');
+    const [region, setRegion] = useState('');
+    const [province, setProvince] = useState('');
+    const [city, setCity] = useState('');
+    const [town, setTown] = useState('');
+    const [barangay, setBarangay] = useState('');
+    const [street, setStreet] = useState('');
+    const [houseNo, setHouseNo] = useState('');
     const [error, setError] = useState([]);
     const [loading, setLoading] = useState(false);
     const [validated, setValidated] = useState(false);
@@ -26,9 +38,18 @@ function Registration () {
     const [emailError, setEmailError] = useState('');
     const [phoneNumberError, setPhoneNumberError] = useState('');
     const [firstNameError, setFirstNameError] = useState('');
-    const [lastNameError, setLastNameError] = useState('');    
-    const[successAlertShow, setSuccessAlertShow] = useState(false);
-    const[errorAlertShow, setErrorAlertShow] = useState(false);
+    const [middleNameError, setMiddleNameError] = useState('');
+    const [lastNameError, setLastNameError] = useState('');
+    const [programError, setProgramError] = useState('');
+    const [regionError, setRegionError] = useState('');   
+    const [provinceError, setProvinceError] = useState('');   
+    const [cityError, setCityError] = useState('');   
+    const [townError, setTownError] = useState('');   
+    const [barangayError, setBarangayError] = useState('');   
+    const [streetError, setStreetError] = useState('');   
+    const [houseNoError, setHouseNoError] = useState('');       
+    const [successAlertShow, setSuccessAlertShow] = useState(false);
+    const [errorAlertShow, setErrorAlertShow] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -44,7 +65,16 @@ function Registration () {
                 email,
                 first_name:firstName,
                 last_name:lastName,
-                phone_number:phoneNumber
+                phone_number:phoneNumber,
+                program,
+                region,
+                province,
+                city,
+                town,
+                barangay,
+                street,
+                house_no:houseNo,
+
             });
             // console.log(response);
             const otpGen = await axios.post(`${API_ENDPOINT}otp/generate`,{
@@ -74,8 +104,26 @@ function Registration () {
             else if(error.response.data.message.includes("First Name")){
                 setFirstNameError(error.response.data.message)
             }
-            else if(error.response.data.message.includes("Last Name")){
+            else if(error.response.data.message.includes("Middle Name")){
+                setMiddleNameError(error.response.data.message)
+            }else if(error.response.data.message.includes("Last Name")){
                 setLastNameError(error.response.data.message)
+            }else if(error.response.data.message.includes("Region")){
+                setRegionError(error.response.data.message)
+            }else if(error.response.data.message.includes("Province")){
+                setProvinceError(error.response.data.message)
+            }else if(error.response.data.message.includes("City")){
+                setCityError(error.response.data.message)
+            }else if(error.response.data.message.includes("Town")){
+                setTownError(error.response.data.message)
+            }else if(error.response.data.message.includes("Barangay")){
+                setBarangayError(error.response.data.message)
+            }else if(error.response.data.message.includes("Street")){
+                setStreetError(error.response.data.message)
+            }else if(error.response.data.message.includes("House Number")){
+                setHouseNoError(error.response.data.message)
+            }else if(error.response.data.message.includes("Program")){
+                setProgramError(error.response.data.message)
             }
             
             setLoading(false);
@@ -88,6 +136,11 @@ function Registration () {
         navigate('/login');
     }
     
+    const renderTooltip = (props) => (
+        <Tooltip id="tooltip" {...props}>
+        Fields with "*" are required
+        </Tooltip>
+    );
 
     return (
         <div style={{
@@ -171,7 +224,7 @@ function Registration () {
                                         <Alert variant="danger" onClose={() => setErrorAlertShow(false)} dismissible>
                                         <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
                                         <p>
-                                        This can happen somethimes. Check your details first and try again
+                                        This can happen sometimes. Check your details first and try again
                                         </p>
                                     </Alert>
                                     )
@@ -182,11 +235,21 @@ function Registration () {
                                 <div style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',width:'100%'}}>
                                 <span className='form-heading-1'>Register</span>
                                 <span className='form-heading-2'>Campus Bell</span> <br/>
+                                
                                 </div>
                                 <div>
                                 <Form noValidate validated={validated}onSubmit={handleSubmit}>
+                                
+                                 <OverlayTrigger
+                                    placement="right"
+                                    overlay={renderTooltip}
+                                    >
+                                    <FiInfo style={{marginBottom:'8px', color:'#74787e'}}/>
+                                    </OverlayTrigger>
+                                
                                 <Form.Group controlId = 'formUsername'>
-                                    <Form.Label>Username:</Form.Label>
+                                    <p style={{marginBottom:'8px', fontWeight:'500'}}>Account Information</p>
+                                    <Form.Label><span style={{color:'red'}}>* </span>Username:</Form.Label>
                                     <Form.Control 
                                         type='text' 
                                         style={{border:'none', borderBottom:'1px solid gray',}}
@@ -197,7 +260,7 @@ function Registration () {
                                 </Form.Group> <br/>
 
                             <Form.Group controlId='formPassword'>
-                                <Form.Label>Password:</Form.Label>
+                                <Form.Label><span style={{color:'red'}}>* </span>Password:</Form.Label>
                                 <Form.Control
                                         type='password'
                                         style={{border:'none', borderBottom:'1px solid gray'}}
@@ -206,9 +269,10 @@ function Registration () {
                                         onChange={(e) => setPassWord(e.target.value)}isInvalid={!!passWordError} required/>
                                 <Form.Control.Feedback type='invalid'>{passWordError}</Form.Control.Feedback>
                             </Form.Group> <br/>
-
+                            
+                            <p style={{fontWeight:'500'}}>Personal Information</p>
                             <Form.Group controlId = 'formFirstName'>
-                                    <Form.Label>First Name:</Form.Label>
+                                    <Form.Label><span style={{color:'red'}}>* </span> First Name:</Form.Label>
                                     <Form.Control 
                                         type='text'
                                         style={{border:'none', borderBottom:'1px solid gray'}}
@@ -218,8 +282,19 @@ function Registration () {
                                     <Form.Control.Feedback type='invalid'>{firstNameError}</Form.Control.Feedback>
                                 </Form.Group> <br/>
 
+                                <Form.Group controlId = 'formMiddleName'>
+                                    <Form.Label>Middle Name:</Form.Label>
+                                    <Form.Control 
+                                        type='text'
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
+                                        placeholder='Will'
+                                        value={middleName}
+                                        onChange={(e) => setMiddleName(e.target.value)}isInvalid={!!middleNameError} />
+                                    <Form.Control.Feedback type='invalid'>{middleNameError}</Form.Control.Feedback>
+                                </Form.Group> <br/>
+
                             <Form.Group controlId = 'formLastName'>
-                                    <Form.Label>Last Name:</Form.Label>
+                                    <Form.Label><span style={{color:'red'}}>* </span>Last Name:</Form.Label>
                                     <Form.Control 
                                         type='text'
                                         style={{border:'none', borderBottom:'1px solid gray'}}
@@ -230,7 +305,7 @@ function Registration () {
                                 </Form.Group> <br/>
 
                             <Form.Group controlId = 'formEmail'>
-                                    <Form.Label>Email:</Form.Label>
+                                    <Form.Label><span style={{color:'red'}}>* </span>Email:</Form.Label>
                                     <Form.Control
                                         type='email'
                                         style={{border:'none', borderBottom:'1px solid gray'}}
@@ -241,13 +316,102 @@ function Registration () {
                                 </Form.Group> <br/>
 
                             <Form.Group controlId = 'formPhoneNumber'>
-                                    <Form.Label>Phone Number:</Form.Label>
+                                    <Form.Label><span style={{color:'red'}}>* </span>Phone Number:</Form.Label>
                                     <Form.Control 
                                         type='text'
                                         style={{border:'none', borderBottom:'1px solid gray'}}
                                         placeholder='09123456789'
                                         value={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}isInvalid={!!phoneNumberError} required />
+                                    <Form.Control.Feedback type='invalid'>{phoneNumberError}</Form.Control.Feedback>
+                                </Form.Group> <br/>
+
+                            <Form.Group controlId = 'formProgram'>
+                                    <Form.Label>Program:</Form.Label>
+                                    <Form.Control 
+                                        type='text'
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
+                                        placeholder='BS-Information System'
+                                        value={program}
+                                        onChange={(e) => setProgram(e.target.value)}isInvalid={!!programError} />
+                                    <Form.Control.Feedback type='invalid'>{programError}</Form.Control.Feedback>
+                                </Form.Group> <br/>
+
+                            <p style={{fontWeight:'500'}}>Address</p>
+                            <Form.Group controlId = 'formRegion'>
+                                    <Form.Label>Region:</Form.Label>
+                                    <Form.Control 
+                                        type='text'
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
+                                        placeholder='5'
+                                        value={region}
+                                        onChange={(e) => setRegion(e.target.value)}isInvalid={!!regionError} />
+                                    <Form.Control.Feedback type='invalid'>{regionError}</Form.Control.Feedback>
+                                </Form.Group> <br/>
+
+                            <Form.Group controlId = 'formProvince'>
+                                    <Form.Label>Province:</Form.Label>
+                                    <Form.Control 
+                                        type='text'
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
+                                        placeholder='Camarines Sur'
+                                        value={province}
+                                        onChange={(e) => setProvince(e.target.value)}isInvalid={!!provinceError} />
+                                    <Form.Control.Feedback type='invalid'>{provinceError}</Form.Control.Feedback>
+                                </Form.Group> <br/>
+
+                            <Form.Group controlId = 'formCity'>
+                                    <Form.Label>City:</Form.Label>
+                                    <Form.Control 
+                                        type='text'
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
+                                        placeholder='Caloocan City'
+                                        value={city}
+                                        onChange={(e) => setCity(e.target.value)}isInvalid={!!cityError} />
+                                    <Form.Control.Feedback type='invalid'>{cityError}</Form.Control.Feedback>
+                                </Form.Group> <br/>
+
+                            <Form.Group controlId = 'formTown'>
+                                    <Form.Label>Town:</Form.Label>
+                                    <Form.Control 
+                                        type='text'
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
+                                        placeholder='San Jose'
+                                        value={town}
+                                        onChange={(e) => setTown(e.target.value)}isInvalid={!!townError} />
+                                    <Form.Control.Feedback type='invalid'>{townError}</Form.Control.Feedback>
+                                </Form.Group> <br/>
+
+                            <Form.Group controlId = 'formBarangay'>
+                                    <Form.Label>Barangay:</Form.Label>
+                                    <Form.Control 
+                                        type='text'
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
+                                        placeholder='Calauag'
+                                        value={barangay}
+                                        onChange={(e) => setBarangay(e.target.value)}isInvalid={!!barangayError} />
+                                    <Form.Control.Feedback type='invalid'>{barangayError}</Form.Control.Feedback>
+                                </Form.Group> <br/>
+
+                            <Form.Group controlId = 'formStreet'>
+                                    <Form.Label>Street:</Form.Label>
+                                    <Form.Control 
+                                        type='text'
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
+                                        placeholder='Green Valley'
+                                        value={street}
+                                        onChange={(e) => setStreet(e.target.value)}isInvalid={!!streetError} />
+                                    <Form.Control.Feedback type='invalid'>{streetError}</Form.Control.Feedback>
+                                </Form.Group> <br/>
+
+                            <Form.Group controlId = 'formHouseNo'>
+                                    <Form.Label>House Number:</Form.Label>
+                                    <Form.Control 
+                                        type='text'
+                                        style={{border:'none', borderBottom:'1px solid gray'}}
+                                        placeholder='077'
+                                        value={houseNo}
+                                        onChange={(e) => setHouseNo(e.target.value)}isInvalid={!!houseNoError} />
                                     <Form.Control.Feedback type='invalid'>{phoneNumberError}</Form.Control.Feedback>
                                 </Form.Group> <br/>
 

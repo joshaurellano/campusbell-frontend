@@ -24,7 +24,9 @@
 }
 .registration-card{
   border-radius: 15px;
-  box-shadow: 2px 2px 2px black
+  box-shadow: 2px 2px 2px black;
+  height: 100vh;
+  overflow: scroll;
 }
 .form-heading-1{
   font-size: 1.5rem;
@@ -33,7 +35,11 @@
   font-weight: bold;
   font-size: 1.875rem;
 }
-
+.form-label{
+  width: 100%;
+  display: flex;
+  white-space: nowrap;
+}
 @media (max-width: 600px) {
   h2 {
     font-size: 1.3rem !important;
