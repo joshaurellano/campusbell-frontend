@@ -3,8 +3,9 @@ import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 import Cookies from 'js-cookie';
+import Swal from 'sweetalert2'
 
-import {Nav,Navbar,Container,Button,Form,Row,Col,Spinner,Card,FloatingLabel} from 'react-bootstrap';
+import {Nav,Navbar,Container,Button,Form,Row,Col,Spinner,Card,FloatingLabel,Modal} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 import { FaUserAlt } from "react-icons/fa";
@@ -21,12 +22,25 @@ function Login () {
     const [user,setUser] = useState(null);
     const [username,setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('')
     const [validated, setValidated] = useState(false);
     const [error, setError] = useState('');
     const [usernameError, setUsernameError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [modalError, setModalError] = useState('');
     const [loading, setLoading] = useState(false)
+    const [modalLoading, setModalLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+
+    const openModal = () => {
+        setModalError('');
+        setShowModal(true)
+    }
+    const closeModal = () => {
+        setModalError('');
+        setShowModal(false)
+    }
 
     const onShowPassword = () => setShowPassword(true)
     const onHidePassword = () => setShowPassword(false)
@@ -89,6 +103,26 @@ function Login () {
             setError(error.response.data.message);
         }
     };
+    const sendResetLink = async(e) => {
+        e.preventDefault();
+        
+        setModalLoading(true);
+        try {
+            await axios.post(`${API_ENDPOINT}auth/password-reset`,{email})
+            setModalLoading(false)
+            Swal.fire({
+                title: "Success",
+                text: "An email containing reset link has been sent to your email address",
+                icon: "success",
+                showCloseButton: true,
+                });
+                setEmail('');
+                closeModal();
+        } catch (error) {
+            setModalLoading(false)
+            setModalError(error.response.data.message)
+        }
+    }
 
     return (
         <div className='edu-sa-hand-bodyFont'
@@ -134,7 +168,7 @@ function Login () {
                             <Form noValidate validated={validated}onSubmit={handleSubmit} style={{width:'100%'}}>
                             
                             <div style={{marginTop:'16px'}}>
-                            <Form.Group controlId = 'formUsername'> 
+                            <Form.Group controlId='formUsername'> 
                                 <FloatingLabel style={{fontSize:'12px'}}
                                     label={
                                         <>
@@ -212,7 +246,7 @@ function Login () {
                             <div style={{marginTop:'16px'}}>
                              <Form.Group>
                                 <span style={{fontSize:'12px'}}>
-                                    Forgot Password? <Link to ='/forgot-password'>Click Here</Link>
+                                    Forgot Password? <Link onClick={openModal}>Click Here</Link>
                                 </span>
                             </Form.Group>
                             </div>
@@ -247,6 +281,59 @@ function Login () {
                                 </Card.Body>
                             </Card>
                         </div>
+
+                        <Modal show={showModal} onHide={closeModal}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Don't worry, we got your back </Modal.Title> 
+                            </Modal.Header>
+                            <Modal.Body>
+                                <span>We just need to confirm first your identity.</span><br /> <br />
+                                <span>Please enter your email address in order for you to receive a reset link</span> <br />
+                                <Form id='FormReceiveLink' onSubmit={sendResetLink}>
+                                    <Form.Group>
+                                        <Form.Control
+                                            value={email} 
+                                            placeholder='Email Address' 
+                                            onChange={(e) => {
+                                                setEmail(e.target.value)
+                                                setModalError('')
+                                            }}
+                                            required />
+                                    </Form.Group>
+                                    {
+                                        modalError.length > 0 && (
+                                            <>
+                                            <span style={{color:'red'}}>{modalError}</span>
+                                            </>
+                                        )
+                                    }
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant='secondary' onClick={closeModal}>Close</Button>
+                                <Button 
+                                    type='submit'
+                                    form='FormReceiveLink' 
+                                    disabled={modalLoading}>
+                                    {
+                                        modalLoading ? (
+                                            <>
+                                            <Spinner
+                                                as="span"
+                                                animation="border"
+                                                size="sm"
+                                                role="status"
+                                                aria-hidden="true"
+                                                />
+                                            </>
+                                        ):(
+                                            'Confirm'
+                                        )
+                                    }
+                                    
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
             </Col>
             </Row>
         </Container>
