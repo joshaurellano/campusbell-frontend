@@ -43,7 +43,10 @@ function ForgotPassword() {
         setButtonLoading(true)
         const id = saveToken.user_id
         try {
-            const update_pass = await axios.put(`${API_ENDPOINT}user/password/${id}`,{password})
+            const update_pass = await axios.put(`${API_ENDPOINT}user/password/${id}`,{
+                password,
+                token
+            })
             setButtonLoading(false)
             
             Swal.fire({
