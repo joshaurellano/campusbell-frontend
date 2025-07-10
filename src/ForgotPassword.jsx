@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {useNavigate, useParams} from 'react-router-dom';
-import {Nav,Navbar,Container,Button,Form,Row,Col,Spinner,Card,FloatingLabel,Toast,ToastContainer} from 'react-bootstrap';
+import {Nav,Navbar,Container,Button,Form,Row,Col,Spinner,Card,FloatingLabel,Toast,ToastContainer,Alert} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 import {API_ENDPOINT} from './Api';
 import axios from 'axios';
@@ -16,6 +17,7 @@ function ForgotPassword() {
     const [error, setError] = useState('')
     const [formError, setFormError] = useState('')
     const [errorToast, setErrorToast] = useState(false)
+    const [buttonLoading, setButtonLoading] = useState(false)
     
     const openToast = () => setErrorToast(true)
     const closeToast = () => {
@@ -38,15 +40,40 @@ function ForgotPassword() {
     const updatePassword = async (e) => {
         e.preventDefault();
         //console.log(saveToken)
+        setButtonLoading(true)
         const id = saveToken.user_id
         try {
             const update_pass = await axios.put(`${API_ENDPOINT}user/password/${id}`,{password})
+            setButtonLoading(false)
+            
+            Swal.fire({
+                title: "Success!",
+                text: "Password Updated, Close this alert to go back to login page",
+                icon: "success",
+                showCloseButton: true,
+                }). then((result) => {
+                    if(result.isConfirmed){
+                        navigate('/login')
+                    }
+                })
+            setPassword('')
+            setRePassword('')
+            
         } catch (error) {
             setFormError(error.response.data.message);
+            setButtonLoading(false)
+            
+            Swal.fire({
+            title: "Error!",
+            text: "There was an error updating you password",
+            icon: "error"
+            });
+
+            setPassword('')
+            setRePassword('')
         }
     }
     const checkPassword = async () => {
-        console.log('Currently using checkPassword')
         try{
             if (password === rePassword) {
                 setFormError('')
@@ -91,7 +118,9 @@ function ForgotPassword() {
                     alignItems:'center',
                 }}>
                     <span style={{fontWeight:'bold', fontSize:'larger'}}>Password Reset</span>
-                
+                {
+
+                }
                 <Form 
                     id='updatePasswordForm'
                     onSubmit={updatePassword}
@@ -112,9 +141,10 @@ function ForgotPassword() {
                                 checkPassword ()
                             }}
                             disabled={error}
-                            placeholder='Enter your new password'>
+                            placeholder='Enter your new password'
+                            required />
 
-                            </Form.Control>
+                            
                         </Form.Group>
 
                         <Form.Group style={{marginBottom:'8px',width:'100%'}}>
@@ -126,9 +156,9 @@ function ForgotPassword() {
                                 checkPassword()
                             }}
                             disabled={error}
-                            placeholder='Re enter your password'>
+                            placeholder='Re enter your password'
+                            required />
 
-                            </Form.Control>
                         </Form.Group> 
 
                     <Form.Group style={{width:'100%'}}>
@@ -136,7 +166,18 @@ function ForgotPassword() {
                         type='submit'
                         disabled={error}
                         style={{width:'100%'}}>
-                            Update password
+                            { buttonLoading ? (
+                                <>
+                                    <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    />
+                                </>
+                                    ): ('Update password')
+                            }
                         </Button>
                     </Form.Group>
                     {
