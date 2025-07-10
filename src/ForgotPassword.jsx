@@ -35,54 +35,59 @@ function ForgotPassword() {
         verifyToken();
     },[])
   return (
-    <div style={{ height:'100vh',width:'100vw',display:'flex', justifyContent:'center',alignItems:'center'}}>
+    <div className='bg-dark' style={{ height:'100vh',width:'100vw',display:'flex', justifyContent:'center',alignItems:'center'}}>
         {
             errorToast && (
                 <>
                     <ToastContainer
-                        position='top-end'>
+                        position='top-end'
+                        style={{ boxShadow: '0 0 10px rgba(0,0,0,0.2)'}}>
                     <Toast show={openToast} onClose={closeToast}
-                        bg='danger'>
-                        <Toast.Header closeButton={true}>
-                             <img
-                                src="holder.js/20x20?text=%20"
-                                className="rounded me-2"
-                                alt=""
-                                />
-                            <strong className="me-auto"> Error</strong>
-                             
+                        bg='warning'
+                        text='dark'>
+                       <Toast.Header>
+                            <strong className="me-auto"> ⚠️Session Expired</strong>
                         </Toast.Header>
-                        <Toast.Body className="text-white" style={{color:'white'}}> {error}</Toast.Body>
-                    </Toast>
-                    </ToastContainer>
+                        <Toast.Body style={{color: '#343a40'}}>Your reset link has expired. Please request a new one.</Toast.Body>
+                        </Toast> 
+                        </ToastContainer>
                 </>
             )
         }
         <Card style={{width:'300px',height:'300px'}}>
             <Card.Body>
-                <div style={{
+                <div className='flex-column' style={{
                     display:'flex',
                     width:'100%',
                     height:'100%',
                     alignItems:'center',
                 }}>
-                <Form style={{width:'100%'}}>
-                    <Form.Group style={{marginBottom:'8px'}}>
-                        <Form.Control
-                        placeholder='Enter your new password'>
+                    <span style={{fontWeight:'bold', fontSize:'larger'}}>Password Reset</span>
+                
+                <Form style={{width:'100%',height:'100%',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',}}>
+                  
+                        <Form.Group style={{marginBottom:'8px',width:'100%'}}>
+                            <Form.Control
+                            disabled={error}
+                            placeholder='Enter your new password'>
 
-                        </Form.Control>
-                    </Form.Group>
+                            </Form.Control>
+                        </Form.Group>
 
-                    <Form.Group style={{marginBottom:'8px'}}>
-                        <Form.Control
-                        placeholder='Re enter your password'>
+                        <Form.Group style={{marginBottom:'8px',width:'100%'}}>
+                            <Form.Control
+                            disabled={error}
+                            placeholder='Re enter your password'>
 
-                        </Form.Control>
-                    </Form.Group>
+                            </Form.Control>
+                        </Form.Group> 
 
-                    <Form.Group>
-                        <Button>Update password</Button>
+                    <Form.Group style={{width:'100%'}}>
+                        <Button
+                        disabled={error}
+                        style={{width:'100%'}}>
+                            Update password
+                        </Button>
                     </Form.Group>
                 </Form>
                 </div>
