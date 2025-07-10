@@ -10,10 +10,13 @@ function ForgotPassword() {
     const { token } = useParams();
     const navigate = useNavigate();
 
+    const [password, setPassword] = useState('')
+    const [rePassword, setRePassword] = useState('') 
     const [saveToken, setSaveToken] = useState('')
     const [error, setError] = useState('')
+    const [formError, setFormError] = useState('')
     const [errorToast, setErrorToast] = useState(false)
-
+    
     const openToast = () => setErrorToast(true)
     const closeToast = () => {
         setErrorToast(false)
@@ -23,11 +26,36 @@ function ForgotPassword() {
     const verifyToken = async () => {
         try {
             const resetToken = await axios.get(`${API_ENDPOINT}auth/password-reset/${token}`)
-            setSaveToken(resetToken)
+            //console.log(resetToken.data.result)
+            setSaveToken(resetToken.data.result)
+
         } catch (error) {
             setError(error.response.data.message);
             openToast();
             // navigate('/login');
+        }
+    }
+    const updatePassword = async (e) => {
+        e.preventDefault();
+        //console.log(saveToken)
+        const id = saveToken.user_id
+        try {
+            const update_pass = await axios.put(`${API_ENDPOINT}user/password/${id}`,{password})
+        } catch (error) {
+            setFormError(error.response.data.message);
+        }
+    }
+    const checkPassword = async () => {
+        console.log('Currently using checkPassword')
+        try{
+            if (password === rePassword) {
+                setFormError('')
+            } else if(password !== rePassword){
+                setFormError('Password do not match')
+            }
+
+        } catch (error) {
+            console.error(error)
         }
     }
 
@@ -64,10 +92,25 @@ function ForgotPassword() {
                 }}>
                     <span style={{fontWeight:'bold', fontSize:'larger'}}>Password Reset</span>
                 
-                <Form style={{width:'100%',height:'100%',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',}}>
+                <Form 
+                    id='updatePasswordForm'
+                    onSubmit={updatePassword}
+                    style={{
+                        width:'100%',
+                        height:'100%',
+                        display:'flex',
+                        flexDirection:'column',
+                        justifyContent:'center',
+                        alignItems:'center',}}>
                   
                         <Form.Group style={{marginBottom:'8px',width:'100%'}}>
                             <Form.Control
+                            type='password'
+                            value={password}
+                            onChange={(e) => {
+                                setPassword(e.target.value)
+                                checkPassword ()
+                            }}
                             disabled={error}
                             placeholder='Enter your new password'>
 
@@ -76,6 +119,12 @@ function ForgotPassword() {
 
                         <Form.Group style={{marginBottom:'8px',width:'100%'}}>
                             <Form.Control
+                            type='password'
+                            value={rePassword}
+                            onChange={(e) => {
+                                setRePassword(e.target.value)
+                                checkPassword()
+                            }}
                             disabled={error}
                             placeholder='Re enter your password'>
 
@@ -84,11 +133,19 @@ function ForgotPassword() {
 
                     <Form.Group style={{width:'100%'}}>
                         <Button
+                        type='submit'
                         disabled={error}
                         style={{width:'100%'}}>
                             Update password
                         </Button>
                     </Form.Group>
+                    {
+                        formError && (
+                            <>
+                                <span style={{color:'red'}}>{formError}</span>
+                            </>
+                        )
+                    }
                 </Form>
                 </div>
             </Card.Body>
