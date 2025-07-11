@@ -41,11 +41,9 @@ function ForgotPassword() {
         e.preventDefault();
         //console.log(saveToken)
         setButtonLoading(true)
-        const id = saveToken.user_id
         try {
-            const update_pass = await axios.put(`${API_ENDPOINT}user/password/${id}`,{
-                password,
-                token
+            const update_pass = await axios.put(`${API_ENDPOINT}user/password/${token}`,{
+                password
             })
             setButtonLoading(false)
             
