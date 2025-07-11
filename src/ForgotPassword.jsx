@@ -90,6 +90,9 @@ function ForgotPassword() {
     useEffect(() =>{
         verifyToken();
     },[])
+    useEffect(() => {
+        checkPassword()
+    },[password, rePassword])
   return (
     <div className='bg-dark' style={{ height:'100vh',width:'100vw',display:'flex', justifyContent:'center',alignItems:'center'}}>
         {
@@ -137,10 +140,7 @@ function ForgotPassword() {
                             <Form.Control
                             type='password'
                             value={password}
-                            onChange={(e) => {
-                                setPassword(e.target.value)
-                                checkPassword ()
-                            }}
+                            onChange={(e) => setPassword(e.target.value)}
                             disabled={error}
                             placeholder='Enter your new password'
                             required />
@@ -152,10 +152,7 @@ function ForgotPassword() {
                             <Form.Control
                             type='password'
                             value={rePassword}
-                            onChange={(e) => {
-                                setRePassword(e.target.value)
-                                checkPassword()
-                            }}
+                            onChange={(e) => setRePassword(e.target.value)}
                             disabled={error}
                             placeholder='Re enter your password'
                             required />
