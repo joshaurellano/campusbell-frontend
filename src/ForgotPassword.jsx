@@ -3,6 +3,8 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {Nav,Navbar,Container,Button,Form,Row,Col,Spinner,Card,FloatingLabel,Toast,ToastContainer,Alert} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import Swal from 'sweetalert2'
+import { IoEye } from "react-icons/io5";
+import { IoEyeOff } from "react-icons/io5";
 
 import {API_ENDPOINT} from './Api';
 import axios from 'axios';
@@ -18,13 +20,27 @@ function ForgotPassword() {
     const [formError, setFormError] = useState('')
     const [errorToast, setErrorToast] = useState(false)
     const [buttonLoading, setButtonLoading] = useState(false)
-    
+    const [isChecked, setIsChecked] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
+    const [showRePassword, setShowRePassword] = useState(false)
     const openToast = () => setErrorToast(true)
     const closeToast = () => {
         setErrorToast(false)
         navigate('/login')    
     }
 
+    const onShowPassword = () => setShowPassword(true)
+    const onHidePassword = () => setShowPassword(false)
+    const onShowRePassword = () => setShowRePassword(true)
+    const onHideRePassword = () => setShowRePassword(false)
+
+    function handleTicked () {
+        if(isChecked === false) {
+            onHidePassword()
+        } else if(isChecked === true) {
+            onShowPassword()
+        }        
+    }
     const verifyToken = async () => {
         try {
             const resetToken = await axios.get(`${API_ENDPOINT}auth/password-reset/${token}`)
@@ -93,6 +109,9 @@ function ForgotPassword() {
     useEffect(() => {
         checkPassword()
     },[password, rePassword])
+    useEffect(() =>{
+        handleTicked()
+    },[isChecked])
   return (
     <div className='bg-dark' style={{ height:'100vh',width:'100vw',display:'flex', justifyContent:'center',alignItems:'center'}}>
         {
@@ -139,31 +158,70 @@ function ForgotPassword() {
                         alignItems:'center',}}>
                   
                         <Form.Group style={{marginBottom:'8px',width:'100%'}}>
-                            <Form.Control
-                            type='password'
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            disabled={error}
-                            placeholder='Enter your new password'
-                            required />
+                            <Form.Label>New Password</Form.Label>
+                            {
+                                showPassword ? (
+                                
+                                <>
+                                <Form.Control
+                                type='text'
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                disabled={error}
+                                placeholder='Enter your new password'
+                                required /> 
+                                </>) : (
+                                    <>
+                                        <Form.Control
+                                            type='password'
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            disabled={error}
+                                            placeholder='Enter your new password'
+                                            required />
+                                    </>
+                                )
+                            }
 
-                            
                         </Form.Group>
-
                         <Form.Group style={{marginBottom:'8px',width:'100%'}}>
-                            <Form.Control
-                            type='password'
-                            value={rePassword}
-                            onChange={(e) => setRePassword(e.target.value)}
-                            disabled={error}
-                            placeholder='Re enter your password'
-                            isInvalid={!!formError}
-                            required />
-
+                            <Form.Label>Confirm New Password</Form.Label>
+                            {
+                                showPassword ? (<>
+                                    <Form.Control
+                                    type='text'
+                                    value={rePassword}
+                                    onChange={(e) => setRePassword(e.target.value)}
+                                    disabled={error}
+                                    placeholder='Re enter your password'
+                                    isInvalid={!!formError}
+                                    required />
+                                </>):(
+                                <>
+                                <Form.Control
+                                type='password'
+                                value={rePassword}
+                                onChange={(e) => setRePassword(e.target.value)}
+                                disabled={error}
+                                placeholder='Re enter your password'
+                                isInvalid={!!formError}
+                                required /> </>
+                            )}
                             <Form.Control.Feedback type='invalid'>
                                 {formError}
                             </Form.Control.Feedback>
                         </Form.Group> 
+                        
+                        <Form.Group style={{width:'100%', marginBottom:'8px'}}>
+                            <Form.Check
+                                id='showPasswordToggle'
+                                type='checkbox'
+                                label='Show Password'
+                                checked={isChecked}
+                                onChange={(e) => setIsChecked(e.target.checked)}
+                            />
+
+                        </Form.Group>
 
                     <Form.Group style={{width:'100%'}}>
                         <Button
