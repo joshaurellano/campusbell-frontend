@@ -12,6 +12,7 @@ import TopicPosts from './TopicPosts';
 import Messages from './Messages';
 import Freedomwall from './Freedomwall';
 import ForgotPassword from './ForgotPassword';
+import RequestNewOtp from './RequestNewOtp';
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
           <Route path='/chat' element={<Messages />} />
           <Route path='/wall' element={<Freedomwall />} />
           <Route path='/password-reset/:token' element={<ForgotPassword />} />
-          
+          <Route path='/request-new-otp' element={<RequestNewOtp />} />
+
         </Routes>
       </Router>
     </>
