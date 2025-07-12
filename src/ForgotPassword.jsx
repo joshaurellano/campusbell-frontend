@@ -39,7 +39,7 @@ function ForgotPassword() {
     }
     const updatePassword = async (e) => {
         e.preventDefault();
-        //console.log(saveToken)
+
         setButtonLoading(true)
         try {
             const update_pass = await axios.put(`${API_ENDPOINT}user/password/${token}`,{
@@ -74,7 +74,7 @@ function ForgotPassword() {
             setRePassword('')
         }
     }
-    const checkPassword = async () => {
+    const checkPassword = () => {
         try{
             if (password === rePassword) {
                 setFormError('')
@@ -128,6 +128,8 @@ function ForgotPassword() {
                 <Form 
                     id='updatePasswordForm'
                     onSubmit={updatePassword}
+                    noValidate
+                    
                     style={{
                         width:'100%',
                         height:'100%',
@@ -155,14 +157,18 @@ function ForgotPassword() {
                             onChange={(e) => setRePassword(e.target.value)}
                             disabled={error}
                             placeholder='Re enter your password'
+                            isInvalid={!!formError}
                             required />
 
+                            <Form.Control.Feedback type='invalid'>
+                                {formError}
+                            </Form.Control.Feedback>
                         </Form.Group> 
 
                     <Form.Group style={{width:'100%'}}>
                         <Button
                         type='submit'
-                        disabled={error}
+                        disabled={error || formError}
                         style={{width:'100%'}}>
                             { buttonLoading ? (
                                 <>
@@ -178,13 +184,13 @@ function ForgotPassword() {
                             }
                         </Button>
                     </Form.Group>
-                    {
+                    {/* {
                         formError && (
                             <>
                                 <span style={{color:'red'}}>{formError}</span>
                             </>
                         )
-                    }
+                    } */}
                 </Form>
                 </div>
             </Card.Body>
