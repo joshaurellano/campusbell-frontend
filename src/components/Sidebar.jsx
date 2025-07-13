@@ -3,24 +3,10 @@ import {useNavigate, useLocation} from 'react-router-dom';
 import axios from 'axios';
 
 import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Image,Spinner, Offcanvas,Alert} from 'react-bootstrap';
-import { FaBell } from "react-icons/fa";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { CiCirclePlus } from "react-icons/ci";
-import { BiSolidMessageRoundedDots } from "react-icons/bi";
-import { IoIosNotifications } from "react-icons/io";
-import { FaUserCircle } from "react-icons/fa";
-import { FaHome } from "react-icons/fa";
-import { IoIosMore } from "react-icons/io";
-import { FaUser } from "react-icons/fa";
-import { CiClock2 } from "react-icons/ci";
-import { AiOutlineLike } from "react-icons/ai";
-import { TbShare3 } from "react-icons/tb";
-import { FaRegComment } from "react-icons/fa6";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { AiFillLike } from "react-icons/ai";
-import { IoChatbubble } from "react-icons/io5";
 
-import ReactTimeAgo from 'react-time-ago'
+import { CiCirclePlus } from "react-icons/ci";
+import { FaHome } from "react-icons/fa";
+import { IoChatbubble } from "react-icons/io5";
 
 import {Link} from 'react-router-dom';
 
@@ -37,22 +23,15 @@ const Sidebar = ({ showSidebar, handleCloseSidebar }) => {
       const [topics, setTopics] = useState([]);
       // for post
       const [userData, setUserData] = useState([]);
-      const [pageLoading, setPageLoading] = useState(false);
 
       const navigate = useNavigate();
          useEffect(() =>{
           const checkUserSession = async () => {
-              setPageLoading(true);
               try {
                   const userInfo = await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
                       setUser(data.result);
-                      console.log(data.result)
-                  })
-                  // console.log(userInfo)
-              setPageLoading(false);
-  
+                  })  
               } catch(error) {
-                  //go back to login in case if error
                   navigate ('/login');
               }
           };
@@ -75,7 +54,6 @@ const Sidebar = ({ showSidebar, handleCloseSidebar }) => {
       const getTopics = async () => {
               await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
               setTopics(data.result)
-              // console.log(data.result)
           })
       }
     
@@ -174,6 +152,17 @@ const Sidebar = ({ showSidebar, handleCloseSidebar }) => {
                     </div>
                     </Nav.Link>
                         <hr/>
+                     <Nav.Link className='navLinkColor' style={{fontWeight:'bold'}} as={Link} to='/wall'>
+                        <div style={{fontSize:'15px', display:'flex', alignItems:'center',color:'white', gap:'4'}}>
+                            <IoChatbubble style={{display:'flex', gap:'4'}} />
+                        <div>
+                            <span>
+                            Freedom Wall
+                            </span>
+                        </div>
+                        </div>
+                    </Nav.Link>
+                <hr />
                 <span style={{fontWeight:'bold',color:'gray'}}>Topics</span>              
             {
                 topics.length > 0 && (

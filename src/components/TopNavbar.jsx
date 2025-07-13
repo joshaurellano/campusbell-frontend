@@ -5,20 +5,9 @@ import axios from 'axios';
 import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Image,Spinner, Offcanvas,Alert} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { CiCirclePlus } from "react-icons/ci";
 import { BiSolidMessageRoundedDots } from "react-icons/bi";
 import { IoIosNotifications } from "react-icons/io";
-import { FaUserCircle } from "react-icons/fa";
-import { FaHome } from "react-icons/fa";
-import { IoIosMore } from "react-icons/io";
-import { FaUser } from "react-icons/fa";
-import { CiClock2 } from "react-icons/ci";
-import { AiOutlineLike } from "react-icons/ai";
-import { TbShare3 } from "react-icons/tb";
-import { FaRegComment } from "react-icons/fa6";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { AiFillLike } from "react-icons/ai";
-import { IoChatbubble } from "react-icons/io5";
 
 import ReactTimeAgo from 'react-time-ago'
 
@@ -35,19 +24,11 @@ const TopNavbar = ({handleToggleSidebar}) => {
   // const for user fetching
       const [user, setUser] = useState(null);
       // for topics
-      const [topics, setTopics] = useState([]);
-      // for post
-      const [post, setPost] = useState([]);
+
       const [userData, setUserData] = useState([]);
       const [alertData, setAlertData] = useState(null);
   
       const [pageLoading, setPageLoading] = useState(false);
-  
-    //   const [showSidebar, setShowSidebar] = useState(false);
-  
-    //   const handleCloseSidebar = () => setShowSidebar(false);
-      
-    //   const handleShowSidebar = () => setShowSidebar(true);
   
       const [alert, setAlert] = useState(true);
       const [notDisplayed, setNotDisplayed] = useState(true)
@@ -104,14 +85,6 @@ const TopNavbar = ({handleToggleSidebar}) => {
       }
   }, [user]);
   
-  
-      const getTopics = async () => {
-              await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
-              setTopics(data.result)
-              // console.log(data.result)
-          })
-      }
-
       const viewProfile = (userId) => {
           navigate('/profile', {state: {
               userId

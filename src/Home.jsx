@@ -29,6 +29,7 @@ import {API_ENDPOINT} from './Api';
 import './Home.css';
 import TopNavbar from './components/TopNavbar';
 import Sidebar from './components/Sidebar'
+
 axios.defaults.withCredentials = true;
 
 function Home () {
@@ -87,19 +88,6 @@ function Home () {
         checkUserSession();
     }, []);
 
-    //function to handle logout
-    const handleLogout = async () => {
-        try {
-            // remove token from cookies
-            await axios.post(`${API_ENDPOINT}auth/logout`,{withCredentials:true}).then(({data})=>{
-                setUser(data.result);
-            });
-            // make sure to go back to login page after removing the token 
-            navigate('/login')
-        } catch (error) {
-            console.error('Logout failed',error)
-        }
-    }
     useEffect(() =>{
         getTopics()
     },[])
