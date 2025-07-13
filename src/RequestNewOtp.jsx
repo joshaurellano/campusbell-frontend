@@ -19,18 +19,21 @@ function RequestNewOtp() {
         e.preventDefault();
         setButtonLoading(true)
         try {
-            await axios.post(`${API_ENDPOINT}otp/regenerate`,{
+            const reOtp = await axios.post(`${API_ENDPOINT}otp/regenerate`,{
                 phone_number: phoneNumber,
                 purpose_id: '3'
             })
-            setShow(true)
+            setPhoneNumber('')
+            setFail(false)
             setButtonLoading(false)
-            setSuccess(true)                                                                      
-        } catch (error) {
+            setSuccess(true)  
             setShow(true)
+        } catch(error) {
+            setError(error.response.data.message)
+            setSuccess(false)
             setButtonLoading(false)
-            setFail(true)  
-            console.error(error)
+            setFail(true) 
+            setShow(true)
         }
     }
     return (
@@ -58,9 +61,14 @@ function RequestNewOtp() {
             { success ?(<>
                 <ToastContainer position={'top-end'} >
                     <Toast show={show} bg='success && text-white' onClose={() => setShow(false)}>
-                        <Toast.Header closeButton={true}> Notification</Toast.Header>
+                        <Toast.Header closeButton={true}> 
+                            <strong className="me-auto">😄 Success </strong>
+                            </Toast.Header>
                         <Toast.Body>
-                            Success
+                            <span>New OTP has been sent to your email. Go check it out</span>
+                            <hr />
+                            
+                            <span><small>Close this notification to go back to login page</small></span>
                         </Toast.Body>
                     </Toast>
 
@@ -70,10 +78,10 @@ function RequestNewOtp() {
             <ToastContainer position={'top-end'}>
                     <Toast show={show} bg='danger && text-white' onClose={() => setShow(false)}>
                         <Toast.Header closeButton={true}>
-                            <strong className="me-auto"> Notification </strong>
+                            <strong className="me-auto">😔Oh. Sorry it's an error </strong>
                         </Toast.Header>
                         <Toast.Body>
-                            Error
+                            <p>Please check the error message</p>
                         </Toast.Body>
                     </Toast>
 
@@ -99,7 +107,10 @@ function RequestNewOtp() {
                         <Form.Label>Phone Number</Form.Label>  
                             <Form.Control placeholder='Your Phone Number' style={{borderRadius:'15px'}}
                              value={phoneNumber}
-                            onChange={(e)=>setPhoneNumber(e.target.value)}
+                            onChange={(e)=>{
+                                setPhoneNumber(e.target.value)
+                                setError('')
+                            }}
                             >
                             </Form.Control>
                         
@@ -126,7 +137,7 @@ function RequestNewOtp() {
                     </Form.Group>
                     </div>
                     <div style={{marginTop:'8px'}}>
-                        {error && <span style={{color:'red'}}>{error}</span>}
+                        {error && <span style={{color:'red'}}><small>{error}</small></span>}
                     </div>
                 </Form>
                 
