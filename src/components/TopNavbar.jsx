@@ -96,13 +96,10 @@ const TopNavbar = ({handleToggleSidebar}) => {
               console.error('Logout failed',error)
           }
       }
-      useEffect(() =>{
-          getTopics()
-      },[])
+    
      useEffect(() => {
       if (user?.user_id) {
           fetchUserData();
-          getPosts();
           fetchAlerts()
       }
   }, [user]);
@@ -114,39 +111,13 @@ const TopNavbar = ({handleToggleSidebar}) => {
               // console.log(data.result)
           })
       }
-    
-      const getPosts = async () => {
-          await axios.get(`${API_ENDPOINT}post/`,{withCredentials: true}).then(({data})=>{
-              setPost(data.result)
-              getPosts()
-              // console.log(data.result)
-          })
-      }
-      const viewPost = (postID) => {
-          navigate('/view', {state: {
-              postID
-          }});
-      }
+
       const viewProfile = (userId) => {
           navigate('/profile', {state: {
               userId
           }});
       }
-      const handleTopicPosts = (topicId) =>{
-          navigate('/topic', {state: {
-              topicId
-          }})
-      }
     
-      const handleReact = async (postID, userID) => {
-          const payload = {
-              post_id:postID,
-              user_id:userID
-          }
-          // console.log(payload)
-          await axios.post(`${API_ENDPOINT}react`,payload,{withCredentials:true})
-          getPosts()
-      }
       const fetchUserData = async () => {
           const id = user.user_id;
           await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{

@@ -36,39 +36,17 @@ const Sidebar = ({ showSidebar, handleCloseSidebar }) => {
       // for topics
       const [topics, setTopics] = useState([]);
       // for post
-      const [post, setPost] = useState([]);
       const [userData, setUserData] = useState([]);
-      const [alertData, setAlertData] = useState(null);
-  
       const [pageLoading, setPageLoading] = useState(false);
-  
-    //   const [showSidebar, setShowSidebar] = useState(false);
-  
-    //   const handleCloseSidebar = () => setShowSidebar(false);
-    //   const handleShowSidebar = () => setShowSidebar(true);
-  
-      const [alert, setAlert] = useState(true);
-      const [notDisplayed, setNotDisplayed] = useState(true)
-      
-      const closeAlert = () => {
-          setAlert(false)
-          sessionStorage.setItem('displayed', 'true')
-      }
-      
-      useEffect(() =>{
-          const displayed = sessionStorage.getItem('displayed')
-          if(displayed === 'true') {
-              setAlert(false)
-          }
-      },[])
+
       const navigate = useNavigate();
-      //Check if user has session
-      useEffect(() =>{
+         useEffect(() =>{
           const checkUserSession = async () => {
               setPageLoading(true);
               try {
                   const userInfo = await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
                       setUser(data.result);
+                      console.log(data.result)
                   })
                   // console.log(userInfo)
               setPageLoading(false);
@@ -80,31 +58,19 @@ const Sidebar = ({ showSidebar, handleCloseSidebar }) => {
           };
           checkUserSession();
       }, []);
-  
-      //function to handle logout
-      const handleLogout = async () => {
-          try {
-              // remove token from cookies
-              await axios.post(`${API_ENDPOINT}auth/logout`,{withCredentials:true}).then(({data})=>{
-                  setUser(data.result);
-              });
-              // make sure to go back to login page after removing the token 
-              navigate('/login')
-          } catch (error) {
-              console.error('Logout failed',error)
-          }
-      }
+      
+      const fetchUserData = async () => {
+        const id = user.user_id;
+        await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
+            setUserData(data.result[0])
+        })
+    }
       useEffect(() =>{
+        if(user?.user_id){
           getTopics()
-      },[])
-     useEffect(() => {
-      if (user?.user_id) {
-          fetchUserData();
-          getPosts();
-          fetchAlerts()
-      }
-  }, [user]);
-  
+          fetchUserData()
+        }
+      },[user])
   
       const getTopics = async () => {
               await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
@@ -113,52 +79,12 @@ const Sidebar = ({ showSidebar, handleCloseSidebar }) => {
           })
       }
     
-      const getPosts = async () => {
-          await axios.get(`${API_ENDPOINT}post/`,{withCredentials: true}).then(({data})=>{
-              setPost(data.result)
-              getPosts()
-              // console.log(data.result)
-          })
-      }
-      const viewPost = (postID) => {
-          navigate('/view', {state: {
-              postID
-          }});
-      }
-      const viewProfile = (userId) => {
-          navigate('/profile', {state: {
-              userId
-          }});
-      }
       const handleTopicPosts = (topicId) =>{
           navigate('/topic', {state: {
               topicId
           }})
       }
-    
-      const handleReact = async (postID, userID) => {
-          const payload = {
-              post_id:postID,
-              user_id:userID
-          }
-          // console.log(payload)
-          await axios.post(`${API_ENDPOINT}react`,payload,{withCredentials:true})
-          getPosts()
-      }
-      const fetchUserData = async () => {
-          const id = user.user_id;
-          await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
-              setUserData(data.result[0])
-          })
-      }
-          
-      const fetchAlerts = async () => {
-          const id = user.user_id;
-          await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
-              setAlertData(data.result)
-              // console.log(data.result)
-          })
-      }
+
   return (
     <div>
       <Container fluid>

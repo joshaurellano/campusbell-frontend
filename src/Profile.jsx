@@ -127,7 +127,9 @@ const fetchAlerts = async () => {
         const id = user_id;
         await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
         setUserData(data.result[0])
+        console.log(data.result[0])
         })
+        
     }  
     
     const uploadImage = async () => {
@@ -270,7 +272,7 @@ const fetchAlerts = async () => {
 
                     <Row>
                         <Col className='d-none d-sm-block d-md-none d-lg-block'>
-                            <div>
+                            <div style={{marginBottom:'8px'}}>
                                 <span style={{fontWeight:'500', color:'white', fontSize:'1.2rem'}}>Posts</span>
                             </div>
                             <div>
@@ -280,17 +282,41 @@ const fetchAlerts = async () => {
                                         userData.posts &&(userData.posts).map(data=>(
                                             <div key={data.postId}>
                                                 <Card className='post-card' style={{backgroundColor:'black', color:'white'}}>
-                                                    <Card.Header>
-                                                    <div>
+                                                    <Card.Header style={{borderBottom:'1px solid white'}}>
+                                                    <div className='d-flex flex-row w-100'>
+                                                    <div className='w-100'>
                                                     <span className='post-title'>{data.post_title}</span>
                                                     </div>
+                                                    <div className='d-flex justify-content-end'>
+                                                        <IoIosMore  />
+                                                    </div>
+                                                    
+                                                </div>
                                                     </Card.Header>
                                                     
                                                     <Card.Body>
-                                                        <span className='post-content'>
-                                                            {data.post_content}
-                                                        </span>
+                                                         <div className='d-flex align-items-center h-100 w-100'>
+                                                            <CiClock2 />
+                                                            <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
+                                                            <span style ={{marginLeft:'4px'}}>Date Posted: {data?.post_posted && (<ReactTimeAgo
+                                                                    date={new Date(data.post_posted).toISOString()}
+                                                                    locale="en-US"
+                                                                    timeStyle="round"
+                                                                    />)}</span>
+                                                            </div>
+                                                        </div> 
+                                                        <div>
+                                                            <span>Topic: {data.topic_name}</span>
+                                                        </div>                                                        
                                                     </Card.Body>
+                                                    <Card.Footer>
+                                                          <div className='d-flex gap-3'>
+                                                            <small>Reacts </small> 
+                                                            <small>{data.post_reacts} </small> 
+                                                            <small>Comments</small>
+                                                            <small>{data.comment_count}</small>
+                                                        </div>
+                                                    </Card.Footer>
                                                 </Card>
 
                                             </div>
@@ -381,7 +407,7 @@ const fetchAlerts = async () => {
                  </Container>
             </Col>
 {/* 3rd Column Block */}
-            <Col className='d-block d-sm-none d-md-block container-fluid container'>
+            <Col className='d-block d-sm-none d-md-block d-lg-none container-fluid container'>
                 <Card style={{border:'1px solid gray',minHeight:'250px', backgroundColor:'black'}}>
                     <Card.Body>
                 <div>
@@ -410,19 +436,42 @@ const fetchAlerts = async () => {
                             userData.posts &&(userData.posts).map(data=>(
                                 <div key={data.postId}>
                                     <Card className='post-card' style={{backgroundColor:'black', color:'white'}}>
-                                        <Card.Header>
-                                        <div>
+                                        <Card.Header style={{borderBottom:'1px solid white'}}>
+                                        <div className='d-flex flex-row w-100'>
+                                        <div className='w-100'>
                                         <span className='post-title'>{data.post_title}</span>
                                         </div>
+                                        <div className='d-flex justify-content-end'>
+                                            <IoIosMore  />
+                                        </div>
+                                        
+                                    </div>
                                         </Card.Header>
                                         
                                         <Card.Body>
-                                            <span className='post-content'>
-                                                {data.post_content}
-                                            </span>
+                                            <div className='d-flex align-items-center h-100 w-100'>
+                                            <CiClock2 />
+                                            <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
+                                            <span style ={{marginLeft:'4px'}}>Date Posted: {data?.post_posted && (<ReactTimeAgo
+                                                    date={new Date(data.post_posted).toISOString()}
+                                                    locale="en-US"
+                                                    timeStyle="round"
+                                                    />)}</span>
+                                            </div>
+                                            </div> 
+                                            <div>
+                                                <span>Topic: {data.topic_name}</span>
+                                            </div>                                                        
                                         </Card.Body>
+                                        <Card.Footer>
+                                                <div className='d-flex gap-3'>
+                                                <small>Reacts </small> 
+                                                <small>{data.post_reacts} </small> 
+                                                <small>Comments</small>
+                                                <small>{data.comment_count}</small>
+                                            </div>
+                                        </Card.Footer>
                                     </Card>
-
                                 </div>
                                 ))
                                     
