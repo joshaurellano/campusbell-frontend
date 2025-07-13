@@ -205,7 +205,7 @@ function Home () {
             <div className='container'>
             {
                 post.length > 0 && (
-                post.slice(0,10).map((post)=>(
+                post.map((post)=>(
                     <div key={post.postID}>
                     <Card className='post-card'>
                         <Card.Header>

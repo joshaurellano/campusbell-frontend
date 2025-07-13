@@ -230,7 +230,7 @@ const fetchUserData = async () => {
                                                         
                                                     </Form.Control> */}
                                                 <Form.Control className='post-area' as="textarea" value={body}
-                                                onChange={(e)=>setBody(e.target.value)} required>
+                                                onChange={(e)=>setBody(e.target.value)}>
                                                         
                                                     </Form.Control>
                                             </Form.Group>
