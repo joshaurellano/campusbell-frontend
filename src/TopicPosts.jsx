@@ -156,7 +156,7 @@ function TopicPosts () {
         }})
     }
     return (
-    <>
+    <div style={{height:'100vh', overflow:'hidden'}}>
         {
         pageLoading ?
         <>
@@ -175,12 +175,12 @@ function TopicPosts () {
     <Row style={{paddingTop:'68px', backgroundColor:'black'}}>
         <Container fluid>
             <Row>
-            <Col lg={2} style={{borderRight:'2px solid gray'}}>
+            <Col lg={2} className='topic-col'>
                <Sidebar showSidebar={showSidebar} 
                 handleCloseSidebar={() => setShowSidebar(false)}/>
             </Col>
 
-            <Col lg={8} sm={12} xs={12}>
+            <Col lg={8} sm={12} xs={12} style={{height:'100vh', overflow:'scroll'}}>
             <div className='container'>
             <div>
                 <Form.Select value={topicNo} onChange={handleSelected} className='topic' style={{marginBottom:'8px'}}>
@@ -428,7 +428,7 @@ function TopicPosts () {
     </Row>
         </div> 
         }
-    </>
+    </div>
     )
 }
 

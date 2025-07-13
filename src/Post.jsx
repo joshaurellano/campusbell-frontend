@@ -170,7 +170,7 @@ const fetchAlerts = async () => {
             getPost();
         }
     return (
-    <>
+    <div style={{height:'100vh', overflow:'hidden'}}>
         {
         pageLoading ?
         <>
@@ -186,15 +186,15 @@ const fetchAlerts = async () => {
         <TopNavbar handleToggleSidebar={toggleSidebar}/>
         </Row>
         
-        <Row style={{paddingTop:'50px', backgroundColor:'black'}}> 
+        <Row style={{paddingTop:'68px', backgroundColor:'black'}}> 
             <Container fluid>
                 <Row>
-                    <Col lg={2} style={{borderRight:'2px solid gray'}}>
+                    <Col lg={2} className='topic-col'>
                         <Sidebar showSidebar={showSidebar} 
                         handleCloseSidebar={() => setShowSidebar(false)}/>
                         </Col>
 
-                    <Col lg={8}>
+                    <Col lg={8} style={{height:'100vh', overflow:'scroll'}}>
                 <div className='container'>
                 <br />
                 {
@@ -401,7 +401,7 @@ const fetchAlerts = async () => {
         </Row>
         </div>
         }
-    </>
+    </div>
     )
 }
 

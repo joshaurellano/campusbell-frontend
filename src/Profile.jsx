@@ -167,7 +167,7 @@ const fetchAlerts = async () => {
         setPrevImg('');
     }
     return (
-    <div>
+    <div style={{height:'100vh', overflow:'hidden'}}>
     <Row>
         <TopNavbar handleToggleSidebar={toggleSidebar}/>
     </Row>
@@ -175,7 +175,7 @@ const fetchAlerts = async () => {
     <Row style={{paddingTop:'68px', backgroundColor:'black'}}>
         <Container fluid>
             <Row>
-            <Col lg={2} style={{borderRight:'2px solid gray'}}>
+            <Col lg={2} className='topic-col'>
                 <Sidebar showSidebar={showSidebar} 
                 handleCloseSidebar={() => setShowSidebar(false)}/>
             </Col>
@@ -271,7 +271,7 @@ const fetchAlerts = async () => {
                     </Row>
 
                     <Row>
-                        <Col className='d-none d-sm-block d-md-none d-lg-block'>
+                        <Col className='d-none d-sm-block d-md-none d-lg-block' style={{height:'100vh', overflow:'scroll'}}>
                             <div style={{marginBottom:'8px'}}>
                                 <span style={{fontWeight:'500', color:'white', fontSize:'1.2rem'}}>Posts</span>
                             </div>
@@ -334,7 +334,7 @@ const fetchAlerts = async () => {
                 </div>
             </Col>
 
-            <Col lg={3} xs={10} className='container d-none d-sm-block d-md-none d-lg-block'>
+            <Col lg={3} xs={10} className='container d-none d-sm-block d-md-none d-lg-block' style={{height:'100vh', overflow:'scroll'}}>
                 <Container>
                  <Card style={{border:'solid 1px gray', borderRadius:'15px', backgroundColor:'black', color:'white'}}>
                     <Card.Header>

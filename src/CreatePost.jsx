@@ -183,7 +183,7 @@ const fetchUserData = async () => {
                 <Row style={{paddingTop:'68px', backgroundColor:'black'}}>
                 <Container fluid>
                     <Row>
-                        <Col lg={2} style={{borderRight:'2px solid gray'}}>
+                        <Col lg={2} className='topic-col'>
                             <Sidebar showSidebar={showSidebar} 
                             handleCloseSidebar={() => setShowSidebar(false)}/>
                         </Col>
