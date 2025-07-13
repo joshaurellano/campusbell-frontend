@@ -169,6 +169,15 @@ const fetchAlerts = async () => {
             setCommentBody('');
             getPost();
         }
+         const handleReact = async (postID, userID) => {
+                const payload = {
+                    post_id:postID,
+                    user_id:userID
+                }
+                // console.log(payload)
+                await axios.post(`${API_ENDPOINT}react`,payload,{withCredentials:true})
+                getPost();
+            }
     return (
     <div style={{height:'100vh', overflow:'hidden'}}>
         {
