@@ -155,7 +155,7 @@ function Home () {
     }
 
     return (
-    <>
+    <div style={{height:'100vh', overflow:'hidden'}}>
         {
         pageLoading ?
         <>
@@ -388,7 +388,7 @@ function Home () {
             </div>
             </Col>
 
-            <Col lg={2} className='d-none d-sm-block'>
+            <Col lg={2} className='d-none d-sm-block' style={{height:'100vh', overflow:'scroll'}}>
                  <div style={{width:'100%'}}>
                     <Card style={{backgroundColor:'black', width:'100%'}}>
                         <div className='d-flex flex-column '>
@@ -438,7 +438,7 @@ function Home () {
     </Row>
         </div> 
         }
-    </>
+    </div>
     )
 }
 

@@ -228,7 +228,7 @@ justify-content: center !important;
     height:auto
 }
 }
-@media (max-width: 768px) {
+@media (max-width: 990px) {
 .searchbar{
         width: 14rem !important;
     }
@@ -277,4 +277,9 @@ justify-content: center !important;
     justify-content: center;
     padding-right: 4rem;
 }
+}
+@media (max-width: 685px){
+.searchbar{
+    display: none 
+    }
 }

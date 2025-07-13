@@ -223,3 +223,11 @@
         width: auto;
     }
 }
+@media (max-width: 1250px) {
+    .profile-col{
+        width: auto;
+    }
+    .header-info-col{
+        width: auto;
+    }
+}
