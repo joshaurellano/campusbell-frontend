@@ -335,7 +335,7 @@ const fetchAlerts = async () => {
                 </div>
             </Col>
 
-            <Col lg={3} xs={10} className='container d-none d-sm-block d-md-none d-lg-block' style={{height:'100vh', overflow:'scroll'}}>
+            <Col lg={3} xs={10} className='container d-none d-sm-none d-md-none d-lg-block' style={{height:'calc(100vh - 68px)', overflow:'auto', overflowX:'hidden'}}>
                 <Container>
                  <Card style={{border:'solid 1px gray', borderRadius:'15px', backgroundColor:'black', color:'white'}}>
                     <Card.Header>

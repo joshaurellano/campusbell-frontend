@@ -189,7 +189,7 @@ function Home () {
                 handleCloseSidebar={() => setShowSidebar(false)}/>
                 </Col>
 
-            <Col lg={8} sm={12} xs={12} style={{height:'100vh', overflow:'scroll'}}>
+            <Col lg={8} sm={12} xs={12} style={{height:'100vh', overflowY:'auto', overflowX:'hidden'}}>
             <div className='container'>
             {
                 post.length > 0 && (

@@ -283,3 +283,10 @@ justify-content: center !important;
     display: none 
     }
 }
+@media (min-width: 991px){
+    .topic-col{
+        height: calc(100vh - 68px);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
