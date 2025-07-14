@@ -172,7 +172,7 @@ const fetchAlerts = async () => {
         <TopNavbar handleToggleSidebar={toggleSidebar}/>
     </Row>
 
-    <Row style={{paddingTop:'68px', backgroundColor:'black'}}>
+    <Row style={{paddingTop:'68px', backgroundColor:'black', height:'100vh', overflowY:'auto'}}>
         <Container fluid>
             <Row>
             <Col lg={2} className='topic-col'>
@@ -180,7 +180,7 @@ const fetchAlerts = async () => {
                 handleCloseSidebar={() => setShowSidebar(false)}/>
             </Col>
             
-            <Col lg={7}>
+            <Col lg={7} className='mainCol'>
                 <div className='container-fluid'>
                 
                     <Row>
@@ -190,6 +190,7 @@ const fetchAlerts = async () => {
                         userData && (
                         <>
                             <Col className='profile-col' lg={3} style={{height:'100%', alignItems:'center'}}>
+                            <div>
                             <div className='profile-img'>
                                 <Image className='pr-img'
                                     width={150}
@@ -199,7 +200,7 @@ const fetchAlerts = async () => {
                                     roundedCircle	
                                 />
                                 <FaCamera className='profile-edit'onClick={handleShowProfileModal} />
-
+                            </div>
                                 <Modal className='update-img-modal' show={showProfileModal} onHide={handleCloseProfileModal}>
                                     <Modal.Header closeButton>
                                     <Modal.Title>Change Profile Image</Modal.Title>
@@ -251,7 +252,7 @@ const fetchAlerts = async () => {
                             </div> 
                             </Col>
 
-                            <Col className='header-info-col' lg={9} style={{color:'white',height:'100%',display:'flex',justifyContent:'center', flexDirection:'column'}}>
+                            <Col className='header-info-col' lg={9} style={{color:'white',height:'100%',display:'flex',justifyContent:'center', flexDirection:'column',padding:0}}>
                             <div>
                                 <span className='header-info-1'>{userData.first_name} {userData.last_name}</span>
                                 </div>
@@ -271,7 +272,7 @@ const fetchAlerts = async () => {
                     </Row>
 
                     <Row>
-                        <Col className='d-none d-sm-block d-md-none d-lg-block' style={{height:'100vh', overflow:'scroll'}}>
+                        <Col className='d-none d-sm-none d-md-none d-lg-block' style={{height:'100vh', overflowY:'auto', overflowX:'hidden'}}>
                             <div style={{marginBottom:'8px'}}>
                                 <span style={{fontWeight:'500', color:'white', fontSize:'1.2rem'}}>Posts</span>
                             </div>
@@ -407,7 +408,8 @@ const fetchAlerts = async () => {
                  </Container>
             </Col>
 {/* 3rd Column Block */}
-            <Col className='d-block d-sm-none d-md-block d-lg-none container-fluid container'>
+            <div className='container'>                      
+            <Col className='d-lg-none'>
                 <Card style={{border:'1px solid gray',minHeight:'250px', backgroundColor:'black'}}>
                     <Card.Body>
                 <div>
@@ -558,6 +560,7 @@ const fetchAlerts = async () => {
                 </Card.Body>
                         </Card>
             </Col>
+            </div>   
             </Row>
         </Container>
     </Row>

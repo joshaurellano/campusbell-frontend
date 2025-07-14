@@ -113,9 +113,12 @@
     color: white;
     background-color: blue !important;
 }
-.pr-img{
+/* .pr-img{
     position: relative;
-
+} */
+.profile-img{
+   
+    position: relative;
 }
 .profile-edit{
     position: absolute;
@@ -180,6 +183,7 @@
 
 }
 .profile-img{
+   
     width: 75px;
     height: 75px;
 }
@@ -230,4 +234,11 @@
     .header-info-col{
         width: auto;
     }
+}
+@media (min-width: 992px){
+    .mainCol{
+    height: calc(100vh - 68px);
+    overflow-y: auto;
+    overflow-x: hidden
+}
 }
