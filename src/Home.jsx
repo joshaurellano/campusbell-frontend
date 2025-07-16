@@ -44,7 +44,9 @@ function Home () {
     const [alertData, setAlertData] = useState(null);
 
     const [newPostLoad, setNewPostLoad] = useState(false);
+    const [postLoading, setPostLoading] = useState(false);
     const [pageLoading, setPageLoading] = useState(false);
+    const [shownSkeleton, setShownSkeleton] = useState(false);
 
     const [showSidebar, setShowSidebar] = useState(false);
 
@@ -119,11 +121,16 @@ function Home () {
         if(newPostLoad) return;
         const limit = 10;
         const lastId = nextId?nextId : 0
+        
+        setPostLoading(true)
+        
         if(page !== 1){
             setNewPostLoad(true)
         }
             try{
             await axios.get(`${API_ENDPOINT}post?page=${page}&lastId=${lastId}&limit=${limit}`,{withCredentials: true}).then(({data})=>{
+                setShownSkeleton(true)
+                setPostLoading(false)
                 if(page === 1){
                     setPost(data.result)
                 } else {
@@ -193,7 +200,7 @@ function Home () {
 
         return () => window.removeEventListener('scroll',onScroll)
     }, [])
-    
+    const noOfCards = Array.from({length:3})
     return (
     <div style={{height:'100vh', overflow:'hidden'}}>
         {
@@ -232,7 +239,59 @@ function Home () {
             <Col lg={8} sm={12} xs={12} style={{height:'calc(100vh - 68px)', overflowY:'auto', overflowX:'hidden'}} onScroll={onScroll}
         ref={listInnerRef}> 
             <div className='container'> 
-            {
+            { (postLoading && !shownSkeleton) ? (
+                <div>{
+                noOfCards.map((card,index) =>
+                <div key={index}>
+                <Card className='post-card'>
+                    <Card.Header>
+                        <Placeholder style={{ width: '25%' }} size="xs" bg="light" />
+                            <br/>
+                        <Placeholder xs={2} size="xs" bg="light" />
+                            <br/>
+                        <Placeholder xs={12} size="lg" bg="light" />
+                    </Card.Header>
+                    <Card.Body>
+                        <Placeholder as="p" animation="glow">
+                            <Placeholder xs={12} bg="light" />
+                        </Placeholder>
+                        <Placeholder as="p" animation="glow">
+                            <Placeholder xs={12} bg="light" />
+                        </Placeholder>
+                        <Placeholder as="p" animation="glow">
+                        <Placeholder xs={12} bg="light" />
+                    </Placeholder>
+                    </Card.Body>
+                    <Card.Footer style={{overflowWrap:'normal', zIndex:0}}>
+                         <div className='action-tabs gap-4'>
+                            <div>
+                            <div id='oval'>
+                                 <Placeholder style={{ width: '70%' }} bg="light" />
+                            </div>                            
+                            
+                            </div>
+
+                            <div>
+                            <div id='oval'>
+                                 <Placeholder style={{ width: '70%' }} bg="light" />
+                            </div>
+                            </div>
+                            <div>
+                            <div id='oval' >
+                                 <Placeholder style={{ width: '75%' }} bg="light" />
+                            </div>
+                            </div>
+                        </div>
+                        
+                    </Card.Footer>
+                </Card>
+                <hr />
+                <br />
+                
+            </div>)}
+            </div>) : (
+                <div>
+                {
                 post.length > 0 && (
                 post.map((post)=>(
                     <div key={`main-${post.postID}`}>
@@ -345,19 +404,22 @@ function Home () {
                          
                     </div>
                 ))
-            )
-        }
+                )
+            }</div>)}
+        
             {
-                newPostLoad && (
+                newPostLoad &&(
                     <div className='h-100 w-100 d-flex justify-content-center'>
                         <Spinner variant='light' animation="border" />
+                        <br />
                     </div>
+                    
                 ) 
             }
         <br />       
             </div>
             {
-                hasMore === false && (
+                !hasMore && (
                     <div className='h-100 w-100 d-flex justify-content-center text-white'>
                         <span> - - End of posts - - </span>
                     </div>
