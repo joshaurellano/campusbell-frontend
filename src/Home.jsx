@@ -117,6 +117,8 @@ function Home () {
     const getPosts = async () => {
         const limit = 10;
         const lastId = nextId?nextId : 0
+            
+            try{
             await axios.get(`${API_ENDPOINT}post?page=${page}&lastId=${lastId}&limit=${limit}`,{withCredentials: true}).then(({data})=>{
                 if(page === 1){
                     setPost(data.result)
@@ -125,8 +127,10 @@ function Home () {
                 }
                 setNextId(data.nextID)
                 setHasMore(data.more_items)
-                // console.log(data.result)
             })
+        } catch(error){
+            setHasMore(error.response.data.more_items)
+        }
     }
     const viewPost = (postID) => {
         navigate('/view', {state: {
@@ -149,7 +153,6 @@ function Home () {
             post_id:postID,
             user_id:userID
         }
-        // console.log(payload)
         await axios.post(`${API_ENDPOINT}react`,payload,{withCredentials:true})
         getPosts();
     }
@@ -219,7 +222,7 @@ function Home () {
                 handleCloseSidebar={() => setShowSidebar(false)}/>
                 </Col>
 
-            <Col lg={8} sm={12} xs={12} style={{height:'100vh', overflowY:'auto', overflowX:'hidden'}} onScroll={onScroll}
+            <Col lg={8} sm={12} xs={12} style={{height:'calc(100vh - 68px)', overflowY:'auto', overflowX:'hidden'}} onScroll={onScroll}
         ref={listInnerRef}> 
             <div className='container'> 
             {
@@ -337,86 +340,15 @@ function Home () {
             )
         }
         <br />
-                    <Card style={{backgroundColor:'black', color:'gray'}}>
-                        <Card.Header>
-                            <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
-                        </Card.Header>
-
-                        <Card.Body>
-                            <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
-                        </Card.Body>
-
-                        <Card.Footer>
-                            <div className='d-flex justify-content-start gap-4'>
-                            <div>
-                            <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                <div className='d-flex h-100 align-items-center'>
-                                <AiOutlineLike />
-                                <span style={{marginLeft:'4px'}}>React</span>
-                                </div>
-                            </div>
-                            </div>
-                            <div>
-                            <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                <div className='d-flex h-100 align-items-center'>
-                                <FaRegComment />
-                                <span style={{marginLeft:'4px'}}>Comments</span>
-                                </div>
-                            </div>
-                            </div>
-                            <div>
-                            <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                <div className='d-flex h-100 align-items-center'>
-                                <TbShare3 />
-                                <span style={{marginLeft:'4px'}}>Share</span>
-                                </div>
-                            </div>
-                            </div>
-                            </div>
-                        </Card.Footer>
-                    </Card>
-                    <br />
-                    <hr/>
-                    <Card style={{backgroundColor:'black', color:'white'}}>
-                        <Card.Header>
-                            <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
-                        </Card.Header>
-
-                        <Card.Body>
-                            <Placeholder className="w-75" /> <Placeholder style={{ width: '25%' }} />
-                        </Card.Body>
-
-                        <Card.Footer>
-                            <div className='d-flex justify-content-start gap-4'>
-                            <div>
-                            <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                <div className='d-flex h-100 align-items-center'>
-                                <AiOutlineLike />
-                                <span style={{marginLeft:'4px'}}>React</span>
-                                </div>
-                            </div>
-                            </div>
-                            <div>
-                            <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                <div className='d-flex h-100 align-items-center'>
-                                <FaRegComment />
-                                <span style={{marginLeft:'4px'}}>Comments</span>
-                                </div>
-                            </div>
-                            </div>
-                            <div>
-                            <div id='oval' className='d-flex justify-content-center align-items-center' style={{color:'white'}}>
-                                <div className='d-flex h-100 align-items-center'>
-                                <TbShare3 />
-                                <span style={{marginLeft:'4px'}}>Share</span>
-                                </div>
-                            </div>
-                            </div>
-                            </div>
-                        </Card.Footer>
-                    </Card>
-                    <br />
+                
             </div>
+            {
+                hasMore === false && (
+                    <div className='h-100 w-100 d-flex justify-content-center text-white'>
+                        <span> - - End of posts - - </span>
+                    </div>
+                )
+            }
             </Col>
 
             <Col lg={2} className='d-none d-sm-block' style={{height:'100vh', overflow:'scroll'}}>
