@@ -99,9 +99,12 @@ function Home () {
     if (user?.user_id) {
         fetchUserData();
         fetchAlerts();
-        getPosts();
+        setPage(1)
     }
-}, [user,page]);
+}, [user]);
+    useEffect(() => {
+        getPosts()
+    },[page])
    
 
     const getTopics = async () => {
@@ -112,10 +115,14 @@ function Home () {
     }
   
     const getPosts = async () => {
-       const limit = 10;
-            await axios.get(`${API_ENDPOINT}post?page=${page}&limit=${limit}`,{withCredentials: true}).then(({data})=>{
-                console.log(data.result)
-                setPost((prev) => [...prev, ...data.result])
+        const limit = 10;
+        const lastId = nextId?nextId : 0
+            await axios.get(`${API_ENDPOINT}post?page=${page}&lastId=${lastId}&limit=${limit}`,{withCredentials: true}).then(({data})=>{
+                if(page === 1){
+                    setPost(data.result)
+                } else {
+                    setPost((prev) => [...prev, ...data.result])
+                }
                 setNextId(data.nextID)
                 setHasMore(data.more_items)
                 // console.log(data.result)
@@ -144,7 +151,7 @@ function Home () {
         }
         // console.log(payload)
         await axios.post(`${API_ENDPOINT}react`,payload,{withCredentials:true})
-        getPosts()
+        getPosts();
     }
     const fetchUserData = async () => {
         const id = user.user_id;
@@ -164,12 +171,12 @@ function Home () {
         if(listInnerRef.current) {
             const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
 
-            if(scrollTop + clientHeight === scrollHeight) {
-                setPage(page + 1)
-
+            if(scrollTop + clientHeight >= scrollHeight) {
+                setPage(prevPage => prevPage + 1)
             }
-            
         }
+    
+        
     }
     useEffect (() => {
         window.addEventListener('scroll',onScroll);
@@ -218,7 +225,7 @@ function Home () {
             {
                 post.length > 0 && (
                 post.map((post)=>(
-                    <div key={post.postID}>
+                    <div key={`main-${post.postID}`}>
                     <Card className='post-card'>
                         <Card.Header>
                         <div className='d-flex flex-row w-100'>
@@ -422,7 +429,7 @@ function Home () {
                         {
                         post.length > 0 && (
                         post.slice(0,10).map((post)=>(
-                            <div key={post.postID}>
+                            <div key={`side-${post.postID}`}>
                             <div className='navLinkColor' style={{height:'100%',
                             display:'flex', 
                             flexDirection:'row', 
