@@ -135,6 +135,22 @@
     font-weight: bold;
     font-size: .8rem;
 }
+#magnifying-glass{
+    position: absolute;
+    color: gray;
+    translate: 10px 10px;
+}
+
+.custom-popover{
+    max-width: 500px; /* or whatever you want */
+    width: auto;
+    height: 250px;  
+    transform: translate(440px, 56px) !important
+}
+.popover-arrow{
+    transform: translate(10px, 0px) !important
+}
+    
 @media (max-width: 600px) {
 .brand {
     align-items: center;

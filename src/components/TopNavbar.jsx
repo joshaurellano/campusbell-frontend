@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {useNavigate, useLocation} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Image,Spinner, Offcanvas,Alert} from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Image,Spinner, Offcanvas,Alert,OverlayTrigger,Popover} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { BiSolidMessageRoundedDots } from "react-icons/bi";
@@ -19,6 +19,14 @@ import '../Home.css';
 
 axios.defaults.withCredentials = true;
 
+const popover = (
+  <Popover id="popover-basic" className='custom-popover'>
+    <Popover.Header as="h3">Search Results</Popover.Header>
+    <Popover.Body>
+      <strong>The main content</strong><br /> Search results goes here
+    </Popover.Body>
+  </Popover>
+);
 const TopNavbar = ({handleToggleSidebar}) => {
     
   // const for user fetching
@@ -31,8 +39,9 @@ const TopNavbar = ({handleToggleSidebar}) => {
       const [pageLoading, setPageLoading] = useState(false);
   
       const [alert, setAlert] = useState(true);
-      const [notDisplayed, setNotDisplayed] = useState(true)
-      
+      const [notDisplayed, setNotDisplayed] = useState(true);
+      const [showSearch, setShowSearch] = useState(false);
+
       const closeAlert = () => {
           setAlert(false)
           sessionStorage.setItem('displayed', 'true')
@@ -135,15 +144,18 @@ const TopNavbar = ({handleToggleSidebar}) => {
                 translate:'-20px 0px'
             }}>
             <Nav className="me-auto align-items-center"style={{width:'100%', height:'100%', display:'flex', justifyContent:'start'}}>
+                <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
                 <div style={{display:'flex', alignItems:'center', height:'100%'}}>
-                    <FaMagnifyingGlass className='searchbar-icon' />
+                    
+                    <FaMagnifyingGlass className='searchbar-icon' onClick={() => setShowSearch(true)} />
                     
                     <Row style={{width:'100%'}}>
                         <Col lg={12} xs={1}>
-                        <Form.Control className='searchbar' placeholder='Search' />
+                        <Form.Control className='searchbar' placeholder='Search' onClick={() => setShowSearch(true)} />
                         </Col>
                     </Row>
                 </div>
+                </OverlayTrigger>
             </Nav>
             </Col>
             
@@ -219,6 +231,7 @@ const TopNavbar = ({handleToggleSidebar}) => {
             </Col>
             </Row>
         </Container>
+        
     </Navbar>
     </div>
   )
