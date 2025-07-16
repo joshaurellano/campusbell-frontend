@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {useNavigate, useLocation} from 'react-router-dom';
 import axios from 'axios';
 
@@ -33,6 +33,7 @@ import Sidebar from './components/Sidebar'
 axios.defaults.withCredentials = true;
 
 function Home () {
+    const listInnerRef = useRef();
     // const for user fetching
     const [user, setUser] = useState(null);
     // for topics
@@ -50,8 +51,11 @@ function Home () {
     const handleShowSidebar = () => setShowSidebar(true);
 
     const [alert, setAlert] = useState(true);
-    const [notDisplayed, setNotDisplayed] = useState(true)
-    
+    const [notDisplayed, setNotDisplayed] = useState(true);
+    const [nextId, setNextId] = useState('');
+    const [hasMore, setHasMore] = useState(false);
+    const [page, setPage] = useState(1);
+
     const toggleSidebar = () => {
         //console.log(showSidebar)
         setShowSidebar(showSidebar => !showSidebar)
@@ -94,11 +98,11 @@ function Home () {
    useEffect(() => {
     if (user?.user_id) {
         fetchUserData();
+        fetchAlerts();
         getPosts();
-        fetchAlerts()
     }
-}, [user]);
-
+}, [user,page]);
+   
 
     const getTopics = async () => {
             await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
@@ -108,11 +112,14 @@ function Home () {
     }
   
     const getPosts = async () => {
-        await axios.get(`${API_ENDPOINT}post/`,{withCredentials: true}).then(({data})=>{
-            setPost(data.result)
-            getPosts()
-            // console.log(data.result)
-        })
+       const limit = 10;
+            await axios.get(`${API_ENDPOINT}post?page=${page}&limit=${limit}`,{withCredentials: true}).then(({data})=>{
+                console.log(data.result)
+                setPost((prev) => [...prev, ...data.result])
+                setNextId(data.nextID)
+                setHasMore(data.more_items)
+                // console.log(data.result)
+            })
     }
     const viewPost = (postID) => {
         navigate('/view', {state: {
@@ -153,7 +160,23 @@ function Home () {
             // console.log(data.result)
         })
     }
+    const onScroll = () => {
+        if(listInnerRef.current) {
+            const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
 
+            if(scrollTop + clientHeight === scrollHeight) {
+                setPage(page + 1)
+
+            }
+            
+        }
+    }
+    useEffect (() => {
+        window.addEventListener('scroll',onScroll);
+
+        return () => window.removeEventListener('scroll',onScroll)
+    }, [])
+    
     return (
     <div style={{height:'100vh', overflow:'hidden'}}>
         {
@@ -189,8 +212,9 @@ function Home () {
                 handleCloseSidebar={() => setShowSidebar(false)}/>
                 </Col>
 
-            <Col lg={8} sm={12} xs={12} style={{height:'100vh', overflowY:'auto', overflowX:'hidden'}}>
-            <div className='container'>
+            <Col lg={8} sm={12} xs={12} style={{height:'100vh', overflowY:'auto', overflowX:'hidden'}} onScroll={onScroll}
+        ref={listInnerRef}> 
+            <div className='container'> 
             {
                 post.length > 0 && (
                 post.map((post)=>(
