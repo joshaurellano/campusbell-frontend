@@ -43,6 +43,7 @@ function Home () {
     const [userData, setUserData] = useState([]);
     const [alertData, setAlertData] = useState(null);
 
+    const [newPostLoad, setNewPostLoad] = useState(false);
     const [pageLoading, setPageLoading] = useState(false);
 
     const [showSidebar, setShowSidebar] = useState(false);
@@ -115,9 +116,12 @@ function Home () {
     }
   
     const getPosts = async () => {
+        if(newPostLoad) return;
         const limit = 10;
         const lastId = nextId?nextId : 0
-            
+        if(page !== 1){
+            setNewPostLoad(true)
+        }
             try{
             await axios.get(`${API_ENDPOINT}post?page=${page}&lastId=${lastId}&limit=${limit}`,{withCredentials: true}).then(({data})=>{
                 if(page === 1){
@@ -130,7 +134,10 @@ function Home () {
             })
         } catch(error){
             setHasMore(error.response.data.more_items)
+        } finally{
+            setNewPostLoad(false)
         }
+
     }
     const viewPost = (postID) => {
         navigate('/view', {state: {
@@ -335,12 +342,19 @@ function Home () {
                         </Card.Footer>
                     </Card>
                     <hr/>
+                         
                     </div>
                 ))
             )
         }
-        <br />
-                
+            {
+                newPostLoad && (
+                    <div className='h-100 w-100 d-flex justify-content-center'>
+                        <Spinner variant='light' animation="border" />
+                    </div>
+                ) 
+            }
+        <br />       
             </div>
             {
                 hasMore === false && (
