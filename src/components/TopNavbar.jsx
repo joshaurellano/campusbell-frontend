@@ -38,7 +38,8 @@ const TopNavbar = ({handleToggleSidebar}) => {
       const [showSearch, setShowSearch] = useState(false);
 
       const openPopover = () => {
-        setUserSearch('')
+        setUserSearch('');
+        setPostSearch('')
         setShowSearch(true)
     }
 
@@ -129,6 +130,7 @@ const TopNavbar = ({handleToggleSidebar}) => {
         }     
       } else if(!search){
         setUserSearch('')
+        setPostSearch('')
       }
     }
       const popover = (
@@ -153,6 +155,22 @@ const TopNavbar = ({handleToggleSidebar}) => {
                 </div> <br /> 
             <hr />
             <strong>Posts</strong>
+            <div>
+                {
+                    postSearch && postSearch.length > 0 ? (
+                        postSearch.map((data) => (
+                            <div key={data.post_id}> 
+                                {data.title}
+                            </div>
+                        ))
+
+                    ) : (
+                        <>
+                        <span> </span>
+                        </>
+                    )
+                }
+            </div>
 
             </Popover.Body>
         </Popover>
