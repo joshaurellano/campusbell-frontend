@@ -142,7 +142,7 @@
 }
 
 .custom-popover{
-    max-width: 500px; /* or whatever you want */
+    min-width: 400px;
     width: auto;
     height: 250px;  
     transform: translate(440px, 56px) !important

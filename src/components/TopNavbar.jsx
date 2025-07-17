@@ -19,14 +19,6 @@ import '../Home.css';
 
 axios.defaults.withCredentials = true;
 
-const popover = (
-  <Popover id="popover-basic" className='custom-popover'>
-    <Popover.Header as="h3">Search Results</Popover.Header>
-    <Popover.Body>
-      <strong>The main content</strong><br /> Search results goes here
-    </Popover.Body>
-  </Popover>
-);
 const TopNavbar = ({handleToggleSidebar}) => {
     
   // const for user fetching
@@ -34,6 +26,9 @@ const TopNavbar = ({handleToggleSidebar}) => {
       // for topics
 
       const [userData, setUserData] = useState([]);
+      const [userSearch, setUserSearch] = useState([]);
+      const [postSearch, setPostSearch] = useState([]);
+      const [search, setSearch] = useState('');
       const [alertData, setAlertData] = useState(null);
   
       const [pageLoading, setPageLoading] = useState(false);
@@ -41,6 +36,11 @@ const TopNavbar = ({handleToggleSidebar}) => {
       const [alert, setAlert] = useState(true);
       const [notDisplayed, setNotDisplayed] = useState(true);
       const [showSearch, setShowSearch] = useState(false);
+
+      const openPopover = () => {
+        setUserSearch('')
+        setShowSearch(true)
+    }
 
       const closeAlert = () => {
           setAlert(false)
@@ -93,7 +93,10 @@ const TopNavbar = ({handleToggleSidebar}) => {
           fetchAlerts()
       }
   }, [user]);
-  
+    useEffect(() => {
+        handleSearch();
+    },[search])
+
       const viewProfile = (userId) => {
           navigate('/profile', {state: {
               userId
@@ -114,6 +117,46 @@ const TopNavbar = ({handleToggleSidebar}) => {
               // console.log(data.result)
           })
       }
+      const handleSearch = async () => {
+        if(search){
+        try{
+            await axios.get(`${API_ENDPOINT}search/find?search=${search}`,{withCredentials:true}).then(({data})=> {
+                setUserSearch(data.userResult)
+                setPostSearch(data.postResult)
+            })
+        }   catch(error) {
+            console.error(error)
+        }     
+      } else if(!search){
+        setUserSearch('')
+      }
+    }
+      const popover = (
+        <Popover id="popover-basic" className='custom-popover'>
+            <Popover.Header as="h3">Search Results</Popover.Header>
+            <Popover.Body>
+            <strong>Users</strong> <br /> 
+            <div>
+                {
+                    userSearch && userSearch.length > 0 ? (
+                        userSearch.map((data) => (
+                            <div key={data.user_id}>
+                                <span>{data.username}</span>
+                            </div>
+                        ))
+                    ) : (
+                        <div>
+                            <span> </span>
+                            </div>
+                    )
+                }
+                </div> <br /> 
+            <hr />
+            <strong>Posts</strong>
+
+            </Popover.Body>
+        </Popover>
+        );
   return (
     <div>
        <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1, display:'flex', alignItems:'center'}}>
@@ -147,11 +190,17 @@ const TopNavbar = ({handleToggleSidebar}) => {
                 <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
                 <div style={{display:'flex', alignItems:'center', height:'100%'}}>
                     
-                    <FaMagnifyingGlass className='searchbar-icon' onClick={() => setShowSearch(true)} />
+                    <FaMagnifyingGlass className='searchbar-icon' onClick={() => openPopover()} />
                     
                     <Row style={{width:'100%'}}>
                         <Col lg={12} xs={1}>
-                        <Form.Control className='searchbar' placeholder='Search' onClick={() => setShowSearch(true)} />
+                        <Form.Control className='searchbar' placeholder='Search' 
+                            onClick={() => {openPopover()
+                            }}
+                            onChange={(e) => {
+                                setSearch(e.target.value)
+
+                            }} />
                         </Col>
                     </Row>
                 </div>
