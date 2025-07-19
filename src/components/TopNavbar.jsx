@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Image,Spinner, Offcanvas,Alert,OverlayTrigger,Popover} from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Image} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { BiSolidMessageRoundedDots } from "react-icons/bi";
@@ -24,48 +24,26 @@ const TopNavbar = ({handleToggleSidebar}) => {
   // const for user fetching
       const [user, setUser] = useState(null);
       // for topics
-
       const [userData, setUserData] = useState([]);
       const [userSearch, setUserSearch] = useState([]);
       const [postSearch, setPostSearch] = useState([]);
       const [search, setSearch] = useState('');
+      const [error, setError] = useState('');
       const [alertData, setAlertData] = useState(null);
-  
-      const [pageLoading, setPageLoading] = useState(false);
-  
-      const [alert, setAlert] = useState(true);
-      const [notDisplayed, setNotDisplayed] = useState(true);
-      const [showSearch, setShowSearch] = useState(false);
+      const [openSearch, setOpenSearch] = useState(false);
 
-      const openPopover = () => {
-        setUserSearch('');
-        setPostSearch('')
-        setShowSearch(true)
-    }
-
-      const closeAlert = () => {
-          setAlert(false)
-          sessionStorage.setItem('displayed', 'true')
-      }
-      
-      useEffect(() =>{
-          const displayed = sessionStorage.getItem('displayed')
-          if(displayed === 'true') {
-              setAlert(false)
-          }
-      },[])
+      const searchOpen = () => setOpenSearch(true)
+      const searchClose = () => setOpenSearch(false)
+    
       const navigate = useNavigate();
       //Check if user has session
       useEffect(() =>{
           const checkUserSession = async () => {
-              setPageLoading(true);
               try {
                   const userInfo = await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
                       setUser(data.result);
                   })
-                  // console.log(userInfo)
-              setPageLoading(false);
-  
+                  // console.log(userInfo)  
               } catch(error) {
                   //go back to login in case if error
                   navigate ('/login');
@@ -119,6 +97,7 @@ const TopNavbar = ({handleToggleSidebar}) => {
           })
       }
       const handleSearch = async () => {
+        searchOpen();
         if(search){
         try{
             await axios.get(`${API_ENDPOINT}search/find?search=${search}`,{withCredentials:true}).then(({data})=> {
@@ -126,55 +105,14 @@ const TopNavbar = ({handleToggleSidebar}) => {
                 setPostSearch(data.postResult)
             })
         }   catch(error) {
-            console.error(error)
+            setError(error.response.data.message)
         }     
       } else if(!search){
-        setUserSearch('')
-        setPostSearch('')
+        searchClose();
+        setUserSearch('');
+        setPostSearch('');
       }
     }
-      const popover = (
-        <Popover id="popover-basic" className='custom-popover'>
-            <Popover.Header as="h3">Search Results</Popover.Header>
-            <Popover.Body>
-            <strong>Users</strong> <br /> 
-            <div>
-                {
-                    userSearch && userSearch.length > 0 ? (
-                        userSearch.map((data) => (
-                            <div key={data.user_id}>
-                                <span>{data.username}</span>
-                            </div>
-                        ))
-                    ) : (
-                        <div>
-                            <span> </span>
-                            </div>
-                    )
-                }
-                </div> <br /> 
-            <hr />
-            <strong>Posts</strong>
-            <div>
-                {
-                    postSearch && postSearch.length > 0 ? (
-                        postSearch.map((data) => (
-                            <div key={data.post_id}> 
-                                {data.title}
-                            </div>
-                        ))
-
-                    ) : (
-                        <>
-                        <span> </span>
-                        </>
-                    )
-                }
-            </div>
-
-            </Popover.Body>
-        </Popover>
-        );
   return (
     <div>
        <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1, display:'flex', alignItems:'center'}}>
@@ -204,25 +142,82 @@ const TopNavbar = ({handleToggleSidebar}) => {
             <Col lg={6} xs={2} style={{
                 translate:'-20px 0px'
             }}>
-            <Nav className="me-auto align-items-center"style={{width:'100%', height:'100%', display:'flex', justifyContent:'start'}}>
-                <OverlayTrigger trigger="click" placement="bottom" overlay={popover}>
+            <Nav className="me-auto align-items-center"style={{width:'100%', height:'100%', display:'flex', justifyContent:'start', flexDirection:'column', position:'relative'}}>
                 <div style={{display:'flex', alignItems:'center', height:'100%'}}>
-                    
-                    <FaMagnifyingGlass className='searchbar-icon' onClick={() => openPopover()} />
-                    
+                    <FaMagnifyingGlass className='searchbar-icon' />
                     <Row style={{width:'100%'}}>
                         <Col lg={12} xs={1}>
-                        <Form.Control className='searchbar' placeholder='Search' 
-                            onClick={() => {openPopover()
-                            }}
-                            onChange={(e) => {
-                                setSearch(e.target.value)
-
-                            }} />
+                        <Form.Control className='searchbar' placeholder='Search'                             
+                            onChange={(e) => setSearch(e.target.value)} />
                         </Col>
                     </Row>
                 </div>
-                </OverlayTrigger>
+                
+                { 
+                    openSearch && (
+                        <div className='container' style={{width:'400px',height:'auto', maxHeight:'400px', backgroundColor:'white', zIndex:1, position:'absolute', top:'100%', marginTop:'8px', borderRadius:'4px', display:'flex', flexDirection:'column', overflowY:'auto'}}>
+                            <div style={{height:'12%',display:'flex',alignItems:'center', padding:'4px', whiteSpace:'nowrap'}}>
+                            <span><strong>Search Result</strong></span>
+                            </div>
+                            <hr style={{margin:0}}/>
+                            <div style={{marginTop:'8px'}}>
+                                <div>
+                                    {
+                                        userSearch && userSearch.length > 0 ? (
+                                            <div>
+                                                <span style={{fontWeight:'500'}}>Users</span>
+                                                <hr style={{margin:0}} />
+                                                {
+                                                userSearch.map((data)=>(
+                                                    <div key={data.user_id}>
+                                                        {data.username}
+                                                        <hr />
+                                                    </div>
+                                            ))
+                                            }
+                                            </div>
+                                            
+                                        ) : (
+                                            <>
+                                            <span></span>
+                                            </>
+                                        )
+                                    }
+                                                    
+                            </div>
+                            <div>
+                                    {
+                                        postSearch && postSearch.length > 0 ? (
+                                            <div>
+                                                <span style={{fontWeight:'500'}}>Posts</span>
+                                                <hr style={{margin:0}} />
+                                            {
+                                                postSearch.map((data)=>(
+                                                    <div key={data.post_id}>
+                                                    {data.title}
+                                                    <hr />
+                                                    </div>
+                                                ))
+                                            }
+                                            </div>
+                                        ) : (
+                                            <>
+                                            <span></span>
+                                            </>
+                                        )
+                                    }
+                                    </div>
+                                    </div>
+                                    {
+                                        error && (
+                                            <div style={{marginBottom:'8px'}}>
+                                                <span>{error}</span>
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                    )
+                }
             </Nav>
             </Col>
             
