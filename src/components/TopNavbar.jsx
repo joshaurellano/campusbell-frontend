@@ -103,8 +103,15 @@ const TopNavbar = ({handleToggleSidebar}) => {
             await axios.get(`${API_ENDPOINT}search/find?search=${search}`,{withCredentials:true}).then(({data})=> {
                 setUserSearch(data.userResult)
                 setPostSearch(data.postResult)
+
+                if(data.totalPost){
+                    setUserSearch('')
+                } else if(data.totalUser){
+                    setPostSearch('')
+                }
             })
         }   catch(error) {
+
             setError(error.response.data.message)
         }     
       } else if(!search){
@@ -209,12 +216,12 @@ const TopNavbar = ({handleToggleSidebar}) => {
                                     </div>
                                     </div>
                                     {
-                                        error && (
+                                        error && (!userSearch && !postSearch) && (
                                             <div style={{marginBottom:'8px'}}>
                                                 <span>{error}</span>
                                             </div>
                                         )
-                                    }
+                                    } 
                                 </div>
                     )
                 }
