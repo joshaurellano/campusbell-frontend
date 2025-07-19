@@ -1,33 +1,21 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import {useNavigate,useLocation} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner,Offcanvas,Alert,Figure,Image,Modal} from 'react-bootstrap';
-import { FaBell } from "react-icons/fa";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { CiCirclePlus } from "react-icons/ci";
-import { BiSolidMessageRoundedDots } from "react-icons/bi";
-import { IoIosNotifications } from "react-icons/io";
-import { FaUserCircle } from "react-icons/fa";
-import { FaHome } from "react-icons/fa";
-import { IoIosMore } from "react-icons/io";
-import { FaUser } from "react-icons/fa";
-import { CiClock2 } from "react-icons/ci";
-import { AiOutlineLike } from "react-icons/ai";
-import { TbShare3 } from "react-icons/tb";
-import { FaRegComment } from "react-icons/fa6";
-import { GiHamburgerMenu } from "react-icons/gi";
+import {Nav,Container,Form,Row,Col,Card,Image,Modal,Button} from 'react-bootstrap';
+
 import { FaCamera } from "react-icons/fa";
+import { IoIosMore } from "react-icons/io";
+import { CiClock2 } from "react-icons/ci";
 
 import ReactTimeAgo from 'react-time-ago'
-
-import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
 
 import './Profile.css';
 import TopNavbar from './components/TopNavbar';
-import Sidebar from './components/Sidebar'
+import Sidebar from './components/Sidebar';
+
 axios.defaults.withCredentials = true;
 
 function Profile () {
@@ -35,11 +23,9 @@ function Profile () {
     const [user, setUser] = useState(null);
     const [userData, setUserData] = useState([]);
     // for topics
-    const [topics, setTopics] = useState([]);
     const [selected, setSelected] = useState('');
     const [imgFile, setImgFile] = useState('');
     const [prevImg, setPrevImg] = useState('');
-    const [alertData, setAlertData] = useState(null);
     const [showSidebar, setShowSidebar] = useState(false);
 
     const handleCloseSidebar = () => setShowSidebar(false);
@@ -80,46 +66,15 @@ function Profile () {
         checkUserSession();
     }, []);
 
-    //function to handle logout
-    const handleLogout = async () => {
-        try {
-            // remove token from cookies
-            await axios.post(`${API_ENDPOINT}auth/logout`,{withCredentials:true}).then(({data})=>{
-                setUser(data.result);
-            });
-            // make sure to go back to login page after removing the token 
-            navigate('/login')
-        } catch (error) {
-            console.error('Logout failed',error)
-        }
-    }
     useEffect(() =>{
-        getTopics()
         fetchUserData()
     },[])
      useEffect(() =>{
         if(user?.user_id){
             fetchUserData();
-            fetchAlerts();
         }
     },[user])
-const fetchAlerts = async () => {
-        const id = user.user_id;
-        await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
-            setAlertData(data.result)
-        })
-    }
-    const handleTopicPosts = (topicId) =>{
-        navigate('/topic', {state: {
-            topicId
-        }})
-    }
-    const getTopics = async () => {
-            await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
-            setTopics(data.result)
-            // console.log(data.result)
-        })
-    }
+
     const location = useLocation();
     const user_id = location.state.userId;
     
@@ -127,11 +82,8 @@ const fetchAlerts = async () => {
         const id = user_id;
         await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
         setUserData(data.result[0])
-        console.log(data.result[0])
         })
-        
     }  
-    
     const uploadImage = async () => {
     let imageUrl = null
     const formData = new FormData();

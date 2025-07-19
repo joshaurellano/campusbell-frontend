@@ -1,27 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,Container,Button,Form,Row,Col,Card,Placeholder,Image,Spinner,Offcanvas,NavDropdown } from 'react-bootstrap';
-import { FaBell } from "react-icons/fa";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { CiCirclePlus } from "react-icons/ci";
-import { BiSolidMessageRoundedDots } from "react-icons/bi";
-import { IoIosNotifications } from "react-icons/io";
-import { FaUserCircle } from "react-icons/fa";
-import { FaHome } from "react-icons/fa";
-import { IoIosMore } from "react-icons/io";
-import { FaUser } from "react-icons/fa";
-import { CiClock2 } from "react-icons/ci";
-import { AiOutlineLike } from "react-icons/ai";
-import { TbShare3 } from "react-icons/tb";
-import { FaRegComment } from "react-icons/fa6";
-import { GiHamburgerMenu } from "react-icons/gi";
-
-
-import ReactTimeAgo from 'react-time-ago'
-
-import {Link} from 'react-router-dom';
+import {Container,Button,Form,Row,Col,Card,Spinner} from 'react-bootstrap';
 
 import {API_ENDPOINT} from './Api';
 
@@ -65,27 +46,10 @@ function CreatePost () {
         checkUserSession();
     }, []);
 
-
-    //function to handle logout
-    const handleLogout = async () => {
-        try {
-            // remove token from cookies
-            await axios.post(`${API_ENDPOINT}auth/logout`,{withCredentials:true}).then(({data})=>{
-                setUser(data.result);
-            });
-            // make sure to go back to login page after removing the token 
-            navigate('/login')
-        } catch (error) {
-            console.error('Logout failed',error)
-        }
-    }
-    useEffect(() =>{
-        getTopics()        
-    })
     useEffect(() => {
         if (user?.user_id) {
             fetchUserData();
-            fetchAlerts();
+            getTopics();
         }
     }, [user]);
 
@@ -93,13 +57,7 @@ function CreatePost () {
         //console.log(showSidebar)
         setShowSidebar(showSidebar => !showSidebar)
     }
-    const fetchAlerts = async () => {
-            const id = user.user_id;
-            await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
-                setAlertData(data.result)
-                console.log(data.result)
-            })
-        }
+    
     const getTopics = async () => {
             await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
             setTopics(data.result)
@@ -225,14 +183,8 @@ const fetchUserData = async () => {
                                                 <Form.Label>
                                                     Body
                                                 </Form.Label>
-                                                {/* <Form.Control className='post-area' as="textarea"
-                                                onChange={(e)=>setValues({...values,body:e.target.value})} required>
-                                                        
-                                                    </Form.Control> */}
                                                 <Form.Control className='post-area' as="textarea" value={body}
-                                                onChange={(e)=>setBody(e.target.value)}>
-                                                        
-                                                    </Form.Control>
+                                                onChange={(e)=>setBody(e.target.value)} />                                                        
                                             </Form.Group>
                                             </div>
 

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useState } from 'react';
 import axios from 'axios';
-import {Nav,Navbar,Container,Button,Form,Row,Col,Spinner,Card,Alert,ToastContainer, Toast} from 'react-bootstrap';
+import {Nav,Navbar,Container,Button,Form,Spinner,Card,ToastContainer, Toast} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 import { FaBell } from "react-icons/fa";

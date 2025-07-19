@@ -1,25 +1,13 @@
-import React, { useEffect, useState,useRef } from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import { useEffect,useState,useRef } from 'react';
+import {useNavigate} from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import axios from 'axios';
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Image,Spinner, Offcanvas,Alert} from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Image} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { CiCirclePlus } from "react-icons/ci";
 import { BiSolidMessageRoundedDots } from "react-icons/bi";
 import { IoIosNotifications } from "react-icons/io";
-import { FaUserCircle } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
-import { IoIosMore } from "react-icons/io";
-import { FaUser } from "react-icons/fa";
-import { CiClock2 } from "react-icons/ci";
-import { AiOutlineLike } from "react-icons/ai";
-import { TbShare3 } from "react-icons/tb";
-import { FaRegComment } from "react-icons/fa6";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { AiFillLike } from "react-icons/ai";
-
-import ReactTimeAgo from 'react-time-ago'
 
 import {Link} from 'react-router-dom';
 

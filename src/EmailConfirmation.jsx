@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
-import Cookies from 'js-cookie';
 
-import {Nav,Navbar,Container,Button,Form,Row,Col,Spinner,Card,FloatingLabel} from 'react-bootstrap';
+import {Nav,Navbar,Container,Button,Form,Spinner,Card,FloatingLabel} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
-import { FaUserAlt } from "react-icons/fa";
-import { FaKey } from "react-icons/fa";
 import { FaBell } from "react-icons/fa";
 
 import {API_ENDPOINT} from './Api';

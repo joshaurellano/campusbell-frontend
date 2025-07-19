@@ -1,10 +1,8 @@
-import React, {useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {useNavigate, useParams} from 'react-router-dom';
-import {Nav,Navbar,Container,Button,Form,Row,Col,Spinner,Card,FloatingLabel,Toast,ToastContainer,Alert} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
+import {Button,Form,Spinner,Card,Toast,ToastContainer} from 'react-bootstrap';
+
 import Swal from 'sweetalert2'
-import { IoEye } from "react-icons/io5";
-import { IoEyeOff } from "react-icons/io5";
 
 import {API_ENDPOINT} from './Api';
 import axios from 'axios';
@@ -242,13 +240,6 @@ function ForgotPassword() {
                             }
                         </Button>
                     </Form.Group>
-                    {/* {
-                        formError && (
-                            <>
-                                <span style={{color:'red'}}>{formError}</span>
-                            </>
-                        )
-                    } */}
                 </Form>
                 </div>
             </Card.Body>

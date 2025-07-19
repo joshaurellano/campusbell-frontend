@@ -1,10 +1,8 @@
-import React, { useEffect, useState,useRef } from 'react';
+import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
-import Cookies from 'js-cookie';
 
-import {Navbar,Nav,Container,Button,Form,Row,Col,Spinner,Card,Alert,Popover, OverlayTrigger,Overlay, Tooltip} from 'react-bootstrap';
+import {Navbar,Nav,Container,Button,Form,Row,Col,Spinner,Card,Alert, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';

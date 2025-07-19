@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Image,Spinner,Offcanvas} from 'react-bootstrap';
+import {Container,Form,Row,Col,Card,Spinner} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { CiCirclePlus } from "react-icons/ci";
-import { BiSolidMessageRoundedDots } from "react-icons/bi";
-import { IoIosNotifications } from "react-icons/io";
-import { FaUserCircle } from "react-icons/fa";
-import { FaHome } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { CiClock2 } from "react-icons/ci";
@@ -17,19 +11,16 @@ import { AiOutlineLike } from "react-icons/ai";
 import { TbShare3 } from "react-icons/tb";
 import { FaRegComment } from "react-icons/fa6";
 import { IoSendSharp } from "react-icons/io5";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { AiFillLike } from "react-icons/ai";
 
-
 import ReactTimeAgo from 'react-time-ago'
-
-import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
 
 import './Post.css';
 import TopNavbar from './components/TopNavbar';
 import Sidebar from './components/Sidebar'
+
 axios.defaults.withCredentials = true;
 
 function Post () {
@@ -40,7 +31,6 @@ function Post () {
     // for post
     const [post, setPost] = useState([]);
     const [userData, setUserData] = useState([]);
-    const [alertData, setAlertData] = useState(null);
     const [pageLoading, setPageLoading] = useState(false);
     const [commentLoading, setCommentLoading] = useState(false);
 
@@ -84,56 +74,21 @@ function Post () {
         setShowSidebar(showSidebar => !showSidebar)
     }
 
-    //function to handle logout
-    const handleLogout = async () => {
-        try {
-            // remove token from cookies
-            await axios.post(`${API_ENDPOINT}auth/logout`,{withCredentials:true}).then(({data})=>{
-                setUser(data.result);
-            });
-            // make sure to go back to login page after removing the token 
-            navigate('/login')
-        } catch (error) {
-            console.error('Logout failed',error)
-        }
-    }
 
     useEffect(() => {
         if (user?.user_id) {
             fetchUserData();
             getPost();
-            fetchAlerts();
         }
     }, [user]);
-    useEffect(() =>{
-        getTopics()
-    },[])
-const fetchAlerts = async () => {
-        const id = user.user_id;
-        await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
-            setAlertData(data.result)
-            console.log(data.result)
-        })
-    }
-    
-    const getTopics = async () => {
-            await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
-            setTopics(data.result)
-            // console.log(data.result)
-        })
-    }
+   
     const fetchUserData = async () => {
             const id = user.user_id;
             await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
             setUserData(data.result[0])
             })
         }
-    const handleTopicPosts = (topicId) =>{
-        navigate('/topic', {state: {
-            topicId
-        }})
-    }
-
+   
     const [values, setValues] = useState({
         post_id: '',
         user_id: '',

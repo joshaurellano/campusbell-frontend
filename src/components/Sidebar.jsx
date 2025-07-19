@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Image,Spinner, Offcanvas,Alert} from 'react-bootstrap';
+import {Nav,Container,Image, Offcanvas} from 'react-bootstrap';
 
 import { CiCirclePlus } from "react-icons/ci";
 import { FaHome } from "react-icons/fa";

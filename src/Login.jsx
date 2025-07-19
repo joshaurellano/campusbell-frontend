@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
-import Cookies from 'js-cookie';
 import Swal from 'sweetalert2'
 
 import {Nav,Navbar,Container,Button,Form,Row,Col,Spinner,Card,FloatingLabel,Modal} from 'react-bootstrap';
@@ -44,26 +42,6 @@ function Login () {
 
     const onShowPassword = () => setShowPassword(true)
     const onHidePassword = () => setShowPassword(false)
-    //check first if user is already logged in
-    useEffect(() =>{
-        const fetchUser = async () => {
-            try {
-                //check token inside local storage if any
-                const check_token_if_any = Cookies.get('token')
-                //pass result to data
-                setUser(check_token_if_any.data);
-                console.log(check_token_if_any)
-                //if token is available proceed to homepage
-                navigate('/');
-            } catch (error) {
-                //remove token incase of error to prevent further problem
-                localStorage.removeItem('token');
-                //go back to login page
-                navigate('/login');
-            }
-        };
-        fetchUser();
-    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -78,10 +56,7 @@ function Login () {
             const response = await axios.post(`${API_ENDPOINT}auth/login`,{
                 username,
                 password
-            });
-
-            console.log(response.data.message);
-             
+            });             
             // set loading state to false after operation
             setLoading(false)
             setError('');
@@ -89,12 +64,9 @@ function Login () {
             navigate('/');
         
         } catch(error) {
-            console.error(error)
             if(error.response.data.message.includes("Username")){
-                console.log('username')
                 setUsernameError(error.response.data.message);
             }else if(error.response.data.message.includes("Password")){
-                console.log('password')
                 setPasswordError(error.response.data.message);
             }else if(error.response.data.message === 'Unverified'){
                 navigate('/verify');

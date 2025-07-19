@@ -1,28 +1,19 @@
-import React, { useEffect, useState, useRef } from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Image,Spinner, Offcanvas,Alert} from 'react-bootstrap';
+import {Container,Row,Col,Card,Placeholder,Spinner,Alert} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { CiCirclePlus } from "react-icons/ci";
-import { BiSolidMessageRoundedDots } from "react-icons/bi";
-import { IoIosNotifications } from "react-icons/io";
 import { FaUserCircle } from "react-icons/fa";
-import { FaHome } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { CiClock2 } from "react-icons/ci";
 import { AiOutlineLike } from "react-icons/ai";
 import { TbShare3 } from "react-icons/tb";
 import { FaRegComment } from "react-icons/fa6";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { AiFillLike } from "react-icons/ai";
-import { IoChatbubble } from "react-icons/io5";
 
 import ReactTimeAgo from 'react-time-ago'
-
-import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
 
@@ -41,7 +32,6 @@ function Home () {
     // for post
     const [post, setPost] = useState([]);
     const [userData, setUserData] = useState([]);
-    const [alertData, setAlertData] = useState(null);
 
     const [newPostLoad, setNewPostLoad] = useState(false);
     const [postLoading, setPostLoading] = useState(false);
@@ -54,7 +44,6 @@ function Home () {
     const handleShowSidebar = () => setShowSidebar(true);
 
     const [alert, setAlert] = useState(true);
-    const [notDisplayed, setNotDisplayed] = useState(true);
     const [nextId, setNextId] = useState('');
     const [hasMore, setHasMore] = useState(false);
     const [page, setPage] = useState(1);
@@ -95,13 +84,9 @@ function Home () {
         checkUserSession();
     }, []);
 
-    useEffect(() =>{
-        getTopics()
-    },[])
    useEffect(() => {
     if (user?.user_id) {
         fetchUserData();
-        fetchAlerts();
         setPage(1)
     }
 }, [user]);
@@ -109,13 +94,6 @@ function Home () {
         getPosts()
     },[page])
    
-
-    const getTopics = async () => {
-            await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
-            setTopics(data.result)
-            // console.log(data.result)
-        })
-    }
   
     const getPosts = async () => {
         if(newPostLoad) return;
@@ -151,16 +129,6 @@ function Home () {
             postID
         }});
     }
-    const viewProfile = (userId) => {
-        navigate('/profile', {state: {
-            userId
-        }});
-    }
-    const handleTopicPosts = (topicId) =>{
-        navigate('/topic', {state: {
-            topicId
-        }})
-    }
   
     const handleReact = async (postID, userID) => {
         const payload = {
@@ -176,14 +144,7 @@ function Home () {
             setUserData(data.result[0])
         })
     }
-        
-    const fetchAlerts = async () => {
-        const id = user.user_id;
-        await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
-            setAlertData(data.result)
-            // console.log(data.result)
-        })
-    }
+ 
     const onScroll = () => {
         if(listInnerRef.current) {
             const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
@@ -192,7 +153,6 @@ function Home () {
                 setPage(prevPage => prevPage + 1)
             }
         }
-    
         
     }
     useEffect (() => {

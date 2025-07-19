@@ -1,28 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Image,Spinner, Offcanvas,Alert} from 'react-bootstrap';
-import { FaBell } from "react-icons/fa";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { CiCirclePlus } from "react-icons/ci";
-import { BiSolidMessageRoundedDots } from "react-icons/bi";
-import { IoIosNotifications } from "react-icons/io";
-import { FaUserCircle } from "react-icons/fa";
-import { FaHome } from "react-icons/fa";
-import { IoIosMore } from "react-icons/io";
-import { FaUser } from "react-icons/fa";
-import { CiClock2 } from "react-icons/ci";
-import { AiOutlineLike } from "react-icons/ai";
-import { TbShare3 } from "react-icons/tb";
-import { FaRegComment } from "react-icons/fa6";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { AiFillLike } from "react-icons/ai";
-import { IoChatbubble } from "react-icons/io5";
-
-import ReactTimeAgo from 'react-time-ago'
-
-import {Link} from 'react-router-dom';
+import {Container,Button,Form,Row,Col,Card} from 'react-bootstrap';
 
 import {API_ENDPOINT} from './Api';
 
@@ -34,15 +14,9 @@ axios.defaults.withCredentials = true;
 function freedomwall() {
  // const for user fetching
     const [user, setUser] = useState(null);
-    // for topics
-    const [topics, setTopics] = useState([]);
-    // for post
     const [userData, setUserData] = useState([]);
-    const [alertData, setAlertData] = useState(null);
     const [notes, setNotes] = useState('');
     const [noteBody, setNoteBody] = useState('');
-
-    const [pageLoading, setPageLoading] = useState(false);
 
     const [showSidebar, setShowSidebar] = useState(false);
 
@@ -58,14 +32,10 @@ function freedomwall() {
     //Check if user has session
     useEffect(() =>{
         const checkUserSession = async () => {
-            setPageLoading(true);
             try {
                 const userInfo = await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
                     setUser(data.result);
                 })
-                // console.log(userInfo)
-            setPageLoading(false);
-
             } catch(error) {
                 //go back to login in case if error
                 navigate ('/login');
@@ -74,54 +44,17 @@ function freedomwall() {
         checkUserSession();
     }, []);
 
-    //function to handle logout
-    const handleLogout = async () => {
-        try {
-            // remove token from cookies
-            await axios.post(`${API_ENDPOINT}auth/logout`,{withCredentials:true}).then(({data})=>{
-                setUser(data.result);
-            });
-            // make sure to go back to login page after removing the token 
-            navigate('/login')
-        } catch (error) {
-            console.error('Logout failed',error)
-        }
-    }
+    
     useEffect(() =>{
-        getTopics();
         fetchNotes();
     },[])
+
    useEffect(() => {
-    if (user?.user_id) {
-        fetchUserData();
-        fetchAlerts()
-    }
-}, [user]);
+        if (user?.user_id) {
+            fetchUserData();
+        }
+    },[user]);
 
-
-    const getTopics = async () => {
-            await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
-            setTopics(data.result)
-            // console.log(data.result)
-        })
-    }
-  
-    const viewPost = (postID) => {
-        navigate('/view', {state: {
-            postID
-        }});
-    }
-    const viewProfile = (userId) => {
-        navigate('/profile', {state: {
-            userId
-        }});
-    }
-    const handleTopicPosts = (topicId) =>{
-        navigate('/topic', {state: {
-            topicId
-        }})
-    }
-  
     const fetchUserData = async () => {
         const id = user.user_id;
         await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
@@ -129,13 +62,6 @@ function freedomwall() {
         })
     }
         
-    const fetchAlerts = async () => {
-        const id = user.user_id;
-        await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
-            setAlertData(data.result)
-            // console.log(data.result)
-        })
-    }
     const fetchNotes = async () => {
         await axios.get(`${API_ENDPOINT}freedomwall/`,{withCredentials: true}).then(({data})=>{
             setNotes(data.result)

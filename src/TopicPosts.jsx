@@ -1,32 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {useNavigate, useLocation} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Card,Placeholder,Dropdown,Spinner, Offcanvas,Alert,Image} from 'react-bootstrap';
+import {Container,Form,Row,Col,Card,Placeholder,Spinner} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { CiCirclePlus } from "react-icons/ci";
-import { BiSolidMessageRoundedDots } from "react-icons/bi";
-import { IoIosNotifications } from "react-icons/io";
 import { FaUserCircle } from "react-icons/fa";
-import { FaHome } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { CiClock2 } from "react-icons/ci";
 import { AiOutlineLike } from "react-icons/ai";
 import { TbShare3 } from "react-icons/tb";
 import { FaRegComment } from "react-icons/fa6";
-import { GiHamburgerMenu } from "react-icons/gi";
 
 import ReactTimeAgo from 'react-time-ago'
-
-import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from './Api';
 
 import './TopicPosts.css';
 import TopNavbar from './components/TopNavbar';
-import Sidebar from './components/Sidebar'
+import Sidebar from './components/Sidebar';
+
 axios.defaults.withCredentials = true;
 
 function TopicPosts () {
@@ -80,20 +73,6 @@ function TopicPosts () {
         }
     }, [pageLoading]);
 
-
-    //function to handle logout
-    const handleLogout = async () => {
-        try {
-            // remove token from cookies
-            await axios.post(`${API_ENDPOINT}auth/logout`,{withCredentials:true}).then(({data})=>{
-                setUser(data.result);
-            });
-            // make sure to go back to login page after removing the token 
-            navigate('/login')
-        } catch (error) {
-            console.error('Logout failed',error)
-        }
-    }
     useEffect(() =>{
         getTopicPosts()
     },[topicNo])
@@ -104,16 +83,9 @@ function TopicPosts () {
     useEffect(() => {
         if (user?.user_id) {
             fetchUserData();
-            fetchAlerts();
         }
     }, [user]);
-    const fetchAlerts = async () => {
-            const id = user.user_id;
-            await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
-                setAlertData(data.result)
-                console.log(data.result)
-            })
-        }
+    
     const getTopics = async () => {
             await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
             setTopics(data.result)
@@ -135,11 +107,7 @@ function TopicPosts () {
             postID
         }});
     }
-    const viewProfile = (userId) => {
-        navigate('/profile', {state: {
-            userId
-        }});
-    }
+    
     const handleSelected = (e) =>{
         topic_id = e.target.value
         setTopicNo(topic_id)
@@ -150,11 +118,7 @@ function TopicPosts () {
         setUserData(data.result[0])
         })
     }
-    const handleTopicPosts = (topicId) =>{
-        navigate('/topic', {state: {
-            topicId
-        }})
-    }
+    
     return (
     <div style={{height:'100vh', overflow:'hidden'}}>
         {
