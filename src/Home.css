@@ -103,7 +103,8 @@
   right: 0 !important;
   transform: translateX(-8px);
   font-size: .7rem;
-  height: 15rem;
+  height: auto;
+  max-height: 15rem;
   overflow-y: auto;
   overflow-x: hidden;
 

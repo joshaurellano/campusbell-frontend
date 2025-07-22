@@ -51,11 +51,6 @@ const TopNavbar = ({handleToggleSidebar}) => {
           };
           checkUserSession();
       }, []);
-      useEffect(() =>{
-        if(alertData){
-            console.log(alertData)
-        }
-      },[])
   
       //function to handle logout
       const handleLogout = async () => {
@@ -97,7 +92,7 @@ const TopNavbar = ({handleToggleSidebar}) => {
       const fetchAlerts = async () => {
           const id = user.user_id;
           await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
-                console.log(data.result)
+                //console.log(data.result)
                 setAlertData(data.result)
               // console.log(data.result)
           })
@@ -118,7 +113,6 @@ const TopNavbar = ({handleToggleSidebar}) => {
                 }
             })
         }   catch(error) {
-
             setError(error.response.data.message)
         }     
       } else if(!search){
@@ -129,10 +123,23 @@ const TopNavbar = ({handleToggleSidebar}) => {
     }
     const updateAlerts = async () => {
         const id = user.user_id
-        const ids = alertData.map(alert => 
-            (alert.postData).map(post => (post.postID)))
+        const post_data = alertData[0].postData
+        const ids = post_data.flatMap(alert => {
+                if(alert.react){
+                    return (alert.react).map(postReact => {
+                        return postReact.notifID
+                    }
+                        )
+                } else if(alert.comment){
+                    return (alert.comment).map(postComment => {
+                        return postComment.notifID
+                    })
+                }
+            }
+        )
         try {
             await axios.put(`${API_ENDPOINT}alert/${id}`,{ids},{withCredentials:true})
+            fetchAlerts();
         } catch (error) {
             console.error(error)   
         }
@@ -259,23 +266,27 @@ const TopNavbar = ({handleToggleSidebar}) => {
                 <NavDropdown
                     className="notif-dropdown"
                     title={<><IoIosNotifications className='top-menu-icons' />
-                        <Badge>{alertData[0]?.unreadNotif}</Badge>
+                        {   
+                            alertData[0]?.unreadNotif > 0 && (
+                            <Badge pill bg='danger'style={{fontSize:'8px'}}>{alertData[0].unreadNotif}</Badge>
+                            )
+                        }
                     </>}
                     id="basic-nav-dropdown" >
                     <div id='notification-header'>Notifications</div>
                   {
-                    alertData && alertData.length > 0 ? (
+                    alertData && (
 
                        alertData.map((alerts, key) =>(
                         <div key={key}>
                             {
-                                alerts.postData.length && (
-                                    alerts.postData && Object.values(alerts.postData).map(notif => (
-                                        <NavDropdown.Item key={notif.postID}>
+                                alerts.postData ?(
+                                    alerts.postData && Object.values(alerts.postData).map((notif, key) => (
+                                            <div key={key}>
                                             {
                                                 notif.react ? (
                                                     Object.values(notif.react).map(react => (
-                                                        <div key={react.reactorID}>
+                                                        <NavDropdown.Item key={react.notifID}>
                                                             <span><strong>{react.reactorusername}</strong> reacted to your post {notif.title}</span>
                                                             <div>
                                                             <span>{react ?.reactTime && (<ReactTimeAgo 
@@ -283,11 +294,11 @@ const TopNavbar = ({handleToggleSidebar}) => {
                                                             locale="en-US"
                                                             timeStyle="round"/>)}</span>
                                                             </div>
-                                                        </div>
+                                                        </NavDropdown.Item>
                                                     ))
                                                 ) : notif.comment && (
                                                     Object.values(notif.comment).map(comment => (
-                                                        <div key={comment.commenterID}>
+                                                        <NavDropdown.Item key={comment.notifID}>
                                                             <span><strong>{comment.commenterusername}</strong> commented on your post {notif.title}</span>
                                                             <div>
                                                             <span>{comment?.commentTime && (<ReactTimeAgo 
@@ -295,23 +306,27 @@ const TopNavbar = ({handleToggleSidebar}) => {
                                                             locale="en-US"
                                                             timeStyle="round" />)}</span>
                                                             </div>
-                                                        </div>
+                                                        </NavDropdown.Item>
                                                     ))
                                                 )
                                             }
-                                        </NavDropdown.Item>
+                                        </div>
                                     )
                                 )
-                            )}
+                            ) : (<NavDropdown.Item>
+                                No notification yet
+                            </NavDropdown.Item>)
+                        }
                         </div>
                        ))
-                    ) : (<NavDropdown.Item>
-                        No notification yet
-                    </NavDropdown.Item>)
+                    )
                   }
-                  <div style={{padding:'4px'}}>
-                    <span onClick={() => updateAlerts()}>Mark all as read</span>
-                  </div>
+                  { alertData[0]?.postData && (
+                    <div style={{padding:'4px'}}>
+                        <span onClick={() => updateAlerts()}><Link>Mark all as read</Link></span>
+                    </div>
+                    )
+                }
                   </NavDropdown>
                  
                 <NavDropdown className="custom-nav-dropdown" title={<><Image src={userData.profile_image} className='pfp-icon' roundedCircle /></>} id="basic-nav-dropdown">
