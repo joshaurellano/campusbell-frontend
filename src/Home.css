@@ -65,7 +65,7 @@
     height: 100vh
 }
 .top-menu { 
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .top-menu-icons { 
@@ -73,14 +73,14 @@
 }
 .searchbar {
     border-radius: 25px;
+    /* left: 20px; */
     padding-left: 40px;
-    width: 400px
 }
 .searchbar-icon {
     position: absolute;
     color: gray;
     pointer-events: none;
-    translate: 16px 0px
+    translate: 10px 0px
 }
 .profile {
     display: flex;
@@ -153,6 +153,9 @@
 .popover-arrow{
     transform: translate(10px, 0px) !important
 }
+/* .searchbar.form-control::placeholder {
+    padding-left: 20px;
+} */
     
 @media (max-width: 600px) {
 .brand {
@@ -168,28 +171,28 @@ width: 100%;
 height:100%
 }
 .top-menu {
-font-size: .8rem;
+font-size: 1rem;
 }
 .top-menu-icons {
 font-size: 1rem;
 align-items: center;
-translate: 0px 4px;
+translate: 0px 2px;
 }
 .nav-link{
     height: 100%;
     align-items: center;
     display: flex;
-    
 }
 .pfp-icon{
-height: .9rem;
-width: .9rem;
+height: 1rem;
+width: 1rem;
 }
-.searchbar{
+/* .searchbar{
 display: none;
-}
+} */
 .searchbar-icon{
-translate: 24px 0px;
+pointer-events: auto;
+translate: 0px 0px;
 font-size: .8rem;
 }
 .custom-nav-dropdown .dropdown-menu {
@@ -245,10 +248,20 @@ justify-content: center !important;
 .topic-col {
     height:auto
 }
+.search-col1 {
+    display: none;
+}
+.search-col2 {
+    display: block !important;
+    position: absolute;
+    translate: 0px -8px;
+    color: gray;
+    font-size: .7rem;
+}
 }
 @media (max-width: 990px) {
 .searchbar{
-        width: 14rem !important;
+        width: 100% !important;
     }
 .navbar-nav {
     justify-content: end;
@@ -293,7 +306,9 @@ justify-content: center !important;
     }
 .navbar-nav {
     justify-content: center;
-    padding-right: 4rem;
+}
+.brand {
+    padding-left: 1rem;
 }
 }
 @media (max-width: 685px){
@@ -306,5 +321,10 @@ justify-content: center !important;
         height: calc(100vh - 68px);
         overflow-y: auto;
         overflow-x: hidden;
+    }
+}
+@media (max-width: 700px){
+.searchbar-icon{
+    pointer-events: auto;
     }
 }

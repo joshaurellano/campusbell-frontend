@@ -147,11 +147,13 @@ const TopNavbar = ({handleToggleSidebar}) => {
   return (
     <div>
        <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1, display:'flex', alignItems:'center'}}>
-        <Container fluid style={{height:'inherit', padding:0}}>
+        <Container fluid style={{height:'100%', padding:0}}>
             <Row style={{width:'100%',display:'flex',alignItems:'center'}}>
             
-            <Col lg={4} xs={5} style={{display:'flex',alignItems:'center'}}>
-            <div className='brand' style={{display:'flex', alignItems:'center'}}>
+            <Col lg={3} md={4} sm={4} xs={5} style={{display:'flex',alignItems:'center'}}>
+            <div 
+            className='brand' 
+            style={{display:'flex', alignItems:'center', width:'100%'}}>
                 <div className='d-block d-md-block d-sm-block d-lg-none'>
                     <Button variant="primary"onClick={handleToggleSidebar}style={{backgroundColor:'transparent', border:'none', translate: '0px -2px'}}>
                         {
@@ -162,7 +164,9 @@ const TopNavbar = ({handleToggleSidebar}) => {
                     </Button>
                     </div>
                 <FaBell style={{color:'#ffac33'}} />
-                <Navbar.Brand className='brand' style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
+                <Navbar.Brand 
+                className='brand' 
+                style={{color:'white' ,fontWeight:'bold', textShadow: '2px 2px black'}}>
                     <Nav.Link as={Link} to='/'>
                     Campus Bell
                     </Nav.Link>
@@ -170,20 +174,17 @@ const TopNavbar = ({handleToggleSidebar}) => {
             </div>
             </Col>
 
-            <Col lg={6} xs={2} style={{
-                translate:'-20px 0px'
+            <Col 
+            lg={6} md={4} sm={3} xs={2} style={{
             }}>
             <Nav className="me-auto align-items-center"style={{width:'100%', height:'100%', display:'flex', justifyContent:'start', flexDirection:'column', position:'relative'}}>
-                <div style={{display:'flex', alignItems:'center', height:'100%'}}>
-                    <FaMagnifyingGlass className='searchbar-icon' />
-                    <Row style={{width:'100%'}}>
-                        <Col lg={12} xs={1}>
-                        <Form.Control className='searchbar' placeholder='Search'                             
-                            onChange={(e) => setSearch(e.target.value)} />
-                        </Col>
-                    </Row>
+                <div style={{display:'flex', alignItems:'center', height:'100%', width:'60%'}}>
+                    <FaMagnifyingGlass className='searchbar-icon' onClick={()=> console.log('clicked')}/>
+                        <Form.Control 
+                        className='searchbar'
+                        placeholder='Search'                             
+                        onChange={(e) => setSearch(e.target.value)} />
                 </div>
-                
                 { 
                     openSearch && (
                         <div className='container' style={{width:'400px',height:'auto', maxHeight:'400px', backgroundColor:'white', zIndex:1, position:'absolute', top:'100%', marginTop:'8px', borderRadius:'4px', display:'flex', flexDirection:'column', overflowY:'auto'}}>
@@ -252,20 +253,27 @@ const TopNavbar = ({handleToggleSidebar}) => {
             </Nav>
             </Col>
             
-            <Col  lg={2} xs={5} style={{ display:'flex', alignItems:'center', height:'100%'
+            <Col lg={3} md={4} sm={5} xs={5} style={{ display:'flex', alignItems:'center', height:'100%'
             }}>
+                <div style={{width:'100%'}}>
                 <Nav>
-                <Nav.Link className='top-menu' as={Link} to='/post'style={{cursor:'pointer',color:'white'}}>
+                <Nav.Link 
+                className='top-menu' 
+                as={Link} to='/post'style={{cursor:'pointer',color:'white'}}>
                 Post
                 </Nav.Link>
 
                 <Nav.Link as={Link} to='/chat'>
-                    <BiSolidMessageRoundedDots className='top-menu-icons' style={{cursor:'pointer',color:'white'}} />
+                    <BiSolidMessageRoundedDots 
+                    className='top-menu-icons' 
+                    style={{cursor:'pointer',color:'white'}} />
                 </Nav.Link>
 
                 <NavDropdown
                     className="notif-dropdown"
-                    title={<><IoIosNotifications className='top-menu-icons' />
+                    title={<><IoIosNotifications 
+                    className='top-menu-icons' 
+                    />
                         {   
                             alertData[0]?.unreadNotif > 0 && (
                             <Badge pill bg='danger'style={{fontSize:'8px'}}>{alertData[0].unreadNotif}</Badge>
@@ -329,7 +337,11 @@ const TopNavbar = ({handleToggleSidebar}) => {
                 }
                   </NavDropdown>
                  
-                <NavDropdown className="custom-nav-dropdown" title={<><Image src={userData.profile_image} className='pfp-icon' roundedCircle /></>} id="basic-nav-dropdown">
+                <NavDropdown 
+                className="custom-nav-dropdown"
+                title={<><Image src={userData.profile_image} 
+                className='top-menu-icons pfp-icon' 
+                roundedCircle /></>} id="basic-nav-dropdown">
                     <div>
                     <NavDropdown.Item>Settings</NavDropdown.Item>
                     <NavDropdown.Item onClick={()=>viewProfile(user.user_id)}>Profile</NavDropdown.Item>
@@ -338,6 +350,7 @@ const TopNavbar = ({handleToggleSidebar}) => {
                 </NavDropdown>
                
                 </Nav>
+                </div>
             </Col>
             </Row>
         </Container>
