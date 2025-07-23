@@ -153,6 +153,40 @@
 .popover-arrow{
     transform: translate(10px, 0px) !important
 }
+.searchbar-wrapper {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 60%
+}
+.search-result {
+    width: 400px;
+    height: auto; 
+    max-height: 400px;
+    background-color: white;
+    z-index:1;
+    position: absolute;
+    top: 100%;
+    margin-top: 8px; 
+    border-radius: 4px; 
+    display: flex;
+    flex-direction: column; 
+    overflow-y: auto
+}
+.search-body {
+    height: 12%;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    white-space: nowrap
+}
+.mobile-search {
+    position: relative;
+    border-radius: 25px;
+}
+.search-body-title {
+    line-height: 40px;
+}
 /* .searchbar.form-control::placeholder {
     padding-left: 20px;
 } */
@@ -258,6 +292,24 @@ justify-content: center !important;
     color: gray;
     font-size: .7rem;
 }
+.searchbar-wrapper {
+    width: 100%;
+}
+.search-result {
+    width: 300px;
+    height: auto;
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    white-space: normal;
+    word-wrap: break-word;
+    font-size: .8rem;
+    top: 20px;
+}
+.search-body-title {
+    font-size: .8rem;
+    line-height: 30px;
+}
 }
 @media (max-width: 990px) {
 .searchbar{
@@ -297,6 +349,7 @@ justify-content: center !important;
     gap: 12px !important;
 }
 .topic-col {
+    overflow-x: hidden;
     height:auto
 }
 }
@@ -311,11 +364,6 @@ justify-content: center !important;
     padding-left: 1rem;
 }
 }
-@media (max-width: 685px){
-.searchbar{
-    display: none 
-    }
-}
 @media (min-width: 991px){
     .topic-col{
         height: calc(100vh - 68px);
@@ -323,8 +371,27 @@ justify-content: center !important;
         overflow-x: hidden;
     }
 }
-@media (max-width: 700px){
-.searchbar-icon{
+@media (max-width: 425px) {
+    .searchbar{
+        display: none;
+    }
+    .searchbar-icon{
     pointer-events: auto;
+    }
+}
+@media (max-width: 700px){
+    .top-menu { 
+    font-size: .95rem;
+}
+    .top-menu-icons { 
+    font-size: 1.2rem;
+}
+    .brand {
+    font-size: 1rem;
+}
+}
+@media (max-width: 320px){
+    .brand {
+        font-size: .8rem;
     }
 }

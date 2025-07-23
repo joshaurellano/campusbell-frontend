@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Image, Badge} from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Button,Form,Row,Col,Image, Badge, CloseButton} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { BiSolidMessageRoundedDots } from "react-icons/bi";
@@ -27,6 +27,8 @@ const TopNavbar = ({handleToggleSidebar}) => {
       const [userData, setUserData] = useState([]);
       const [userSearch, setUserSearch] = useState([]);
       const [postSearch, setPostSearch] = useState([]);
+      const [mobileSearch, setMobileSearch] = useState(false);
+      const [windowSize, setWindowSize] = useState(window.innerWidth)
       const [search, setSearch] = useState('');
       const [error, setError] = useState('');
       const [alertData, setAlertData] = useState([]);
@@ -76,6 +78,13 @@ const TopNavbar = ({handleToggleSidebar}) => {
         handleSearch();
     },[search])
 
+    useEffect(() => {
+        const handleResize = () =>
+            setWindowSize(window.innerWidth)
+            window.addEventListener('resize',handleResize)
+            return () => window.removeEventListener('resize',handleResize)
+    },[])
+
       const viewProfile = (userId) => {
           navigate('/profile', {state: {
               userId
@@ -102,21 +111,18 @@ const TopNavbar = ({handleToggleSidebar}) => {
         searchOpen();
         if(search){
         try{
+            setUserSearch('')
+            setPostSearch('')
             await axios.get(`${API_ENDPOINT}search/find?search=${search}`,{withCredentials:true}).then(({data})=> {
                 setUserSearch(data.userResult)
                 setPostSearch(data.postResult)
-
-                if(data.totalPost){
-                    setUserSearch('')
-                } else if(data.totalUser){
-                    setPostSearch('')
-                }
             })
         }   catch(error) {
             setError(error.response.data.message)
         }     
       } else if(!search){
         searchClose();
+        setMobileSearch(false)
         setUserSearch('');
         setPostSearch('');
       }
@@ -149,7 +155,6 @@ const TopNavbar = ({handleToggleSidebar}) => {
        <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1, display:'flex', alignItems:'center'}}>
         <Container fluid style={{height:'100%', padding:0}}>
             <Row style={{width:'100%',display:'flex',alignItems:'center'}}>
-            
             <Col lg={3} md={4} sm={4} xs={5} style={{display:'flex',alignItems:'center'}}>
             <div 
             className='brand' 
@@ -175,11 +180,14 @@ const TopNavbar = ({handleToggleSidebar}) => {
             </Col>
 
             <Col 
-            lg={6} md={4} sm={3} xs={2} style={{
+            lg={6} md={4} sm={4} xs={2} style={{
             }}>
             <Nav className="me-auto align-items-center"style={{width:'100%', height:'100%', display:'flex', justifyContent:'start', flexDirection:'column', position:'relative'}}>
-                <div style={{display:'flex', alignItems:'center', height:'100%', width:'60%'}}>
-                    <FaMagnifyingGlass className='searchbar-icon' onClick={()=> console.log('clicked')}/>
+                <div className='searchbar-wrapper'>
+                    <FaMagnifyingGlass className='searchbar-icon' onClick={()=> 
+                    {
+                        setMobileSearch(true)
+                    }} />
                         <Form.Control 
                         className='searchbar'
                         placeholder='Search'                             
@@ -187,8 +195,8 @@ const TopNavbar = ({handleToggleSidebar}) => {
                 </div>
                 { 
                     openSearch && (
-                        <div className='container' style={{width:'400px',height:'auto', maxHeight:'400px', backgroundColor:'white', zIndex:1, position:'absolute', top:'100%', marginTop:'8px', borderRadius:'4px', display:'flex', flexDirection:'column', overflowY:'auto'}}>
-                            <div style={{height:'12%',display:'flex',alignItems:'center', padding:'4px', whiteSpace:'nowrap'}}>
+                        <div className='search-result container'>
+                            <div className='search-body-title'>
                             <span><strong>Search Result</strong></span>
                             </div>
                             <hr style={{margin:0}}/>
@@ -253,105 +261,123 @@ const TopNavbar = ({handleToggleSidebar}) => {
             </Nav>
             </Col>
             
-            <Col lg={3} md={4} sm={5} xs={5} style={{ display:'flex', alignItems:'center', height:'100%'
-            }}>
-                <div style={{width:'100%'}}>
-                <Nav>
-                <Nav.Link 
-                className='top-menu' 
-                as={Link} to='/post'style={{cursor:'pointer',color:'white'}}>
-                Post
-                </Nav.Link>
-
-                <Nav.Link as={Link} to='/chat'>
-                    <BiSolidMessageRoundedDots 
-                    className='top-menu-icons' 
-                    style={{cursor:'pointer',color:'white'}} />
-                </Nav.Link>
-
-                <NavDropdown
-                    className="notif-dropdown"
-                    title={<><IoIosNotifications 
-                    className='top-menu-icons' 
-                    />
-                        {   
-                            alertData[0]?.unreadNotif > 0 && (
-                            <Badge pill bg='danger'style={{fontSize:'8px'}}>{alertData[0].unreadNotif}</Badge>
-                            )
-                        }
-                    </>}
-                    id="basic-nav-dropdown" >
-                    <div id='notification-header'>Notifications</div>
-                  {
-                    alertData && (
-
-                       alertData.map((alerts, key) =>(
-                        <div key={key}>
-                            {
-                                alerts.postData ?(
-                                    alerts.postData && Object.values(alerts.postData).map((notif, key) => (
-                                            <div key={key}>
-                                            {
-                                                notif.react ? (
-                                                    Object.values(notif.react).map(react => (
-                                                        <NavDropdown.Item key={react.notifID}>
-                                                            <span><strong>{react.reactorusername}</strong> reacted to your post {notif.title}</span>
-                                                            <div>
-                                                            <span>{react ?.reactTime && (<ReactTimeAgo 
-                                                            date={new Date(react.reactTime)}
-                                                            locale="en-US"
-                                                            timeStyle="round"/>)}</span>
-                                                            </div>
-                                                        </NavDropdown.Item>
-                                                    ))
-                                                ) : notif.comment && (
-                                                    Object.values(notif.comment).map(comment => (
-                                                        <NavDropdown.Item key={comment.notifID}>
-                                                            <span><strong>{comment.commenterusername}</strong> commented on your post {notif.title}</span>
-                                                            <div>
-                                                            <span>{comment?.commentTime && (<ReactTimeAgo 
-                                                            date={new Date(comment.commentTime)}
-                                                            locale="en-US"
-                                                            timeStyle="round" />)}</span>
-                                                            </div>
-                                                        </NavDropdown.Item>
-                                                    ))
-                                                )
-                                            }
-                                        </div>
-                                    )
-                                )
-                            ) : (<NavDropdown.Item>
-                                No notification yet
-                            </NavDropdown.Item>)
-                        }
-                        </div>
-                       ))
-                    )
-                  }
-                  { alertData[0]?.postData && (
-                    <div style={{padding:'4px'}}>
-                        <span onClick={() => updateAlerts()}><Link>Mark all as read</Link></span>
-                    </div>
-                    )
-                }
-                  </NavDropdown>
-                 
-                <NavDropdown 
-                className="custom-nav-dropdown"
-                title={<><Image src={userData.profile_image} 
-                className='top-menu-icons pfp-icon' 
-                roundedCircle /></>} id="basic-nav-dropdown">
-                    <div>
-                    <NavDropdown.Item>Settings</NavDropdown.Item>
-                    <NavDropdown.Item onClick={()=>viewProfile(user.user_id)}>Profile</NavDropdown.Item>
-                    <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-                    </div>
-                </NavDropdown>
-               
-                </Nav>
+            { (mobileSearch && windowSize <= 425) && (
+            <Col>
+                <div>
+                    <Form.Control 
+                    className='mobile-search'
+                    placeholder='Search'                             
+                    onChange={(e) => setSearch(e.target.value)} />
+                    <CloseButton onClick={() => {
+                        setMobileSearch(false)
+                        setSearch('')
+                    }} aria-label="Hide" style={{fontSize:'8px',position:'absolute', right:'30px',top:'24px'}} />
                 </div>
             </Col>
+            )}
+            
+            
+            {
+                (!mobileSearch || windowSize > 425) &&(
+                    <Col lg={3} md={4} sm={4} xs={5} style={{ display:'flex', alignItems:'center', height:'100%'
+                    }}>
+                        <div style={{width:'100%'}}>
+                        <Nav>
+                        <Nav.Link 
+                        className='top-menu' 
+                        as={Link} to='/post'style={{cursor:'pointer',color:'white'}}>
+                        Post
+                        </Nav.Link>
+
+                        <Nav.Link as={Link} to='/chat'>
+                            <BiSolidMessageRoundedDots 
+                            className='top-menu-icons' 
+                            style={{cursor:'pointer',color:'white'}} />
+                        </Nav.Link>
+
+                        <NavDropdown
+                            className="notif-dropdown"
+                            title={<><IoIosNotifications 
+                            className='top-menu-icons' 
+                            />
+                                {   
+                                    alertData[0]?.unreadNotif > 0 && (
+                                    <Badge pill bg='danger'style={{fontSize:'8px'}}>{alertData[0].unreadNotif}</Badge>
+                                    )
+                                }
+                            </>}
+                            id="basic-nav-dropdown" >
+                            <div id='notification-header'>Notifications</div>
+                        {
+                            alertData && (
+
+                            alertData.map((alerts, key) =>(
+                                <div key={key}>
+                                    {
+                                        alerts.postData ?(
+                                            alerts.postData && Object.values(alerts.postData).map((notif, key) => (
+                                                    <div key={key}>
+                                                    {
+                                                        notif.react ? (
+                                                            Object.values(notif.react).map(react => (
+                                                                <NavDropdown.Item key={react.notifID}>
+                                                                    <span><strong>{react.reactorusername}</strong> reacted to your post {notif.title}</span>
+                                                                    <div>
+                                                                    <span>{react ?.reactTime && (<ReactTimeAgo 
+                                                                    date={new Date(react.reactTime)}
+                                                                    locale="en-US"
+                                                                    timeStyle="round"/>)}</span>
+                                                                    </div>
+                                                                </NavDropdown.Item>
+                                                            ))
+                                                        ) : notif.comment && (
+                                                            Object.values(notif.comment).map(comment => (
+                                                                <NavDropdown.Item key={comment.notifID}>
+                                                                    <span><strong>{comment.commenterusername}</strong> commented on your post {notif.title}</span>
+                                                                    <div>
+                                                                    <span>{comment?.commentTime && (<ReactTimeAgo 
+                                                                    date={new Date(comment.commentTime)}
+                                                                    locale="en-US"
+                                                                    timeStyle="round" />)}</span>
+                                                                    </div>
+                                                                </NavDropdown.Item>
+                                                            ))
+                                                        )
+                                                    }
+                                                </div>
+                                            )
+                                        )
+                                    ) : (<NavDropdown.Item>
+                                        No notification yet
+                                    </NavDropdown.Item>)
+                                }
+                                </div>
+                            ))
+                            )
+                        }
+                        { alertData[0]?.postData && (
+                            <div style={{padding:'4px'}}>
+                                <span onClick={() => updateAlerts()}><Link>Mark all as read</Link></span>
+                            </div>
+                            )
+                        }
+                        </NavDropdown>
+                        
+                        <NavDropdown 
+                        className="custom-nav-dropdown"
+                        title={<><Image src={userData.profile_image} 
+                        className='top-menu-icons pfp-icon' 
+                        roundedCircle /></>} id="basic-nav-dropdown">
+                            <div>
+                            <NavDropdown.Item>Settings</NavDropdown.Item>
+                            <NavDropdown.Item onClick={()=>viewProfile(user.user_id)}>Profile</NavDropdown.Item>
+                            <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                            </div>
+                        </NavDropdown>
+                    
+                        </Nav>
+                        </div>
+                    </Col>)}
             </Row>
         </Container>
         
