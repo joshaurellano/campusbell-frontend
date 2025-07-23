@@ -187,6 +187,12 @@
 .search-body-title {
     line-height: 40px;
 }
+.user-result {
+    cursor: pointer;
+}
+.user-result:hover {
+    background-color: #D3D3D3;
+}
 /* .searchbar.form-control::placeholder {
     padding-left: 20px;
 } */

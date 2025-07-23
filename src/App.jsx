@@ -12,6 +12,7 @@ import Messages from './Messages';
 import Freedomwall from './Freedomwall';
 import ForgotPassword from './ForgotPassword';
 import RequestNewOtp from './RequestNewOtp';
+import ViewProfile from './ViewProfile';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path='/wall' element={<Freedomwall />} />
           <Route path='/password-reset/:token' element={<ForgotPassword />} />
           <Route path='/request-new-otp' element={<RequestNewOtp />} />
+          <Route path='/user' element={<ViewProfile />} />
 
         </Routes>
       </Router>

@@ -190,7 +190,8 @@ const TopNavbar = ({handleToggleSidebar}) => {
                     }} />
                         <Form.Control 
                         className='searchbar'
-                        placeholder='Search'                             
+                        placeholder='Search' 
+                        value={search}                            
                         onChange={(e) => setSearch(e.target.value)} />
                 </div>
                 { 
@@ -209,7 +210,11 @@ const TopNavbar = ({handleToggleSidebar}) => {
                                                 <hr style={{margin:0}} />
                                                 {
                                                 userSearch.map((data)=>(
-                                                    <div key={data.user_id}>
+                                                    <div className='user-result' 
+                                                    key={data.user_id} onClick={() => { 
+                                                        navigate('/user',{state:{userId:data.user_id}})
+                                                        setSearch('')
+                                                    }}>
                                                         {data.username}
                                                         <hr />
                                                     </div>
@@ -266,7 +271,8 @@ const TopNavbar = ({handleToggleSidebar}) => {
                 <div>
                     <Form.Control 
                     className='mobile-search'
-                    placeholder='Search'                             
+                    placeholder='Search'
+                    value={search}                             
                     onChange={(e) => setSearch(e.target.value)} />
                     <CloseButton onClick={() => {
                         setMobileSearch(false)
