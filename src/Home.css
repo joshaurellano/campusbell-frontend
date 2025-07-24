@@ -187,11 +187,14 @@
 .search-body-title {
     line-height: 40px;
 }
-.user-result {
+.selected-search {
     cursor: pointer;
 }
-.user-result:hover {
-    background-color: #D3D3D3;
+.selected-search:hover {
+    background-color: #4169E1;
+    border-radius: 5px;
+    color: white;
+    scale: 1.04 1.08;
 }
 /* .searchbar.form-control::placeholder {
     padding-left: 20px;

@@ -210,7 +210,7 @@ const TopNavbar = ({handleToggleSidebar}) => {
                                                 <hr style={{margin:0}} />
                                                 {
                                                 userSearch.map((data)=>(
-                                                    <div className='user-result' 
+                                                    <div className='selected-search' 
                                                     key={data.user_id} onClick={() => { 
                                                         navigate('/user',{state:{userId:data.user_id}})
                                                         setSearch('')
@@ -238,7 +238,11 @@ const TopNavbar = ({handleToggleSidebar}) => {
                                                 <hr style={{margin:0}} />
                                             {
                                                 postSearch.map((data)=>(
-                                                    <div key={data.post_id}>
+                                                    <div className='selected-search' key={data.post_id} onClick={() => {
+                                                        navigate('/view',{state:{postID: data.post_id}})
+                                                        setSearch('')
+                                                        }
+                                                    }>
                                                     {data.title}
                                                     <hr />
                                                     </div>
