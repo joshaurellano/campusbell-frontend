@@ -197,11 +197,11 @@ const TopNavbar = ({handleToggleSidebar}) => {
                 { 
                     openSearch && (
                         <div className='search-result container'>
-                            <div className='search-body-title'>
+                            <div className='search-body-title' style={{color:'white'}}>
                             <span><strong>Search Result</strong></span>
                             </div>
                             <hr style={{margin:0}}/>
-                            <div style={{marginTop:'8px'}}>
+                            <div style={{marginTop:'8px', color:'white'}}>
                                 <div>
                                     {
                                         userSearch && userSearch.length > 0 ? (
@@ -260,7 +260,7 @@ const TopNavbar = ({handleToggleSidebar}) => {
                                     {
                                         error && (!userSearch && !postSearch) && (
                                             <div style={{marginBottom:'8px'}}>
-                                                <span>{error}</span>
+                                                <span style={{color:'white'}}>{error}</span>
                                             </div>
                                         )
                                     } 

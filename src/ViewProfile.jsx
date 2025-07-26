@@ -71,7 +71,7 @@ return (
                   
                   <div style={{
                     position: 'absolute',
-                    zIndex: 2,
+                    zIndex: 0,
                     bottom: '-30px',
                     left: '0px',
                     display: 'flex',
