@@ -1,0 +1,18 @@
+.view-post {
+    background-color: black;
+    border: 1px solid white; 
+    margin-bottom: 8px;
+}
+.view-post:hover {
+    background-color: #1a1a1a;
+    cursor: pointer;
+}
+.view-post-title {
+    font-size: 1.563rem;
+    color: #ffffff;
+    font-weight: bold
+}
+.view-post-title:hover {
+    color: #ff9800;
+    text-decoration: underline;
+}

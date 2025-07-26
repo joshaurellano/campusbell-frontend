@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ReactTimeAgo from 'react-time-ago'
 import { Row, Col, Container, Figure, Button, Badge, Card } from 'react-bootstrap';
 
 import { FaBookOpen } from "react-icons/fa";
@@ -10,10 +11,12 @@ import {API_ENDPOINT} from './Api';
 
 import TopNavbar from './components/TopNavbar';
 import Sidebar from './components/Sidebar';
+import './ViewProfile.css';
 
 axios.defaults.withCredentials = true;
 
 const ViewProfile = () => {
+    const navigate = useNavigate();
     const [showSidebar, setShowSidebar] = useState(false);
     const [profile, setProfile] = useState([]);
 
@@ -118,12 +121,12 @@ return (
                 <div>
                   <div style={{padding:'8px', gap:'10px'}} className='d-flex align-items-center'>
                     <FaBookOpen style={{color:'white'}} />
-                    <span style={{color:'white', fontSize:'1.125rem'}}>About Me</span>
+                    <span style={{color:'white', fontSize:'1.125rem'}}>Bio</span>
                   </div>
                   <div>
                   
                   <div className='container'>
-                    <Card style={{width:'100%', height:'100px'}}>
+                    <Card style={{width:'100%', height:'100px', backgroundColor:'#1a1a1a'}}>
                       <Card.Body></Card.Body>
                     </Card>
                   </div>
@@ -139,13 +142,23 @@ return (
                     {
                       profile.posts && profile.posts.length > 0 ? (
                         profile.posts.map((post) =>(
-                          <Card key={post.postId} style={{backgroundColor:'black', border:'1px solid white', marginBottom:'8px'}}>
+                          <Card key={post.postId} className='view-post'>
                             <Card.Body>
-                              <div>
-                              <span style={{fontSize:'1.563rem', color:'white', fontWeight:'bold'}}>{post.post_title}</span>
+                              <div onClick={() =>{
+                                navigate('/view',{state:{postID:post.postId}})
+                              }}>
+                              <span className='view-post-title'>{post.post_title}</span>
                               </div>
                               <div>
-                                <span style={{color:'white'}}>{post.topic_name}</span>
+                                <small style={{color:'white'}}>{post?.post_posted && (
+                                  <ReactTimeAgo 
+                                  date={new Date(post.post_posted)}
+                                  locale="en-US"
+                                  timeStyle="twitter"/>
+                                )}</small>
+                              </div>
+                              <div>
+                                <small style={{color:'white'}}>{post.topic_name}</small>
                               </div>
                             </Card.Body>
                           </Card>
