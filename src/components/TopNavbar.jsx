@@ -8,6 +8,7 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import { BiSolidMessageRoundedDots } from "react-icons/bi";
 import { IoIosNotifications } from "react-icons/io";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { TbPointFilled } from "react-icons/tb";
 
 import ReactTimeAgo from 'react-time-ago'
 
@@ -210,12 +211,30 @@ const TopNavbar = ({handleToggleSidebar}) => {
                                                 <hr style={{margin:0}} />
                                                 {
                                                 userSearch.map((data)=>(
-                                                    <div className='selected-search' 
+                                                    <div className='selected'
                                                     key={data.user_id} onClick={() => { 
                                                         navigate('/user',{state:{userId:data.user_id}})
                                                         setSearch('')
                                                     }}>
-                                                        {data.username}
+
+                                                        <div className='d-flex flex-row align-items-center' style={{height:'100%', gap:'10px'}}>
+                                                            <div className='d-flex align-items-center'>
+                                                                <Image roundedCircle
+                                                                height='16px'
+                                                                width='16px'
+                                                                src={data.profile_image}
+                                                                alt='Profile Image'
+                                                                />
+                                                            </div>
+
+                                                            <div className='selected-search'>
+                                                            <span>{data.first_name} {data.last_name}</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div>
+                                                            <small style={{color:'#adb5bd', fontSize:'.8rem'}}>{data.username}</small>
+                                                            </div>
                                                         <hr />
                                                     </div>
                                             ))
@@ -238,12 +257,33 @@ const TopNavbar = ({handleToggleSidebar}) => {
                                                 <hr style={{margin:0}} />
                                             {
                                                 postSearch.map((data)=>(
-                                                    <div className='selected-search' key={data.post_id} onClick={() => {
+                                                    <div className='selected' key={data.post_id} onClick={() => {
                                                         navigate('/view',{state:{postID: data.post_id}})
                                                         setSearch('')
                                                         }
                                                     }>
-                                                    {data.title}
+                                                        <div>
+                                                            <div className='selected-search'>
+                                                            {data.title}
+                                                            </div>
+
+                                                            <div className='d-flex align-items-center h-100' style={{gap:'5px'}}>
+                                                                <TbPointFilled style={{fontSize:'.8rem'}} />
+                                                                <small style={{color:'#adb5bd', fontSize:'.8rem'}}>{data.topic_name}</small>
+                                                                
+                                                                <TbPointFilled style={{fontSize:'.8rem'}} />
+                                                                <Image roundedCircle
+                                                                height='16px'
+                                                                width='16px'
+                                                                src={data.profile_image}
+                                                                alt='Profile Image'
+                                                                />
+                                                                <small style={{color:'#adb5bd', fontSize:'.8rem'}}> {data.username}</small>
+                                                            </div>
+
+                                                            
+                                                            
+                                                        </div>
                                                     <hr />
                                                     </div>
                                                 ))
