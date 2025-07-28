@@ -93,9 +93,9 @@ return (
           </Col>
 
           <Col lg={10} sm={12} xs={12} style={{height:'calc(100vh - 68px)', overflowY:'auto', overflowX:'hidden'}}>
-                <Row style={{height:'350px', width:'100%',paddingLeft:'20px'}}>
+                <Row className='header-row'style={{height:'350px', width:'100%',paddingLeft:'20px'}}>
                   <Container className='p-0' fluid style={{position:'relative'}}>
-                  <div style={{
+                  <div className='cover-image' style={{
                       backgroundImage: "url('https://res.cloudinary.com/dv7ai6yrb/image/upload/v1753324185/pexels-pixabay-289737_gmm8ey.jpg')" ,
                       backgroundSize: "cover",
                       backgroundRepeat: "no-repeat",
@@ -107,33 +107,116 @@ return (
                       }}>
 
                   
-                  <div style={{
+                  <div
+                  className='view-header'
+                  style={{
                     position: 'absolute',
                     zIndex: 0,
                     bottom: '-30px',
                     left: '0px',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '20px',
-                    padding: '10px 20px',
+                    // gap: '20px',
+                    // padding: '10px 20px',
                     width:'100%',
                     //height:'auto'
                     }}>
-                    <Figure>
+                    <Row className='w-100' style={{position:'relative', left:'10px'}}>
+
+                    <Col lg={2} sm={6} xs={6}>
+                    <div className='d-flex align-items-center'>
+                    <Figure className='m-0'>
                     <Figure.Image
+                    className='view-pfp-image'
                     roundedCircle
                     fluid 
-                    width={180}
-                    height={180}
+                    width={150}
+                    height={150}
                     alt="profile image"
                     src={profile.profile_image} 
                     style={{border:'2px solid black'}}
                     />
                   </Figure>
-                    <div className='d-flex flex-column w-100'>
-                    <div className='d-flex flex-row justify-content-between' style={{width:'100%'}}>
-                    <div className='d-flex flex-row' style={{gap:'20px'}}>
-                      <h2 style={{color:'white'}}>{profile.first_name} {profile.last_name}</h2>
+                  </div>
+                  </Col>
+
+                  <Col sm={6} xs={6} className='mobile-col' style={{position:'relative', padding:0}}>
+                    <div className='d-flex justify-content-end align-items-center h-100'>
+                      {
+                      profile.friend ? (
+                        <div>
+                          <Button variant="outline-light" style={{pointerEvents:'none'}}>Friends</Button>
+                        </div>
+                      ) : !profile.friend && profile.friendRequest === null ? (
+                        <div>
+                          <div>
+                            <Button 
+                            disabled={buttonLoading}
+                            onClick={() => handleFriendRequest(profile.user_id)}
+                            >
+                              {
+                                buttonLoading ? (<>
+                                  <Spinner animation="border" size="sm" />
+                                </>) : 
+                                
+                                (<>
+                                Add as a friend
+                                </>)
+                              }
+                              
+                              </Button>
+                            </div>
+                        </div>
+                      ) : !profile.friend && profile.friendRequest === 'pending reply' ? (
+                        <div className='d-flex flex-row' style={{gap:'10px'}}>
+                        <div>
+                          <Button variant='success' onClick={() => handleAcceptFriendRequest(profile.user_id)}>
+                            {
+                              buttonLoading ? (
+                                <Spinner animation="border" size="sm" />
+                              ) : (
+                              <>
+                                Accept
+                              </>)
+                            }
+                          </Button>
+                        </div>
+                        <div>
+                          <Button variant='secondary' onClick={() => handleRejectFriendRequest(profile.user_id)}>Ignore</Button>
+                          </div>
+                        </div>
+                      ) : !profile.friend && profile.friendRequest === 'pending' ? (
+                        <div>
+                          <Button variant='outline-primary' style={{pointerEvents:'none'}}>Friend Request Sent</Button>
+                        </div>
+                      ) : !profile.friend && profile.friendRequest === 'rejected' && (
+                        <div>
+                          <OverlayTrigger overlay={rejectedTooltip}
+                            placement="left"
+                            delay={{ show: 250, hide: 400 }}
+                            >
+                          <span className="d-inline-block">
+                            <Button variant='outline-primary' disabled style={{ pointerEvents: 'none' }}>
+                              Add as a Friend
+                            </Button>
+                          </span>
+                          </OverlayTrigger>
+                        </div>
+                      )
+                      
+                    }
+                    </div>
+                  </Col>
+  
+                  
+                    <Col lg={7} sm={12} xs={12} className='view-header-main' style={{position:'relative', bottom:'-40px'}}>
+                    <div className='d-flex flex-column' style={{width:'100%'}}>
+                      <div className='d-flex flex-row' style={{gap:'10px'}}>
+                        <div>
+                          <h2 style={{color:'white'}}>{profile.first_name} {profile.last_name}</h2>
+                        </div>
+                      
+                      <div className='d-flex align-items-center'>
                       {
                         profile.role_id === 1 ? (
                           <div className='d-flex align-items-center'>
@@ -149,7 +232,15 @@ return (
                           </div>
                         )
                       }
+                      </div>
+                      </div>
+                      <span style={{color:'white'}}>{profile.username}</span>
+                    
                     </div>
+                    </Col>
+                    
+                    <Col lg={3} className='view-header-button d-flex justify-content-end' style={{position:'relative', bottom:'-40px', padding:0}}>
+                    <div>
                     {
                       profile.friend ? (
                         <div>
@@ -214,12 +305,9 @@ return (
                       
                     }
                     </div>
-
-                    <div>
-                      <span style={{color:'white'}}>{profile.username}</span>
-                    </div>
+                    </Col>
                     
-                    </div>
+                    </Row>
                     </div>
           
                     </div>
@@ -227,7 +315,7 @@ return (
                 
                 </Row>
               
-              <Row>
+              <Row className='content-row' style={{marginTop:'24px'}}>
                 <div>
                   <div style={{padding:'8px', gap:'10px'}} className='d-flex align-items-center'>
                     <FaBookOpen style={{color:'white'}} />

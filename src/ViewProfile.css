@@ -16,3 +16,34 @@
     color: #ff9800;
     text-decoration: underline;
 }
+.mobile-col { 
+    display: none !important;        
+}
+@media (max-width:600px) {
+    .view-header {
+        bottom: 60px !important;
+    } 
+    .view-pfp-image {
+        width: 100px;
+        height: 100px;
+    }
+    .view-header-main {
+        bottom: 0px !important;
+        margin-top: 10px;
+    }
+    .view-header-button {
+        display: none !important;
+        bottom: 0px !important;
+    }
+    .cover-image {
+        height: 40% !important;
+    }
+    .mobile-col {
+        display: block !important;   
+    }
+    .content-row {
+        margin-top: 0 !important;
+        position: relative;
+        top: -50px;
+    }
+}
