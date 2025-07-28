@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReactTimeAgo from 'react-time-ago'
-import { Row, Col, Container, Figure, Button, Badge, Card } from 'react-bootstrap';
+import { Row, Col, Container, Figure, Button, Badge, Card, Spinner } from 'react-bootstrap';
 
 import { FaBookOpen } from "react-icons/fa";
 import { FaNoteSticky } from "react-icons/fa6";
@@ -19,6 +19,7 @@ const ViewProfile = () => {
     const navigate = useNavigate();
     const [showSidebar, setShowSidebar] = useState(false);
     const [profile, setProfile] = useState([]);
+    const [buttonLoading, setButtonLoading] = useState(false);
 
     const location = useLocation();
     const user_id = location.state.userId;
@@ -27,12 +28,33 @@ const ViewProfile = () => {
         const id = user_id;
         try {
             await axios.get(`${API_ENDPOINT}user/view/${id}`,{withCredentials:true}).then(({data})=>{
-              console.log(data.result)
               setProfile(data.result)
             })
         } catch (error) {
             console.error(error)
         }
+    }
+    const handleFriendRequest = async (receiver_id) => {
+      setButtonLoading(true)
+      try {
+        const sendFriendRequest = await axios.post(`${API_ENDPOINT}request`,{receiver_id}, {withCredentials:true})
+          setButtonLoading(false)
+          viewUser();
+      } catch (error) {
+        console.error(error)
+        setButtonLoading(false)
+      }
+    }
+    const handleAcceptFiendRequest = async (id) => {
+      setButtonLoading(true)
+      try {
+        const acceptFriendRequest = await axios.put(`${API_ENDPOINT}request/accept/${id}`, {withCredentials:true})
+          setButtonLoading(false)
+          viewUser();
+      } catch (error) {
+        console.error(error)
+        setButtonLoading(false)
+      }
     }
 
     useEffect(() => {
@@ -100,9 +122,53 @@ return (
                       <Badge pill bg='success'>{profile.role}</Badge>
                       </div>
                     </div>
-                    <div>
-                      <Button>Add as a friend</Button>
-                    </div>
+                    {
+                      profile.friend ? (
+                        <div>
+                          <Button variant="outline-light" style={{pointerEvents:'none'}}>Friends</Button>
+                        </div>
+                      ) : !profile.friend && profile.friendRequest === null ? (
+                        <div>
+                          <div>
+                            <Button onClick={() => handleFriendRequest(profile.user_id)}>
+                              {
+                                buttonLoading ? (<>
+                                  <Spinner animation="border" size="sm" />
+                                </>) : 
+                                
+                                (<>
+                                Add as a friend
+                                </>)
+                              }
+                              
+                              </Button>
+                            </div>
+                        </div>
+                      ) : !profile.friend && profile.friendRequest === 'pending reply' ? (
+                        <div className='d-flex flex-row' style={{gap:'10px'}}>
+                        <div>
+                          <Button variant='success' onClick={() => handleAcceptFiendRequest(profile.user_id)}>
+                            {
+                              buttonLoading ? (
+                                <Spinner animation="border" size="sm" />
+                              ) : (
+                              <>
+                                Accept
+                              </>)
+                            }
+                          </Button>
+                        </div>
+                        <div>
+                          <Button variant='secondary'>Ignore</Button>
+                          </div>
+                        </div>
+                      ) : !profile.friend && profile.friendRequest === 'pending' && (
+                        <div>
+                          <Button variant='outline-primary' style={{pointerEvents:'none'}}>Friend Request Sent</Button>
+                        </div>
+                      )
+                      
+                    }
                     </div>
 
                     <div>
