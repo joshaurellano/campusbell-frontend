@@ -33,7 +33,6 @@ const ViewProfile = () => {
               if(data.result.friendRequest === 'rejected') {
                 setRejected(true);
               }
-              console.log(data.result.friendRequest)
             })
         } catch (error) {
             console.error(error)
@@ -135,9 +134,21 @@ return (
                     <div className='d-flex flex-row justify-content-between' style={{width:'100%'}}>
                     <div className='d-flex flex-row' style={{gap:'20px'}}>
                       <h2 style={{color:'white'}}>{profile.first_name} {profile.last_name}</h2>
-                      <div className='d-flex align-items-center'>
-                      <Badge pill bg='success'>{profile.role}</Badge>
-                      </div>
+                      {
+                        profile.role_id === 1 ? (
+                          <div className='d-flex align-items-center'>
+                            <Badge pill bg='danger'>{profile.role}</Badge>
+                            </div>
+                        ) : profile.role_id === 2 ? (
+                          <div className='d-flex align-items-center'>
+                            <Badge pill bg='warning'>{profile.role}</Badge>
+                          </div>
+                        ) :profile.role_id === 3 && (
+                          <div className='d-flex align-items-center'>
+                            <Badge pill bg='success'>{profile.role}</Badge>
+                          </div>
+                        )
+                      }
                     </div>
                     {
                       profile.friend ? (
