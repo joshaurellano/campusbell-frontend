@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReactTimeAgo from 'react-time-ago'
-import { Row, Col, Container, Figure, Button, Badge, Card, Spinner } from 'react-bootstrap';
+import { Row, Col, Container, Figure, Button, Badge, Card, Spinner, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { FaBookOpen } from "react-icons/fa";
 import { FaNoteSticky } from "react-icons/fa6";
@@ -18,6 +18,7 @@ axios.defaults.withCredentials = true;
 const ViewProfile = () => {
     const navigate = useNavigate();
     const [showSidebar, setShowSidebar] = useState(false);
+    const [rejected, setRejected] = useState(false);
     const [profile, setProfile] = useState([]);
     const [buttonLoading, setButtonLoading] = useState(false);
 
@@ -29,6 +30,10 @@ const ViewProfile = () => {
         try {
             await axios.get(`${API_ENDPOINT}user/view/${id}`,{withCredentials:true}).then(({data})=>{
               setProfile(data.result)
+              if(data.result.friendRequest === 'rejected') {
+                setRejected(true);
+              }
+              console.log(data.result.friendRequest)
             })
         } catch (error) {
             console.error(error)
@@ -45,7 +50,7 @@ const ViewProfile = () => {
         setButtonLoading(false)
       }
     }
-    const handleAcceptFiendRequest = async (id) => {
+    const handleAcceptFriendRequest = async (id) => {
       setButtonLoading(true)
       try {
         const acceptFriendRequest = await axios.put(`${API_ENDPOINT}request/accept/${id}`, {withCredentials:true})
@@ -56,7 +61,19 @@ const ViewProfile = () => {
         setButtonLoading(false)
       }
     }
-
+    const handleRejectFriendRequest = async (id) => {
+      try {
+        const rejectFriendRequest = await axios.put(`${API_ENDPOINT}request/reject/${id}`, {withCredentials:true})
+          viewUser();
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    const rejectedTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Please wait 48 hrs to be able to send a friend request again
+    </Tooltip>
+  );
     useEffect(() => {
         viewUser()
     },[user_id])
@@ -130,7 +147,10 @@ return (
                       ) : !profile.friend && profile.friendRequest === null ? (
                         <div>
                           <div>
-                            <Button onClick={() => handleFriendRequest(profile.user_id)}>
+                            <Button 
+                            disabled={buttonLoading}
+                            onClick={() => handleFriendRequest(profile.user_id)}
+                            >
                               {
                                 buttonLoading ? (<>
                                   <Spinner animation="border" size="sm" />
@@ -147,7 +167,7 @@ return (
                       ) : !profile.friend && profile.friendRequest === 'pending reply' ? (
                         <div className='d-flex flex-row' style={{gap:'10px'}}>
                         <div>
-                          <Button variant='success' onClick={() => handleAcceptFiendRequest(profile.user_id)}>
+                          <Button variant='success' onClick={() => handleAcceptFriendRequest(profile.user_id)}>
                             {
                               buttonLoading ? (
                                 <Spinner animation="border" size="sm" />
@@ -159,12 +179,25 @@ return (
                           </Button>
                         </div>
                         <div>
-                          <Button variant='secondary'>Ignore</Button>
+                          <Button variant='secondary' onClick={() => handleRejectFriendRequest(profile.user_id)}>Ignore</Button>
                           </div>
                         </div>
-                      ) : !profile.friend && profile.friendRequest === 'pending' && (
+                      ) : !profile.friend && profile.friendRequest === 'pending' ? (
                         <div>
                           <Button variant='outline-primary' style={{pointerEvents:'none'}}>Friend Request Sent</Button>
+                        </div>
+                      ) : !profile.friend && profile.friendRequest === 'rejected' && (
+                        <div>
+                          <OverlayTrigger overlay={rejectedTooltip}
+                            placement="left"
+                            delay={{ show: 250, hide: 400 }}
+                            >
+                          <span className="d-inline-block">
+                            <Button variant='outline-primary' disabled style={{ pointerEvents: 'none' }}>
+                              Add as a Friend
+                            </Button>
+                          </span>
+                          </OverlayTrigger>
                         </div>
                       )
                       
