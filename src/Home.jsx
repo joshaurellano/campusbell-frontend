@@ -257,47 +257,77 @@ function Home () {
                 post.map((post)=>(
                     <div key={`main-${post.postID}`}>
                     <Card className='post-card'>
-                        <Card.Header>
-                        <div className='d-flex flex-row w-100'>
-                        <div style ={{fontSize:'12px'}}>
-                            <div className='d-flex align-items-center h-100'>
+                        <Card.Header className='post-card-header'>
+                        <div className='d-flex flex-row align-items-center' style={{gap:'8px'}}>
+                        <div className='d-flex align-items-center h-100 w-100' style ={{fontSize:'16px'}}>
+                            <Row className='header-row-1'style={{width:'100%'}}>
+                                <Col lg={1} sm={2} xs={2} className='card-header-col-1' style={{paddingRight:'0'}}>
                                 <Image 
+                                className='post-pfp-image'
                                     src={post.profile_image}
                                     roundedCircle
-                                    height={20}
-                                    width={20}
+                                    height={40}
+                                    width={40}
                                 />
-                                <span style ={{marginLeft:'4px'}}> {post.username}  
-                                </span>
-                            </div>
-                        </div>
-                        <div style ={{fontSize:'12px', marginLeft:'4px', width:'100%'}}>
-                            <div className='d-flex align-items-center h-100 w-100'>
-                                <TbPointFilled />
-                                <AiFillClockCircle />
-                                <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
-                                <span style ={{marginLeft:'4px'}}> {post?.date_posted && (<ReactTimeAgo
-                                        date={new Date(post.date_posted).toISOString()}
-                                        locale="en-US"
-                                        timeStyle="twitter"
-                                        />)}</span>
+                                </Col>
+                                <Col lg={11} sm={10} xs={10} className='card-header-col-2 d-flex flex-column' style={{paddingLeft:'0'}}>
+                                <Row className='card-header-row1'>
+                                {/* <div className='d-flex flex-row' style={{gap:'10px'}}> */}
+                                    <Col className='card-header-name pe-0' lg={4} md={4} xs={12} sm={12}>
+                                    <div style={{fontWeight:'500', fontSize:'16px'}}>
+                                    <span>{post.first_name} {post.last_name}</span>
+                                    </div>
+                                    </Col>
+                                    
+                                    <Col lg={4} md={4} xs={6} sm={6} className='card-header-username pe-0'>
+                                    <div className='d-flex align-items-center h-100' style={{fontSize:'12px',color:'#ADADAD'}}>
+                                        <TbPointFilled />
+                                        <span>{post.username}</span>
+                                    </div>
+                                    </Col>
+
+                                    <Col lg={4} md={4} className='px-0 d-none d-lg-block d-md-block'>
+                                    <div className='d-flex align-items-center h-100' style ={{fontSize:'12px',color:'#ADADAD'}}>
+                                        <TbPointFilled />
+                                        <span>{post.topic_name}</span>
+                                    </div>
+                                    </Col>
+
+                                </Row>
+
+                                <div className='card-header-row2 d-flex flex-row align-items-center h-100' style ={{fontSize:'12px',color:'#ADADAD', gap:'5px'}}>
+                                    <div className='d-flex flex-row align-items-center'>
+                                        
+                                        <AiFillClockCircle />
+                                        <span style ={{marginLeft:'4px'}}> {post?.date_posted && (<ReactTimeAgo
+                                                date={new Date(post.date_posted).toISOString()}
+                                                locale="en-US"
+                                                timeStyle="twitter"
+                                                />)}</span>
+                                    </div>
+
+                                    <div>
+                                        <Col className='d-block d-lg-none d-md-none'>
+                                            <div className='d-flex align-items-center h-100' style ={{fontSize:'12px',color:'#ADADAD'}}>
+                                                <TbPointFilled />
+                                                <span>{post.topic_name}</span>
+                                            </div>
+                                        </Col>
+                                    </div>
                                 </div>
-                            </div> 
+                                </Col>
+                            </Row>
                         </div>
-                        <div style={{display:'flex',width:'100%',justifyContent:'end'}}>
-                            <IoIosMore />
+                         
                         </div>
-                        </div>
-                        <div style ={{fontSize:'12px', marginTop:'4px'}}>
-                            {post.topic_name}
-                        </div>
+                        
                         <div>
                         <span className='post-title'>{post.title}  </span><br />
                         </div>
                         
                         </Card.Header>
 
-                        <Card.Body  onClick={()=>viewPost(post.postID)}>
+                        <Card.Body className='pt-0' onClick={()=>viewPost(post.postID)}>
                         <div className='post-content'>
                             {(post.content).slice(0,500)}
                         </div>

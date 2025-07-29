@@ -198,11 +198,26 @@
     cursor: pointer;
     background-color: #2a2a2a;
 }
+.card-header-name {
+    min-width: 10%;
+    width: auto;
+}
+.card-header-username {
+    width: 10%;
+}
 /* .searchbar.form-control::placeholder {
     padding-left: 20px;
 } */
     
 @media (max-width: 600px) {
+.card-header-username {
+    width: 30%;
+    padding-left: 0;
+}
+.card-header-name {
+    width: 100%;
+    padding-left: 0;
+}
 .brand {
     align-items: center;
     font-size: .9rem;
@@ -321,6 +336,25 @@ justify-content: center !important;
     font-size: .8rem;
     line-height: 30px;
 }
+.card-header-row1 {
+        padding-left: 0px;
+        left: 18px !important;
+        
+    }
+.card-header-row2 {
+        padding-left: 0px;
+        left: 0px !important;
+    }
+.card-header-col-1 {
+    padding-left: 0;
+}
+.card-header-col-2 {
+    padding-right: 0;
+}
+.header-row-1 {
+    position: relative;
+    left: 10px;
+}
 }
 @media (max-width: 990px) {
 .searchbar{
@@ -364,7 +398,7 @@ justify-content: center !important;
     height:auto
 }
 }
-@media (width: 1024px) {
+@media (min-width: 1024px) {
 .searchbar{
         width: 20rem !important;
     }
@@ -374,6 +408,10 @@ justify-content: center !important;
 .brand {
     padding-left: 1rem;
 }
+.card-header-username {
+    width: 10% !important;
+}
+
 }
 @media (min-width: 991px){
     .topic-col{
@@ -404,5 +442,36 @@ justify-content: center !important;
 @media (max-width: 320px){
     .brand {
         font-size: .8rem;
+    }
+}
+@media (min-width: 768px) {
+    .card-header-username {
+        width: 15%;
+    }
+}
+@media (min-width: 992px) {
+    .card-header-row1 {
+        padding-left: 10px;
+    }
+    .card-header-row2 {
+        padding-left: 10px;
+    }
+}
+@media (max-width:990px) {
+    .card-header-row1 {
+        position: relative;
+        left: -40px;
+    }
+    .card-header-row2 {
+        position: relative;
+        left: -40px;
+    }
+}
+@media (max-width:776px) {
+    .card-header-row1 {
+        left: 0px;
+    }
+    .card-header-row2 {
+        left: 0px;
     }
 }
