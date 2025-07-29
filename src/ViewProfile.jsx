@@ -23,10 +23,11 @@ const ViewProfile = () => {
     const [buttonLoading, setButtonLoading] = useState(false);
 
     const location = useLocation();
-    const user_id = location.state.userId;
+    const viewed_user_id = location.state.userId;
+    const user_id = location.state.user_id;
 
     const viewUser = async () => {
-        const id = user_id;
+        const id =  viewed_user_id;
         try {
             await axios.get(`${API_ENDPOINT}user/view/${id}`,{withCredentials:true}).then(({data})=>{
               setProfile(data.result)
@@ -75,7 +76,7 @@ const ViewProfile = () => {
   );
     useEffect(() => {
         viewUser()
-    },[user_id])
+    },[viewed_user_id])
 
 return (
     <div style={{height:'100vh', overflow:'hidden'}}>
@@ -120,11 +121,11 @@ return (
                   <Col sm={6} xs={6} className='mobile-col' style={{position:'relative', padding:0}}>
                     <div className='d-flex justify-content-end align-items-center h-100'>
                       {
-                      profile.friend ? (
+                      (user_id !== viewed_user_id) && profile.friend ? (
                         <div>
                           <Button className='friend-btn-component' variant="outline-light" style={{pointerEvents:'none'}}>Friends</Button>
                         </div>
-                      ) : !profile.friend && profile.friendRequest === null ? (
+                      ) : (user_id !== viewed_user_id) && (!profile.friend && profile.friendRequest === null) ? (
                         <div>
                           <div>
                             <Button className='friend-btn-component'
@@ -144,7 +145,7 @@ return (
                               </Button>
                             </div>
                         </div>
-                      ) : !profile.friend && profile.friendRequest === 'pending reply' ? (
+                      ) : (user_id !== viewed_user_id) && (!profile.friend && profile.friendRequest === 'pending reply') ? (
                         <div className='d-flex flex-row' style={{gap:'10px'}}>
                         <div>
                           <Button className='friend-btn-component' variant='success' onClick={() => handleAcceptFriendRequest(profile.user_id)}>
@@ -162,11 +163,11 @@ return (
                           <Button className='friend-btn-component' variant='secondary' onClick={() => handleRejectFriendRequest(profile.user_id)}>Ignore</Button>
                           </div>
                         </div>
-                      ) : !profile.friend && profile.friendRequest === 'pending' ? (
+                      ) : (user_id !== viewed_user_id) && (!profile.friend && profile.friendRequest === 'pending') ? (
                         <div>
                           <Button className='friend-btn-component' variant='outline-primary' style={{pointerEvents:'none'}}>Friend Request Sent</Button>
                         </div>
-                      ) : !profile.friend && profile.friendRequest === 'rejected' && (
+                      ) : (user_id !== viewed_user_id) && (!profile.friend && profile.friendRequest === 'rejected') && (
                         <div>
                           <OverlayTrigger overlay={rejectedTooltip}
                             placement="left"
@@ -179,8 +180,7 @@ return (
                           </span>
                           </OverlayTrigger>
                         </div>
-                      )
-                      
+                      ) 
                     }
                     </div>
                   </Col>
@@ -190,7 +190,7 @@ return (
                     <div className='d-flex flex-column' style={{width:'100%'}}>
                       <div className='d-flex flex-row align-items-center' style={{gap:'10px', marginBottom:'4px'}}>
                         <div>
-                          <h2 style={{color:'white', margin:0}}>{profile.first_name} {profile.last_name}</h2>
+                          <h2 className='view-header-name'>{profile.first_name} {profile.last_name}</h2>
                         </div>
                       
                       <div className='role-badge'>
@@ -211,7 +211,7 @@ return (
                       }
                       </div>
                       </div>
-                      <span style={{color:'white'}}>{profile.username}</span>
+                      <span className='view-header-username' style={{color:'white'}}>{profile.username}</span>
                     
                     </div>
                     </Col>
@@ -219,11 +219,11 @@ return (
                     <Col lg={3} className='view-header-button'>
                     <div>
                     {
-                      profile.friend ? (
+                      (user_id !== viewed_user_id) && (profile.friend) ? (
                         <div>
                           <Button variant="outline-light" style={{pointerEvents:'none'}}>Friends</Button>
                         </div>
-                      ) : !profile.friend && profile.friendRequest === null ? (
+                      ) : (user_id !== viewed_user_id) && (!profile.friend && profile.friendRequest === null) ? (
                         <div>
                           <div>
                             <Button
@@ -243,7 +243,7 @@ return (
                               </Button>
                             </div>
                         </div>
-                      ) : !profile.friend && profile.friendRequest === 'pending reply' ? (
+                      ) : (user_id !== viewed_user_id) && (!profile.friend && profile.friendRequest === 'pending reply') ? (
                         <div className='d-flex flex-row' style={{gap:'10px'}}>
                         <div>
                           <Button variant='success' onClick={() => handleAcceptFriendRequest(profile.user_id)}>
@@ -261,11 +261,11 @@ return (
                           <Button variant='secondary' onClick={() => handleRejectFriendRequest(profile.user_id)}>Ignore</Button>
                           </div>
                         </div>
-                      ) : !profile.friend && profile.friendRequest === 'pending' ? (
+                      ) : (user_id !== viewed_user_id) && (!profile.friend && profile.friendRequest === 'pending') ? (
                         <div>
                           <Button variant='outline-primary' style={{pointerEvents:'none'}}>Friend Request Sent</Button>
                         </div>
-                      ) : !profile.friend && profile.friendRequest === 'rejected' && (
+                      ) : (user_id !== viewed_user_id) && (!profile.friend && profile.friendRequest === 'rejected') && (
                         <div>
                           <OverlayTrigger overlay={rejectedTooltip}
                             placement="left"

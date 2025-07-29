@@ -57,13 +57,16 @@
     border-radius: 5px;
     outline: 1px solid black;
 }
+.view-header-name {
+    color: white;
+}
 .role-badge {
     display: flex;
     align-items: center;
 }
 @media (max-width:600px) {
     .view-header {
-        bottom: 60px !important;
+        bottom: 70px !important;
     } 
     .view-pfp-image {
         width: 100px;
@@ -105,5 +108,12 @@
     }
     .friend-btn-component {
         font-size: .7rem;
+    }
+    .view-header-name {
+        font-size: 1rem !important;
+        margin: 0;
+    }
+    .view-header-username {
+        font-size: .9rem !important;
     }
 }

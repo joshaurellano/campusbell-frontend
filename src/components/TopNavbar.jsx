@@ -44,7 +44,7 @@ const TopNavbar = ({handleToggleSidebar}) => {
           const checkUserSession = async () => {
               try {
                   const userInfo = await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
-                      setUser(data.result);
+                        setUser(data.result);
                   })
                   // console.log(userInfo)  
               } catch(error) {
@@ -212,8 +212,8 @@ const TopNavbar = ({handleToggleSidebar}) => {
                                                 {
                                                 userSearch.map((data)=>(
                                                     <div className='selected'
-                                                    key={data.user_id} onClick={() => { 
-                                                        navigate('/user',{state:{userId:data.user_id}})
+                                                    key={data.user_id} onClick={() => {
+                                                        navigate('/user',{state:{userId:data.user_id, user_id:user.user_id}})
                                                         setSearch('')
                                                     }}>
 

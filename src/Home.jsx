@@ -2,16 +2,17 @@ import { useEffect, useState, useRef } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Container,Row,Col,Card,Placeholder,Spinner,Alert} from 'react-bootstrap';
+import {Container,Row,Col,Card,Placeholder,Spinner,Alert,Image} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
-import { CiClock2 } from "react-icons/ci";
+import { AiFillClockCircle } from "react-icons/ai";
 import { AiOutlineLike } from "react-icons/ai";
 import { TbShare3 } from "react-icons/tb";
 import { FaRegComment } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
+import { TbPointFilled } from "react-icons/tb";
 
 import ReactTimeAgo from 'react-time-ago'
 
@@ -260,14 +261,20 @@ function Home () {
                         <div className='d-flex flex-row w-100'>
                         <div style ={{fontSize:'12px'}}>
                             <div className='d-flex align-items-center h-100'>
-                                <FaUser  />
+                                <Image 
+                                    src={post.profile_image}
+                                    roundedCircle
+                                    height={20}
+                                    width={20}
+                                />
                                 <span style ={{marginLeft:'4px'}}> {post.username}  
                                 </span>
                             </div>
                         </div>
                         <div style ={{fontSize:'12px', marginLeft:'4px', width:'100%'}}>
                             <div className='d-flex align-items-center h-100 w-100'>
-                                <CiClock2 />
+                                <TbPointFilled />
+                                <AiFillClockCircle />
                                 <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
                                 <span style ={{marginLeft:'4px'}}> {post?.date_posted && (<ReactTimeAgo
                                         date={new Date(post.date_posted).toISOString()}
