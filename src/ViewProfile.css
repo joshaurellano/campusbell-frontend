@@ -16,8 +16,50 @@
     color: #ff9800;
     text-decoration: underline;
 }
+.view-header-button {
+    position: relative;
+    bottom: -40px;
+    padding:0;
+    display: flex;
+    justify-content: end;
+}
 .mobile-col { 
     display: none !important;        
+}
+.view-section-title {
+    padding: 8px; 
+    gap: 10px;
+    font-size: 1.125rem;
+    color: white;
+    display:flex;
+    align-items: center;
+}
+.view-header-main {
+    position: relative;
+    bottom: -40px;
+}
+.view-header {
+    position: absolute;
+    z-index: 0;
+    bottom: -30px;
+    left: 0px;
+    display: flex;
+    align-items: center;
+    width:100%;
+}
+.cover-image {
+    background-image: url('https://res.cloudinary.com/dv7ai6yrb/image/upload/v1753324185/pexels-pixabay-289737_gmm8ey.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 65%;
+    width: 100%;
+    border-radius: 5px;
+    outline: 1px solid black;
+}
+.role-badge {
+    display: flex;
+    align-items: center;
 }
 @media (max-width:600px) {
     .view-header {
@@ -45,5 +87,23 @@
         margin-top: 0 !important;
         position: relative;
         top: -50px;
+    }
+    .view-post-title {
+        font-size: 1rem;
+    }
+    .view-post-datetime {
+        font-size: .9rem;
+    }
+    .view-post-topic {
+        font-size: .9rem;
+    }
+    .view-section-title {
+        font-size: 1rem;
+    }
+    .role-badge {
+        font-size: .8rem;
+    }
+    .friend-btn-component {
+        font-size: .7rem;
     }
 }

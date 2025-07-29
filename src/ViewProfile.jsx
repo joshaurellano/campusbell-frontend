@@ -95,32 +95,9 @@ return (
           <Col lg={10} sm={12} xs={12} style={{height:'calc(100vh - 68px)', overflowY:'auto', overflowX:'hidden'}}>
                 <Row className='header-row'style={{height:'350px', width:'100%',paddingLeft:'20px'}}>
                   <Container className='p-0' fluid style={{position:'relative'}}>
-                  <div className='cover-image' style={{
-                      backgroundImage: "url('https://res.cloudinary.com/dv7ai6yrb/image/upload/v1753324185/pexels-pixabay-289737_gmm8ey.jpg')" ,
-                      backgroundSize: "cover",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "center",
-                      height:'65%',
-                      width: "100%",
-                      borderRadius:'5px',
-                      outline:'1px solid black'
-                      }}>
-
-                  
+                  <div className='cover-image'>
                   <div
-                  className='view-header'
-                  style={{
-                    position: 'absolute',
-                    zIndex: 0,
-                    bottom: '-30px',
-                    left: '0px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    // gap: '20px',
-                    // padding: '10px 20px',
-                    width:'100%',
-                    //height:'auto'
-                    }}>
+                  className='view-header'>
                     <Row className='w-100' style={{position:'relative', left:'10px'}}>
 
                     <Col lg={2} sm={6} xs={6}>
@@ -145,12 +122,12 @@ return (
                       {
                       profile.friend ? (
                         <div>
-                          <Button variant="outline-light" style={{pointerEvents:'none'}}>Friends</Button>
+                          <Button className='friend-btn-component' variant="outline-light" style={{pointerEvents:'none'}}>Friends</Button>
                         </div>
                       ) : !profile.friend && profile.friendRequest === null ? (
                         <div>
                           <div>
-                            <Button 
+                            <Button className='friend-btn-component'
                             disabled={buttonLoading}
                             onClick={() => handleFriendRequest(profile.user_id)}
                             >
@@ -170,7 +147,7 @@ return (
                       ) : !profile.friend && profile.friendRequest === 'pending reply' ? (
                         <div className='d-flex flex-row' style={{gap:'10px'}}>
                         <div>
-                          <Button variant='success' onClick={() => handleAcceptFriendRequest(profile.user_id)}>
+                          <Button className='friend-btn-component' variant='success' onClick={() => handleAcceptFriendRequest(profile.user_id)}>
                             {
                               buttonLoading ? (
                                 <Spinner animation="border" size="sm" />
@@ -182,12 +159,12 @@ return (
                           </Button>
                         </div>
                         <div>
-                          <Button variant='secondary' onClick={() => handleRejectFriendRequest(profile.user_id)}>Ignore</Button>
+                          <Button className='friend-btn-component' variant='secondary' onClick={() => handleRejectFriendRequest(profile.user_id)}>Ignore</Button>
                           </div>
                         </div>
                       ) : !profile.friend && profile.friendRequest === 'pending' ? (
                         <div>
-                          <Button variant='outline-primary' style={{pointerEvents:'none'}}>Friend Request Sent</Button>
+                          <Button className='friend-btn-component' variant='outline-primary' style={{pointerEvents:'none'}}>Friend Request Sent</Button>
                         </div>
                       ) : !profile.friend && profile.friendRequest === 'rejected' && (
                         <div>
@@ -196,7 +173,7 @@ return (
                             delay={{ show: 250, hide: 400 }}
                             >
                           <span className="d-inline-block">
-                            <Button variant='outline-primary' disabled style={{ pointerEvents: 'none' }}>
+                            <Button className='friend-btn-component' variant='outline-primary' disabled style={{ pointerEvents: 'none' }}>
                               Add as a Friend
                             </Button>
                           </span>
@@ -209,14 +186,14 @@ return (
                   </Col>
   
                   
-                    <Col lg={7} sm={12} xs={12} className='view-header-main' style={{position:'relative', bottom:'-40px'}}>
+                    <Col lg={7} sm={12} xs={12} className='view-header-main'>
                     <div className='d-flex flex-column' style={{width:'100%'}}>
-                      <div className='d-flex flex-row' style={{gap:'10px'}}>
+                      <div className='d-flex flex-row align-items-center' style={{gap:'10px', marginBottom:'4px'}}>
                         <div>
-                          <h2 style={{color:'white'}}>{profile.first_name} {profile.last_name}</h2>
+                          <h2 style={{color:'white', margin:0}}>{profile.first_name} {profile.last_name}</h2>
                         </div>
                       
-                      <div className='d-flex align-items-center'>
+                      <div className='role-badge'>
                       {
                         profile.role_id === 1 ? (
                           <div className='d-flex align-items-center'>
@@ -239,7 +216,7 @@ return (
                     </div>
                     </Col>
                     
-                    <Col lg={3} className='view-header-button d-flex justify-content-end' style={{position:'relative', bottom:'-40px', padding:0}}>
+                    <Col lg={3} className='view-header-button'>
                     <div>
                     {
                       profile.friend ? (
@@ -249,7 +226,7 @@ return (
                       ) : !profile.friend && profile.friendRequest === null ? (
                         <div>
                           <div>
-                            <Button 
+                            <Button
                             disabled={buttonLoading}
                             onClick={() => handleFriendRequest(profile.user_id)}
                             >
@@ -317,9 +294,9 @@ return (
               
               <Row className='content-row' style={{marginTop:'24px'}}>
                 <div>
-                  <div style={{padding:'8px', gap:'10px'}} className='d-flex align-items-center'>
-                    <FaBookOpen style={{color:'white'}} />
-                    <span style={{color:'white', fontSize:'1.125rem'}}>Bio</span>
+                  <div className='view-section-title'>
+                    <FaBookOpen />
+                    <span>Bio</span>
                   </div>
                   <div>
                   
@@ -330,9 +307,9 @@ return (
                   </div>
 
                   <div>
-                    <div style={{padding:'8px', gap:'10px'}} className='d-flex align-items-center'>
-                    <FaNoteSticky style={{color:'white'}} />
-                    <span style={{color:'white', fontSize:'1.125rem'}}>Posts</span>
+                    <div className='view-section-title'>
+                    <FaNoteSticky />
+                    <span>Posts</span>
                   </div>
                   </div>
 
@@ -347,7 +324,7 @@ return (
                               }}>
                               <span className='view-post-title'>{post.post_title}</span>
                               </div>
-                              <div>
+                              <div className='view-post-datetime'>
                                 <small style={{color:'white'}}>{post?.post_posted && (
                                   <ReactTimeAgo 
                                   date={new Date(post.post_posted)}
@@ -355,7 +332,7 @@ return (
                                   timeStyle="twitter"/>
                                 )}</small>
                               </div>
-                              <div>
+                              <div className='view-post-topic'>
                                 <small style={{color:'white'}}>{post.topic_name}</small>
                               </div>
                             </Card.Body>
