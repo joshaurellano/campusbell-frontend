@@ -435,14 +435,14 @@ justify-content: center !important;
     font-size: 1.2rem;
 }
     .brand {
-    font-size: 1rem;
+    font-size: .8rem;
 }
 }
-@media (max-width: 320px){
+/* @media (max-width: 320px){
     .brand {
         font-size: .8rem;
     }
-}
+} */
 @media (min-width: 768px) {
     .card-header-username {
         width: 15%;

@@ -155,7 +155,11 @@ function Login () {
                                         type='text'
                                         placeholder=' '
                                         value={username}
-                                        onChange={(e) => setUsername(e.target.value)}isInvalid={!!usernameError}
+                                        onChange={(e) => {
+                                            setUsername(e.target.value)
+                                            setUsernameError('')
+                                        }
+                                        }isInvalid={!!usernameError}
                                         style={{borderRadius:'10px',fontSize:'16px'}}
                                         required />
                                 <Form.Control.Feedback type='invalid'>{usernameError}</Form.Control.Feedback>
@@ -181,12 +185,20 @@ function Login () {
                                         type='text'
                                         placeholder=''
                                         value={password}
-                                        onChange={(e) => setPassword(e.target.value)}isInvalid={!!passwordError} 
+                                        onChange={(e) => {
+                                            setPassword(e.target.value)
+                                            setPasswordError('')
+                                        }}isInvalid={!!passwordError} 
                                         style={{borderRadius:'10px', fontSize:'12px'}}
                                         required />
                                         <Form.Control.Feedback type='invalid'>{passwordError}</Form.Control.Feedback>
                                 </FloatingLabel>
-                                        <IoEye className='eye-icon' onClick={onHidePassword}/>
+                                    {
+                                        !usernameError && !passwordError &&
+                                        (
+                                            <IoEye className='eye-icon' onClick={onHidePassword}/>
+                                        )
+                                    }
                           </>
                                 ):(
                                 <>
@@ -205,12 +217,20 @@ function Login () {
                                         type='password'
                                         placeholder=''
                                         value={password}
-                                        onChange={(e) => setPassword(e.target.value)}isInvalid={!!passwordError} 
+                                        onChange={(e) => {
+                                            setPassword(e.target.value)
+                                            setPasswordError('')
+                                        }}isInvalid={!!passwordError} 
                                         style={{borderRadius:'10px', fontSize:'12px'}}
                                         required />
                                         <Form.Control.Feedback type='invalid'>{passwordError}</Form.Control.Feedback>
                                 </FloatingLabel>
-                                        <IoEyeOff className='eye-icon' onClick={onShowPassword}/>
+                                        {
+                                            !passwordError && !usernameError &&
+                                                (
+                                                    <IoEyeOff className='eye-icon' onClick={onShowPassword}/>
+                                                )
+                                        }
                                         </>
                                 )}
                             </Form.Group>
@@ -260,7 +280,7 @@ function Login () {
                             </Modal.Header>
                             <Modal.Body>
                                 <span>We just need to confirm first your identity.</span><br /> <br />
-                                <span>Please enter your email address in order for you to receive a reset link</span> <br />
+                                <span>Please enter your email address in order to receive a reset link</span> <br />
                                 <Form id='FormReceiveLink' onSubmit={sendResetLink}>
                                     <Form.Group>
                                         <Form.Control

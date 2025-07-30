@@ -125,7 +125,7 @@ const Sidebar = ({ showSidebar, handleCloseSidebar }) => {
 
             <div className='d-block d-lg-none d-md-block d-sm-none'>
             <Offcanvas show={showSidebar} onHide={handleCloseSidebar} style={{backgroundColor:'black', width:'250px'}}>
-                <Offcanvas.Header style={{color:'white'}} closeButton>
+                <Offcanvas.Header style={{color:'white'}}>
                 <Offcanvas.Title>
                     <Nav>
                         <div style={{display:'flex',alignItems:'center',fontSize:'15px', marginTop:'5px'}}>
@@ -137,6 +137,7 @@ const Sidebar = ({ showSidebar, handleCloseSidebar }) => {
                             </div>
                     </Nav>
                 </Offcanvas.Title>
+                <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseSidebar}></button>
                 </Offcanvas.Header>
                 <hr style={{color:'white'}}/>
                 <Offcanvas.Body>
