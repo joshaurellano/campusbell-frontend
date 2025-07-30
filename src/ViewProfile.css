@@ -89,7 +89,7 @@
     .content-row {
         margin-top: 0 !important;
         position: relative;
-        top: -50px;
+        top: -60px;
     }
     .view-post-title {
         font-size: 1rem;
@@ -115,5 +115,21 @@
     }
     .view-header-username {
         font-size: .9rem !important;
+    }
+}
+@media (max-width: 990px) and (min-width:600px) {
+    .view-header-button {
+        display: none !important;
+    }
+    .view-header-main {
+        bottom: 0px
+    }
+    .mobile-col {
+        display: block !important;   
+        bottom: -30px;
+    }
+    .content-row {
+        position: relative;
+        bottom: -10px;
     }
 }
