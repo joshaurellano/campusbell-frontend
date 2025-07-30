@@ -338,8 +338,7 @@ justify-content: center !important;
 }
 .card-header-row1 {
         padding-left: 0px;
-        left: 18px !important;
-        
+        left: 12px !important;
     }
 .card-header-row2 {
         padding-left: 0px;
@@ -403,7 +402,7 @@ justify-content: center !important;
         width: 20rem !important;
     }
 .navbar-nav {
-    justify-content: center;
+    justify-content: end;
 }
 .brand {
     padding-left: 1rem;
