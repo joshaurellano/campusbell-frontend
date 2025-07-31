@@ -102,7 +102,6 @@ const TopNavbar = ({handleToggleSidebar}) => {
       const fetchAlerts = async () => {
           const id = user.user_id;
           await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
-                //console.log(data.result)
                 setAlertData(data.result)
               // console.log(data.result)
           })
@@ -130,20 +129,20 @@ const TopNavbar = ({handleToggleSidebar}) => {
     }
     const updateAlerts = async () => {
         const id = user.user_id
-        const post_data = alertData[0].postData
-        const ids = post_data.flatMap(alert => {
-                if(alert.react){
-                    return (alert.react).map(postReact => {
-                        return postReact.notifID
-                    }
-                        )
-                } else if(alert.comment){
-                    return (alert.comment).map(postComment => {
-                        return postComment.notifID
-                    })
-                }
+        const notif_data = alertData[0]?.postData
+        const postIds = notif_data?.flatMap(alert => {
+                const reactIds = alert.react?.map(postReact => postReact.notifID) || []
+                const commentIds = alert.comment?.map(postComment => postComment.notifID) || []
+                return [...reactIds, ...commentIds]
             }
-        )
+        ) || []
+        
+        const friend_request = alertData[0]?.friendRequests?.map (req => req.notifID) || []
+
+        const accepted_request = alertData[0]?.acceptedFriendRequest?.map(acc => acc.notifID) || []
+
+        const ids = [...postIds, ...friend_request, ...accepted_request]
+        
         try {
             await axios.put(`${API_ENDPOINT}alert/${id}`,{ids},{withCredentials:true})
             fetchAlerts();
@@ -360,11 +359,10 @@ const TopNavbar = ({handleToggleSidebar}) => {
                             <div id='notification-header'>Notifications</div>
                         {
                             alertData && (
-
                             alertData.map((alerts, key) =>(
                                 <div key={key}>
                                     {
-                                        alerts.postData ?(
+                                        alerts.postData ? (
                                             alerts.postData && Object.values(alerts.postData).map((notif, key) => (
                                                     <div key={key}>
                                                     {
@@ -397,7 +395,42 @@ const TopNavbar = ({handleToggleSidebar}) => {
                                                 </div>
                                             )
                                         )
-                                    ) : (<NavDropdown.Item>
+                                    ) : alerts.friendRequests ? (
+                                        alerts.friendRequests.map((request)=>(
+                                                <NavDropdown.Item key={request.notifID} onClick={() => navigate('/user',{state:{userId: request.requestor_userID, user_id:user.user_id}})}>
+                                                    <div className='d-flex flex-row align-items-center' style={{gap:'5px'}}>
+                                                        <Image src={request.requestor_profileImage} height={20} width={20} />
+                                                        <span><strong>{request.username}</strong> sent you a friend request</span>
+                                                    </div>
+                                                    <div>
+                                                        <span><small>{request?.request_time &&(
+                                                            <ReactTimeAgo 
+                                                            date={new Date (request.request_time)}
+                                                            locale="en-US"
+                                                            timeStyle="round"
+                                                        />)}</small></span>
+                                                    </div>
+                                                </NavDropdown.Item>
+                                        )
+                                    )
+                                ): alerts.acceptedFriendRequest ? (
+                                    alerts.acceptedFriendRequest.map((accept) => (
+                                        <NavDropdown.Item key={accept.notifID} onClick={() => navigate('/user',{state:{userId: accept.acceptor_userID, user_id:user.user_id}})}>
+                                            <div className='d-flex flex-row align-items-center' style={{gap:'5px'}}>
+                                                <Image src={accept.acceptor_profileImage} height={20} width={20} />
+                                                <span><strong>{accept.username}</strong> accepted your friend request</span>
+                                            </div>
+                                            <div>
+                                                <span><small>{accept?.accept_time &&(
+                                                    <ReactTimeAgo 
+                                                    date={new Date (accept.accept_time)}
+                                                    locale="en-US"
+                                                    timeStyle="round"
+                                                />)}</small></span>
+                                            </div>
+                                        </NavDropdown.Item>
+                                    ))
+                                ):(<NavDropdown.Item>
                                         No notification yet
                                     </NavDropdown.Item>)
                                 }
@@ -405,7 +438,7 @@ const TopNavbar = ({handleToggleSidebar}) => {
                             ))
                             )
                         }
-                        { alertData[0]?.postData && (
+                        { alertData[0]?.unreadNotif > 0 && (
                             <div style={{padding:'4px'}}>
                                 <span onClick={() => updateAlerts()}><Link>Mark all as read</Link></span>
                             </div>
