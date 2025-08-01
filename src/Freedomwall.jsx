@@ -17,6 +17,7 @@ function freedomwall() {
     const [userData, setUserData] = useState([]);
     const [notes, setNotes] = useState('');
     const [noteBody, setNoteBody] = useState('');
+    const [anonymous, setAnonymous] = useState(false);
 
     const [showSidebar, setShowSidebar] = useState(false);
 
@@ -73,7 +74,8 @@ function freedomwall() {
 
         const payload = {
             user_id:userId,
-            body:noteBody
+            body:noteBody,
+            anonymous
         }
         try{
         await axios.post(`${API_ENDPOINT}freedomwall/`,payload,{withCredentials: true})
@@ -105,16 +107,16 @@ function freedomwall() {
                         </div>
                     </Row>
 
-                    <Row style={{backgroundColor:'white',height:'100%',width:'100%', borderRadius:'5px'}}>
+                    <Row style={{backgroundColor:'white',height:'calc(100vh - 105px)',width:'100%', borderRadius:'5px'}}>
                         <Col lg={3} style={{borderRight:'2px solid gray'}}>
                             <div>
-                                <span>A plave to tell your untold feelings</span>
+                                <span>A place for your untold feelings</span>
                             </div>
                         </Col>
 
-                        <Col lg={9} style={{height:'100%', overflowY:'auto', overflowX:'hidden',padding:'8px'}}>
+                        <Col lg={9} style={{height:'100%',overflow:'hidden',padding:'8px'}}>
                             <Container fluid style={{height:'100%', width:'100%'}}>
-                                <div style={{marginBottom:'16px'}}>
+                                <div style={{marginBottom:'16px', overflow:'auto', height:'calc(100vh - 285px)'}}>
                                     {
                                         notes ? (
                                         notes && notes.map((data) => (
@@ -138,12 +140,22 @@ function freedomwall() {
                                         )
                                     }   
                                 </div>
+                                <hr />
                                 <div className='d-flex align-items-end w-100'>
                                     <Form className='w-100' onSubmit={notePost}>
                                         <Form.Group style={{marginBottom:'4px'}}>
                                             <Form.Control 
                                                 value={noteBody}
                                                 onChange={(e) => setNoteBody(e.target.value)}
+                                                style={{height:'70px'}}
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group>
+                                            <Form.Check 
+                                                type='switch'
+                                                label='Anonymous Post'
+                                                onChange={() => setAnonymous((prev) => !prev)}
                                             />
                                         </Form.Group>
                                         
