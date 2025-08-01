@@ -2,19 +2,21 @@ import { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Container,Button,Form,Row,Col,Card} from 'react-bootstrap';
+import {Container,Button,Form,Row,Col,Card,Image} from 'react-bootstrap';
 
 import {API_ENDPOINT} from './Api';
 
 import './Freedomwall.css';
 import TopNavbar from './components/TopNavbar';
-import Sidebar from './components/Sidebar'
+import Sidebar from './components/Sidebar';
+
+import ReactTimeAgo from 'react-time-ago';
+
 axios.defaults.withCredentials = true;
 
 function freedomwall() {
  // const for user fetching
     const [user, setUser] = useState(null);
-    const [userData, setUserData] = useState([]);
     const [notes, setNotes] = useState('');
     const [noteBody, setNoteBody] = useState('');
     const [anonymous, setAnonymous] = useState(false);
@@ -47,19 +49,6 @@ function freedomwall() {
         fetchNotes();
     },[])
 
-   useEffect(() => {
-        if (user?.user_id) {
-            fetchUserData();
-        }
-    },[user]);
-
-    const fetchUserData = async () => {
-        const id = user.user_id;
-        await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
-            setUserData(data.result[0])
-        })
-    }
-        
     const fetchNotes = async () => {
         await axios.get(`${API_ENDPOINT}freedomwall/`,{withCredentials: true}).then(({data})=>{
             setNotes(data.result)
@@ -99,36 +88,87 @@ function freedomwall() {
             </Col>
 
             <Col lg={10} sm={12} xs={12} className='wall-main-col'>
-                <Container style={{height:'100%', width:'100%', overflow:'auto'}}>
+                <Container className='wall-main-content-container'>
                     <Row>
-                        <div style={{display:'flex', justifyContent:'center', width:'100%', color:'white', fontSize:'1.5rem', fontWeight:'bold'}}>
+                        <div className='wall-main-content-container-row-1-div-1'>
                             <span>FREEDOM WALL</span>
                         </div>
                     </Row>
 
-                    <Row style={{backgroundColor:'white',height:'calc(100vh - 105px)',width:'100%', borderRadius:'5px'}}>
-                        <Col lg={3} style={{borderRight:'2px solid gray'}}>
+                    <Row className='wall-main-content-container-row-2'>
+                        <Col lg={{order: 1}} sm={{order: 2}} xs={{order: 2}} className='wall-main-content-container-row-2-col-1'>
                             <div>
-                                <span>A place for your untold feelings</span>
+                                <span style={{fontWeight:500}}>A place for your untold feelings</span>
+                            </div>
+                            <hr />
+                            <div>
+                                <span>Here are some rules fo you to be guided</span>
+                            </div>
+                            <ul>
+                                <li>Be Respectful</li>
+                                <li>No harmful content</li>
+                                <li>Use anonymity responsibly</li>
+                            </ul>
+                            <div>
+                                <span>Be reponsible on what you post. Admins reserve the rights to delete post or ban users who violate rules</span>
                             </div>
                         </Col>
 
-                        <Col lg={9} style={{height:'100%',overflow:'hidden',padding:'8px'}}>
+                        <Col className='wall-main-content-container-row-2-col-2' lg={9} sm={{order: 1}} xs={{order: 1}}>
                             <Container fluid style={{height:'100%', width:'100%'}}>
-                                <div style={{marginBottom:'16px', overflow:'auto', height:'calc(100vh - 285px)'}}>
+                                <div className='wall-main-content-container-row-2-col-2-cont-div-1'>
                                     {
                                         notes ? (
                                         notes && notes.map((data) => (
-                                            <Card key={data.id} style={{marginBottom:'8px'}}>
+                                            <div key={data.id} style={{color:'white'}}>
+                                            <Card style={{marginBottom:'8px', border:'none', backgroundColor:'black', color:'white'}}>
                                                 <Card.Body>
                                                     <div>
                                                         {
                                                             data.anonymous ? (
-                                                                <div><span>Anonymous</span></div>
+                                                                <div className='d-flex flex-row align-items-center gap-2'>
+                                                                    <Image 
+                                                                        roundedCircle
+                                                                        height={15}
+                                                                        width={15}
+                                                                        src={data.anonymous_pfp}
+                                                                        style={{backgroundColor:'white'}}
+                                                                />
+                                                                    <span style={{fontWeight:500, color:'#696969'}}>Anonymous</span>
+                                                                    <span><small style={{color:'gray'}}>{ data?.created_at && (
+                                                                        <ReactTimeAgo 
+                                                                            date={new Date(data.created_at).toISOString()}
+                                                                            locale="en-US"
+                                                                            timeStyle="twitter"/>)} </small>
+                                                                    </span>
+                                                                    
+                                                                </div>
+
                                                             ) : (
-                                                                <>
-                                                                <span>{data.username}</span>
-                                                                </>
+                                                                <div className='d-flex flex-row align-items-center gap-2'>
+                                                                    <Image 
+                                                                        roundedCircle
+                                                                        src={data.profile_image}
+                                                                        height={15}
+                                                                        width={15}
+                                                                    />
+                                                                    {
+                                                                        data.role_id === 1 ? (
+                                                                            <span style={{fontWeight: 500, color:'red'}}>{data.username}</span>
+                                                                        ) : data.role_id === 2 ? (
+                                                                            <span style={{fontWeight: 500, color:'yellow'}}>{data.username}</span>
+                                                                        ) : data.role_id === 3 && (
+                                                                            <span style={{fontWeight: 500, color:'green'}}>{data.username}</span>
+                                                                        )
+                                                                    }
+                                                                    
+                                                                    <span><small style={{color:'gray'}}>{ data?.created_at && (
+                                                                        <ReactTimeAgo 
+                                                                            date={new Date(data.created_at).toISOString()}
+                                                                            locale="en-US"
+                                                                            timeStyle="twitter"/>)} </small>
+                                                                    </span>
+                                                                </div>
                                                             )
                                                         } 
                                                         
@@ -138,6 +178,8 @@ function freedomwall() {
                                                     </div>
                                                 </Card.Body>
                                             </Card>
+                                            <hr />
+                                            </div>
 
                                         ))
                                             
@@ -149,18 +191,20 @@ function freedomwall() {
                                     }   
                                 </div>
                                 <hr />
-                                <div className='d-flex align-items-end w-100'>
+                                <div className='wall-main-content-container-row-2-col-2-cont-div-2'>
                                     <Form className='w-100' onSubmit={notePost}>
                                         <Form.Group style={{marginBottom:'4px'}}>
                                             <Form.Control 
+                                                className='wall-main-content-container-row-2-col-2-cont-div-2-frm-ctrl'
                                                 value={noteBody}
                                                 onChange={(e) => setNoteBody(e.target.value)}
-                                                style={{height:'70px'}}
+                                                placeholder='Spill the tea?'
                                             />
                                         </Form.Group>
 
                                         <Form.Group>
                                             <Form.Check 
+                                                className='wall-main-content-container-row-2-col-2-cont-div-2-frm-chk'
                                                 type='switch'
                                                 label='Anonymous Post'
                                                 checked={anonymous}
@@ -169,7 +213,7 @@ function freedomwall() {
                                         </Form.Group>
                                         
                                         <Form.Group>
-                                            <Button type='submit'>Share</Button>
+                                            <Button className='wall-button' type='submit'>Share</Button>
                                         </Form.Group>
                                         
                                     </Form>

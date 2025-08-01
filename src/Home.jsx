@@ -387,12 +387,12 @@ function Home () {
                             </div>
                             </div>
                             <div>
-                            <div id='oval' style={{color:'white'}}>
+                            {/* <div id='oval' style={{color:'white'}}>
                                 <div className='d-flex h-100 align-items-center'>
                                 <TbShare3 />
                                 <span style={{marginLeft:'4px'}}>Share</span>
                                 </div>
-                            </div>
+                            </div> */}
                             </div>
                             </div>
                         </Card.Footer>
