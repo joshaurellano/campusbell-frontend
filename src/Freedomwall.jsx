@@ -21,9 +21,6 @@ function freedomwall() {
 
     const [showSidebar, setShowSidebar] = useState(false);
 
-    const handleCloseSidebar = () => setShowSidebar(false);
-    const handleShowSidebar = () => setShowSidebar(true);
-
     const toggleSidebar = () => {
         //console.log(showSidebar)
         setShowSidebar(showSidebar => !showSidebar)
@@ -82,9 +79,11 @@ function freedomwall() {
         } catch(error){
             console.error(error)
         }
-        setNoteBody('')
+        setNoteBody('');
+        setAnonymous(false);
         fetchNotes();
     }
+
     return(
         <div style={{overflow:'hidden'}}>
             <Row>
@@ -123,7 +122,16 @@ function freedomwall() {
                                             <Card key={data.id} style={{marginBottom:'8px'}}>
                                                 <Card.Body>
                                                     <div>
-                                                        {data.username}
+                                                        {
+                                                            data.anonymous ? (
+                                                                <div><span>Anonymous</span></div>
+                                                            ) : (
+                                                                <>
+                                                                <span>{data.username}</span>
+                                                                </>
+                                                            )
+                                                        } 
+                                                        
                                                     </div>
                                                     <div>
                                                         {data.body}
@@ -155,6 +163,7 @@ function freedomwall() {
                                             <Form.Check 
                                                 type='switch'
                                                 label='Anonymous Post'
+                                                checked={anonymous}
                                                 onChange={() => setAnonymous((prev) => !prev)}
                                             />
                                         </Form.Group>
