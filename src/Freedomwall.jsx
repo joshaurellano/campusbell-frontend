@@ -6,7 +6,7 @@ import {Container,Button,Form,Row,Col,Card} from 'react-bootstrap';
 
 import {API_ENDPOINT} from './Api';
 
-import './Home.css';
+import './Freedomwall.css';
 import TopNavbar from './components/TopNavbar';
 import Sidebar from './components/Sidebar'
 axios.defaults.withCredentials = true;
@@ -84,7 +84,7 @@ function freedomwall() {
         fetchNotes();
     }
     return(
-        <div>
+        <div style={{overflow:'hidden'}}>
             <Row>
                 <TopNavbar handleToggleSidebar={toggleSidebar}/>
             </Row>
@@ -97,77 +97,66 @@ function freedomwall() {
                 handleCloseSidebar={() => setShowSidebar(false)}/>
             </Col>
 
-            <Col lg={10} sm={12} xs={12}>
-                <div className='container'>
-                    <div>
-                        <span style={{display:'flex', justifyContent:'center',fontSize:'2rem', color:'white', fontWeight:'bold'}}>FREEDOM WALL</span>
-                    </div>
-                    <div>
-                        <Card style={{height:'100%'}}>
-                            <Card.Body>
-                                <Row style={{height:'100%'}}>
-                                    <Col lg={3} style={{borderRight:'gray 1px solid', height:'100%'}}>
-                                        <span>
-                                            A place to tell your untold feelings
-                                        </span>
-                                    </Col>
-                                    <Col lg={9}>
-                                        <span>
-                                            Notes
-                                        </span>
-                                        
-                                        <div>
-                                            {
-                                                notes && notes.length > 0 ? (
-                                                    notes.map(data => (
-                                                        
-                                                            <Card key={data.id} style={{marginBottom: '8px'}}>
-                                                                <Card.Body>
-                                                                    <div>
-                                                                    {data.username}
-                                                                    </div>
-                                                                    
-                                                                    <div>
-                                                                    {data.body}
-                                                                    </div>
-                                                                </Card.Body>
-                                                            </Card>
-                                                      
-                                                    ))
-                                                ) : (
-                                                    <>
-                                                    <span>
-                                                        No notes yet
-                                                    </span>
-                                                    </>
-                                                )
-                                                
-                                            }
-                                        </div>
-                                    
-                                    </Col>
-                                </Row>
+            <Col lg={10} sm={12} xs={12} className='wall-main-col'>
+                <Container style={{height:'100%', width:'100%', overflow:'auto'}}>
+                    <Row>
+                        <div style={{display:'flex', justifyContent:'center', width:'100%', color:'white', fontSize:'1.5rem', fontWeight:'bold'}}>
+                            <span>FREEDOM WALL</span>
+                        </div>
+                    </Row>
 
-                            </Card.Body>
-                            <Card.Footer>
-                                <Form onSubmit={notePost}>
-                                    <Form.Group style={{marginBottom:'1rem'}}>
-                                        <Form.Control style={{minHeight:'5rem'}} 
-                                        value={noteBody}
-                                        onChange={(e) =>setNoteBody(e.target.value)}>
+                    <Row style={{backgroundColor:'white',height:'100%',width:'100%', borderRadius:'5px'}}>
+                        <Col lg={3} style={{borderRight:'2px solid gray'}}>
+                            <div>
+                                <span>A plave to tell your untold feelings</span>
+                            </div>
+                        </Col>
 
-                                        </Form.Control>
+                        <Col lg={9} style={{height:'100%', overflowY:'auto', overflowX:'hidden',padding:'8px'}}>
+                            <Container fluid style={{height:'100%', width:'100%'}}>
+                                <div style={{marginBottom:'16px'}}>
+                                    {
+                                        notes ? (
+                                        notes && notes.map((data) => (
+                                            <Card key={data.id} style={{marginBottom:'8px'}}>
+                                                <Card.Body>
+                                                    <div>
+                                                        {data.username}
+                                                    </div>
+                                                    <div>
+                                                        {data.body}
+                                                    </div>
+                                                </Card.Body>
+                                            </Card>
+
+                                        ))
+                                            
+                                        ):(
+                                            <>
+                                                <span>No notes yet</span>
+                                            </>
+                                        )
+                                    }   
+                                </div>
+                                <div className='d-flex align-items-end w-100'>
+                                    <Form className='w-100' onSubmit={notePost}>
+                                        <Form.Group style={{marginBottom:'4px'}}>
+                                            <Form.Control 
+                                                value={noteBody}
+                                                onChange={(e) => setNoteBody(e.target.value)}
+                                            />
+                                        </Form.Group>
                                         
-                                    </Form.Group>
-                                   
-                                    <Form.Group>                                        
-                                        <Button type='submit'>Post Note</Button>
-                                    </Form.Group>
-                                </Form>
-                            </Card.Footer>
-                        </Card>
-                    </div>
-                </div>
+                                        <Form.Group>
+                                            <Button type='submit'>Share</Button>
+                                        </Form.Group>
+                                        
+                                    </Form>
+                                </div>
+                            </Container>
+                        </Col>
+                    </Row>
+                </Container>
             </Col>
 
            
