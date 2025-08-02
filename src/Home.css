@@ -199,11 +199,15 @@
     background-color: #2a2a2a;
 }
 .card-header-name {
-    min-width: 10%;
-    width: auto;
+    font-size: .9rem;
 }
-.card-header-username {
-    width: 10%;
+.card-header-date {
+    width: 100%
+}
+
+.post-profile-pfp {
+    height: 40px;
+    width: 40px;
 }
 /* .card-header-topic {
     padding: 0;
@@ -213,14 +217,19 @@
 } */
     
 @media (max-width: 600px) {
+.card-header-topic {
+    font-size: .7rem;
+}
 .card-header-username {
-    width: 30%;
-    padding-left: 0;
+    font-size: .7rem;
 }
 .card-header-name {
-    /* width: 100%; */
-    padding-left: 0;
+    font-weight: 500;
 }
+.card-header-date {
+    font-size: .7rem;
+}
+
 .brand {
     align-items: center;
     font-size: .9rem;
@@ -357,6 +366,10 @@ justify-content: center !important;
     position: relative;
     left: 10px;
 }
+.post-profile-pfp {
+    height: 25px;
+    width: 25px;
+}
 }
 @media (max-width: 990px) {
 .searchbar{
@@ -410,9 +423,6 @@ justify-content: center !important;
 .brand {
     padding-left: 1rem;
 }
-.card-header-username {
-    width: 10% !important;
-}
 
 }
 @media (min-width: 991px){
@@ -446,11 +456,7 @@ justify-content: center !important;
         font-size: .8rem;
     }
 } */
-@media (min-width: 768px) {
-    .card-header-username {
-        width: 15%;
-    }
-}
+
 @media (min-width: 992px) {
     .card-header-row1 {
         padding-left: 10px;

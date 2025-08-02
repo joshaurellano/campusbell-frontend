@@ -243,59 +243,82 @@ function Home () {
                     <div key={`main-${post.postID}`}>
                     <Card className='post-card'>
                         <Card.Header className='post-card-header'>
-                            <div>
-                                <Row>
-                                    <Col lg={1} sm={2} xs={2} className='d-flex justify-content-center align-items-center'>
-                                        <Image 
-                                            roundedCircle
-                                            src={post.profile_image}
-                                            
-                                            className='post-profile-pfp'
-                                        />
-                                    </Col>
+                        <div className='d-flex flex-row align-items-center' style={{gap:'8px'}}>
+                        <div className='d-flex align-items-center h-100 w-100' style ={{fontSize:'16px'}}>
+                            <Row className='header-row-1'style={{width:'100%'}}>
+                                
+                                <Col lg={1} sm={2} xs={2} className='card-header-col-1' style={{paddingRight:'0'}}>
+                                <Image 
+                                className='post-pfp-image'
+                                    src={post.profile_image}
+                                    roundedCircle
+                                    height={40}
+                                    width={40}
+                                />
+                                </Col>
 
-                                    <Col lg={11} sm={10} xs={10}>
-                                        <Row>
-                                        <Col lg={4} md={5} xs={12} sm={12} style={{width:'auto'}}>
-                                                <div className='d-flex flex-row align-items-center gap-2'>
-                                                    <span className='card-header-name'>{post.first_name} {post.last_name}</span>
-                                                    
-                                                </div>
-                                        </Col>
-
-                                        <Col lg={4} className='d-flex align-items-center' style={{width:'auto'}}>
-                                            <div>
-                                                <span><small className='card-header-username'>{post.username}</small></span>
-                                            </div>
-                                        </Col>
-                                            
-                                        <Col className='d-flex align-items-center' lg={4} md={5} sm={6} xs={6} style={{width:'auto'}}>
-                                                <div className='card-header-date h-100'>
-                                                    <span><small>{post?.date_posted && (
-                                                        <ReactTimeAgo 
-                                                            date={new Date(post.date_posted)} 
-                                                            locale="en-US" timeStyle="twitter"
-                                                        />)}</small></span>
-                                                </div>
-                                            
-                                        </Col>
-                                        
-                                        <Col className='d-flex align-items-center' lg={12} sm={6} xs={6}>
-                                            <div className='card-header-topic d-flex flex-row gap-2'>
-                                                <span><small>{post.topic_name}</small></span>
-                                            </div>
-                                        </Col>
-                                        </Row>
-                                    
-                                    </Col>
-                                </Row>
-
-                                <Row>
-                                    <div>
-                                    <span style={{fontWeight:'bold', fontSize:'1.9rem'}}>{post.title}</span>
+                                <Col lg={11} sm={10} xs={10} className='card-header-col-2 d-flex flex-column' style={{paddingLeft:'0'}}>
+                                <Row className='card-header-row1'>
+                                <div className='d-flex flex-row' style={{gap:'10px'}}>
+                                <Col className='card-header-name pe-0' lg={6} md={6} xs={6} sm={6}>
+                                    <div style={{fontWeight:'500', fontSize:'16px'}}>
+                                    <span>{post.first_name} {post.last_name}</span>
                                     </div>
+                                    </Col>
+                                    
+                                <Col lg={6} md={6} xs={6} sm={6} className='card-header-username pe-0'>
+                                    <div className='d-flex align-items-center h-100' style={{fontSize:'12px',color:'#ADADAD'}}>
+                                        <TbPointFilled />
+                                        <span>{post.username}</span>
+                                    </div>
+                                    </Col>
+                                </div>
+
+                                    <Col lg={12} md={12} sm={{order: 2, span: 12}} xs={{order: 2, span: 12}} className='card-header-topic'>
+                                    {/* d-none d-lg-block d-md-block */}
+                                    <div className='d-flex align-items-center h-100' style ={{fontSize:'12px',color:'#ADADAD'}}>
+                                        <TbPointFilled />
+                                        <span>{post.topic_name}</span>
+                                    </div>
+                                    </Col>
+
                                 </Row>
-                            </div>
+
+                                <div className='card-header-row2 d-flex flex-row align-items-center h-100' style ={{fontSize:'12px',color:'#ADADAD', gap:'5px'}}>
+                                    <div className='d-flex flex-row align-items-center'>
+                                        
+                                        <AiFillClockCircle />
+                                        <span style ={{marginLeft:'4px'}}> {post?.date_posted && (<ReactTimeAgo
+                                                date={new Date(post.date_posted).toISOString()}
+                                                locale="en-US"
+                                                timeStyle="twitter"
+                                                />)}</span>
+                                    </div>
+
+                                    {/* <div>
+                                        <Col className='d-block d-lg-none d-md-none'>
+                                            <div className='d-flex align-items-center h-100' style ={{fontSize:'12px',color:'#ADADAD'}}>
+                                                <TbPointFilled />
+                                                <span>{post.topic_name}</span>
+                                            </div>
+                                        </Col>
+                                    </div> */}
+                                </div>
+                                </Col>
+                            </Row>
+                        </div>
+                         
+                        </div>
+                        
+                        <div>
+                        <span className='post-title'>{post.title}  </span><br />
+                        </div>
+
+                        <div>
+                            
+                        </div>
+                        
+                        
                         </Card.Header>
 
                         <Card.Body className='pt-0' onClick={()=>viewPost(post.postID)}>
