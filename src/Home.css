@@ -205,6 +205,9 @@
 .card-header-username {
     width: 10%;
 }
+/* .card-header-topic {
+    padding: 0;
+} */
 /* .searchbar.form-control::placeholder {
     padding-left: 20px;
 } */
@@ -215,7 +218,7 @@
     padding-left: 0;
 }
 .card-header-name {
-    width: 100%;
+    /* width: 100%; */
     padding-left: 0;
 }
 .brand {

@@ -5,11 +5,9 @@ import axios from 'axios';
 import {Container,Row,Col,Card,Placeholder,Spinner,Alert,Image} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
-import { IoIosMore } from "react-icons/io";
-import { FaUser } from "react-icons/fa";
 import { AiFillClockCircle } from "react-icons/ai";
 import { AiOutlineLike } from "react-icons/ai";
-import { TbShare3 } from "react-icons/tb";
+//import { TbShare3 } from "react-icons/tb";
 import { FaRegComment } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
 import { TbPointFilled } from "react-icons/tb";
@@ -28,11 +26,8 @@ function Home () {
     const listInnerRef = useRef();
     // const for user fetching
     const [user, setUser] = useState(null);
-    // for topics
-    const [topics, setTopics] = useState([]);
     // for post
     const [post, setPost] = useState([]);
-    const [userData, setUserData] = useState([]);
 
     const [newPostLoad, setNewPostLoad] = useState(false);
     const [postLoading, setPostLoading] = useState(false);
@@ -40,9 +35,6 @@ function Home () {
     const [shownSkeleton, setShownSkeleton] = useState(false);
 
     const [showSidebar, setShowSidebar] = useState(false);
-
-    const handleCloseSidebar = () => setShowSidebar(false);
-    const handleShowSidebar = () => setShowSidebar(true);
 
     const [alert, setAlert] = useState(true);
     const [nextId, setNextId] = useState('');
@@ -84,17 +76,6 @@ function Home () {
         };
         checkUserSession();
     }, []);
-
-   useEffect(() => {
-    if (user?.user_id) {
-        fetchUserData();
-        setPage(1)
-    }
-}, [user]);
-    useEffect(() => {
-        getPosts()
-    },[page])
-   
   
     const getPosts = async () => {
         if(newPostLoad) return;
@@ -126,9 +107,7 @@ function Home () {
 
     }
     const viewPost = (postID) => {
-        navigate('/view', {state: {
-            postID
-        }});
+        navigate('/view', {state: {postID}});
     }
   
     const handleReact = async (postID, userID) => {
@@ -139,13 +118,7 @@ function Home () {
         await axios.post(`${API_ENDPOINT}react`,payload,{withCredentials:true})
         getPosts();
     }
-    const fetchUserData = async () => {
-        const id = user.user_id;
-        await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
-            setUserData(data.result[0])
-        })
-    }
- 
+
     const onScroll = () => {
         if(listInnerRef.current) {
             const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
@@ -161,7 +134,19 @@ function Home () {
 
         return () => window.removeEventListener('scroll',onScroll)
     }, [])
+
+    useEffect(() => {
+        if (user?.user_id) {
+            setPage(1)
+        }
+    }, [user]);
+    
+    useEffect(() => {
+        getPosts()
+    },[page])
+
     const noOfCards = Array.from({length:3})
+
     return (
     <div style={{height:'100vh', overflow:'hidden'}}>
         {
@@ -261,6 +246,7 @@ function Home () {
                         <div className='d-flex flex-row align-items-center' style={{gap:'8px'}}>
                         <div className='d-flex align-items-center h-100 w-100' style ={{fontSize:'16px'}}>
                             <Row className='header-row-1'style={{width:'100%'}}>
+                                
                                 <Col lg={1} sm={2} xs={2} className='card-header-col-1' style={{paddingRight:'0'}}>
                                 <Image 
                                 className='post-pfp-image'
@@ -270,23 +256,26 @@ function Home () {
                                     width={40}
                                 />
                                 </Col>
+
                                 <Col lg={11} sm={10} xs={10} className='card-header-col-2 d-flex flex-column' style={{paddingLeft:'0'}}>
                                 <Row className='card-header-row1'>
-                                {/* <div className='d-flex flex-row' style={{gap:'10px'}}> */}
-                                    <Col className='card-header-name pe-0' lg={4} md={4} xs={12} sm={12}>
+                                <div className='d-flex flex-row' style={{gap:'10px'}}>
+                                <Col className='card-header-name pe-0' lg={6} md={6} xs={6} sm={6}>
                                     <div style={{fontWeight:'500', fontSize:'16px'}}>
                                     <span>{post.first_name} {post.last_name}</span>
                                     </div>
                                     </Col>
                                     
-                                    <Col lg={4} md={4} xs={6} sm={6} className='card-header-username pe-0'>
+                                <Col lg={6} md={6} xs={6} sm={6} className='card-header-username pe-0'>
                                     <div className='d-flex align-items-center h-100' style={{fontSize:'12px',color:'#ADADAD'}}>
                                         <TbPointFilled />
                                         <span>{post.username}</span>
                                     </div>
                                     </Col>
+                                </div>
 
-                                    <Col lg={4} md={4} className='px-0 d-none d-lg-block d-md-block'>
+                                    <Col lg={12} md={12} sm={{order: 2, span: 12}} xs={{order: 2, span: 12}} className='card-header-topic'>
+                                    {/* d-none d-lg-block d-md-block */}
                                     <div className='d-flex align-items-center h-100' style ={{fontSize:'12px',color:'#ADADAD'}}>
                                         <TbPointFilled />
                                         <span>{post.topic_name}</span>
@@ -306,14 +295,14 @@ function Home () {
                                                 />)}</span>
                                     </div>
 
-                                    <div>
+                                    {/* <div>
                                         <Col className='d-block d-lg-none d-md-none'>
                                             <div className='d-flex align-items-center h-100' style ={{fontSize:'12px',color:'#ADADAD'}}>
                                                 <TbPointFilled />
                                                 <span>{post.topic_name}</span>
                                             </div>
                                         </Col>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 </Col>
                             </Row>
@@ -324,6 +313,11 @@ function Home () {
                         <div>
                         <span className='post-title'>{post.title}  </span><br />
                         </div>
+
+                        <div>
+                            
+                        </div>
+                        
                         
                         </Card.Header>
 
