@@ -199,19 +199,22 @@
     background-color: #2a2a2a;
 }
 .card-header-name {
-    font-size: .9rem;
+    font-weight: 500;
+    
 }
 .card-header-date {
-    width: 100%
+    color: #949494;
 }
 
 .post-profile-pfp {
     height: 40px;
     width: 40px;
 }
-/* .card-header-topic {
-    padding: 0;
-} */
+
+.card-header-topic {
+    color: #949494;
+}
+
 /* .searchbar.form-control::placeholder {
     padding-left: 20px;
 } */
@@ -224,7 +227,7 @@
     font-size: .7rem;
 }
 .card-header-name {
-    font-weight: 500;
+    font-size: .9rem;
 }
 .card-header-date {
     font-size: .7rem;

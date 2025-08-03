@@ -11,8 +11,12 @@ import { AiOutlineLike } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
 import { TbPointFilled } from "react-icons/tb";
+import { MdAdminPanelSettings } from "react-icons/md";
+import { MdAddModerator } from "react-icons/md";
+import { FaUsers } from "react-icons/fa";
 
-import ReactTimeAgo from 'react-time-ago'
+
+// import ReactTimeAgo from 'react-time-ago'
 
 import {API_ENDPOINT} from './Api';
 
@@ -91,6 +95,7 @@ function Home () {
             await axios.get(`${API_ENDPOINT}post?page=${page}&lastId=${lastId}&limit=${limit}`,{withCredentials: true}).then(({data})=>{
                 setShownSkeleton(true)
                 setPostLoading(false)
+                
                 if(page === 1){
                     setPost(data.result)
                 } else {
@@ -144,6 +149,12 @@ function Home () {
     useEffect(() => {
         getPosts()
     },[page])
+
+    useEffect(() => {
+        if(post) {
+            console.log(post)
+        }
+    },[post])
 
     const noOfCards = Array.from({length:3})
 
@@ -255,37 +266,34 @@ function Home () {
                                     </Col>
 
                                     <Col lg={11} sm={10} xs={10}>
-                                        <Row>
-                                        <Col lg={4} md={5} xs={12} sm={12} style={{width:'auto'}}>
-                                                <div className='d-flex flex-row align-items-center gap-2'>
-                                                    <span className='card-header-name'>{post.first_name} {post.last_name}</span>
-                                                    
-                                                </div>
-                                        </Col>
-
-                                        <Col lg={4} className='d-flex align-items-center' style={{width:'auto'}}>
-                                            <div>
-                                                <span><small className='card-header-username'>{post.username}</small></span>
-                                            </div>
-                                        </Col>
-                                            
-                                        <Col className='d-flex align-items-center' lg={4} md={5} sm={6} xs={6} style={{width:'auto'}}>
-                                                <div className='card-header-date h-100'>
-                                                    <span><small>{post?.date_posted && (
-                                                        <ReactTimeAgo 
-                                                            date={new Date(post.date_posted)} 
-                                                            locale="en-US" timeStyle="twitter"
-                                                        />)}</small></span>
-                                                </div>
-                                            
-                                        </Col>
                                         
-                                        <Col className='d-flex align-items-center' lg={12} sm={6} xs={6}>
-                                            <div className='card-header-topic d-flex flex-row gap-2'>
-                                                <span><small>{post.topic_name}</small></span>
+                                            <div className='d-flex align-items-center gap-2'>
+                                                <span className='card-header-name'>{post.first_name} {post.last_name}</span>
+                                                {
+                                                    post.role_id === 1 ? (
+                                                        <MdAdminPanelSettings />
+                                                    ) : post.role_id === 2 ? (
+                                                        <MdAddModerator />
+                                                    ) : post.role_id === 3 &&(
+                                                        <FaUsers />
+                                                    )
+                                                }
                                             </div>
-                                        </Col>
-                                        </Row>
+
+                                            
+                                            <div>
+                                                {
+                                                    post.role_id === 1 ?(
+                                                        <span className='card-header-username' style={{color: 'red'}}>{post.username}</span>
+                                                    ) : post.role_id === 2 ?(
+                                                        <span className='card-header-username' style={{color: 'yellow'}}>{post.username}</span>
+                                                    ) : post.role_id === 3 &&(
+                                                        <span className='card-header-username' style={{color: 'green'}}>{post.username}</span>
+                                                    )
+                                                }
+                                                
+                                            </div>
+                                        
                                     
                                     </Col>
                                 </Row>
@@ -293,6 +301,11 @@ function Home () {
                                 <Row>
                                     <div>
                                     <span style={{fontWeight:'bold', fontSize:'1.9rem'}}>{post.title}</span>
+                                    </div>
+
+                                    <div className='card-header-topic d-flex flex-row align-items-center'>
+                                        <TbPointFilled />
+                                        <span><small>{post.topic_name}</small></span>
                                     </div>
                                 </Row>
                             </div>
@@ -322,6 +335,18 @@ function Home () {
                             <span>Comments</span>
                             <span>{post.commentCount}</span>
                             </div>
+                        </div>
+
+                         <div className='card-header-date d-flex flex-row align-items-center gap-1'>
+                            <AiFillClockCircle />
+                            <small>
+                                {/* {post?.date_posted && (
+                                <ReactTimeAgo 
+                                    date={new Date(post.date_posted)} 
+                                    locale="en-US" timeStyle="twitter"
+                                />)} */}
+                                {new Date (post.date_posted).toLocaleString()}
+                                </small>
                         </div>
                         
                         </Card.Body>
