@@ -2,16 +2,20 @@ import { useEffect, useState } from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-import {Container,Form,Row,Col,Card,Spinner} from 'react-bootstrap';
+import {Container,Form,Row,Col,Card,Spinner,Image,InputGroup} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
-import { IoIosMore } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
-import { CiClock2 } from "react-icons/ci";
-import { AiOutlineLike } from "react-icons/ai";
 import { TbShare3 } from "react-icons/tb";
-import { FaRegComment } from "react-icons/fa6";
 import { IoSendSharp } from "react-icons/io5";
+import { AiOutlineLike } from "react-icons/ai";
+//import { TbShare3 } from "react-icons/tb";
+import { FaRegComment } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
+import { TbPointFilled } from "react-icons/tb";
+import { MdAdminPanelSettings } from "react-icons/md";
+import { MdAddModerator } from "react-icons/md";
+import { FaUsers } from "react-icons/fa";
+import { AiFillClockCircle } from "react-icons/ai";
 
 import ReactTimeAgo from 'react-time-ago'
 
@@ -26,18 +30,13 @@ axios.defaults.withCredentials = true;
 function Post () {
     // const for user fetching
     const [user, setUser] = useState(null);
-    // for topics
-    const [topics, setTopics] = useState([]);
     // for post
     const [post, setPost] = useState([]);
-    const [userData, setUserData] = useState([]);
+    const [commentBody, setCommentBody] = useState('');
     const [pageLoading, setPageLoading] = useState(false);
     const [commentLoading, setCommentLoading] = useState(false);
 
     const [showSidebar, setShowSidebar] = useState(false);
-    
-    const handleCloseSidebar = () => setShowSidebar(false);
-    const handleShowSidebar = () => setShowSidebar(true);
 
     const navigate = useNavigate();
     //Check if user has session
@@ -74,28 +73,11 @@ function Post () {
         setShowSidebar(showSidebar => !showSidebar)
     }
 
-
     useEffect(() => {
         if (user?.user_id) {
-            fetchUserData();
             getPost();
         }
     }, [user]);
-   
-    const fetchUserData = async () => {
-            const id = user.user_id;
-            await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
-            setUserData(data.result[0])
-            })
-        }
-   
-    const [values, setValues] = useState({
-        post_id: '',
-        user_id: '',
-        body: '',  
-    });
-
-    const [commentBody, setCommentBody] = useState('');
   
     const location = useLocation();
     const post_id = location.state.postID;
@@ -115,9 +97,8 @@ function Post () {
             const id = post_id;
 
             const payload = {
-                ...values, user_id, post_id: id, body: commentBody
+                user_id, post_id: id, body: commentBody
             }
-            console.log(payload);
             await axios.post(`${API_ENDPOINT}comment`,payload,{withCredentials: true})
 
             setCommentLoading(false)
@@ -166,55 +147,83 @@ function Post () {
                         <div>
                         <Card className='post-card' style={{backgroundColor:'black', color:'white'}}>
                             <Card.Header>
-                            <div className='d-flex flex-row w-100' style={{flexGrow:1}}>
-                            <div style ={{fontSize:'12px'}}>
-                                <div className='d-flex align-items-center h-100'>
-                                    <FaUser  />
-                                    <span style ={{marginLeft:'4px'}}> {post.username}  
-                                    </span>
-                                </div>
-                            </div>
-                            <div style ={{fontSize:'12px', marginLeft:'4px', width:'100%'}}>
-                                <div className='d-flex align-items-center h-100 w-100'>
-                                    <CiClock2 />
-                                    <div style={{display:'flex',flexDirection:'row',width:'100%'}}>
-                                        <span style ={{marginLeft:'4px'}}> 
-                                        {post?.date_posted && (<ReactTimeAgo
-                                        date={new Date(post.date_posted)}
-                                        locale="en-US"
-                                        timeStyle="twitter"
-                                        />)}
-                                        </span>
+                                <div>
+                                <Row>
+                                    <Col lg={1} sm={2} xs={2} className='d-flex justify-content-center align-items-center'>
+                                        <Image 
+                                            roundedCircle
+                                            src={post.profile_image}
+                                            
+                                            className='post-profile-pfp'
+                                        />
+                                    </Col>
+
+                                    <Col lg={11} sm={10} xs={10}>
+                                        
+                                            <div className='d-flex align-items-center gap-2'>
+                                                <span className='card-header-name'>{post.first_name} {post.last_name}</span>
+                                                {
+                                                    post.role_id === 1 ? (
+                                                        <MdAdminPanelSettings />
+                                                    ) : post.role_id === 2 ? (
+                                                        <MdAddModerator />
+                                                    ) : post.role_id === 3 &&(
+                                                        <FaUsers />
+                                                    )
+                                                }
+                                            </div>
+                                            
+                                            <div>
+                                                {
+                                                    post.role_id === 1 ?(
+                                                        <span className='card-header-username' style={{color: 'red'}}>{post.username}</span>
+                                                    ) : post.role_id === 2 ?(
+                                                        <span className='card-header-username' style={{color: 'yellow'}}>{post.username}</span>
+                                                    ) : post.role_id === 3 &&(
+                                                        <span className='card-header-username' style={{color: 'green'}}>{post.username}</span>
+                                                    )
+                                                }
+                                                
+                                            </div>
+                                        
+                                    
+                                    </Col>
+                                </Row>
+
+                                <Row>
+                                    <div>
+                                    <span style={{fontWeight:'bold', fontSize:'1.9rem'}}>{post.title}</span>
                                     </div>
-                                </div> 
+
+                                    <div className='card-header-topic d-flex flex-row align-items-center'>
+                                        <TbPointFilled />
+                                        <span><small>{post.topic_name}</small></span>
+                                    </div>
+                                </Row>
                             </div>
-                            <div style={{display:'flex',width:'100%',justifyContent:'end'}}>
-                                <IoIosMore />
-                            </div>
-                            </div>
-                            <div style ={{fontSize:'12px', marginTop:'4px'}}>
-                                {post.topic_name}
-                            </div>
-                            <div>
-                            <span className='post-title'>{post.title}  </span><br />
-                            </div>
-                            
                             </Card.Header>
 
                             <Card.Body>
                             <div className='post-content'>
                                 {post.content}
                             </div>
-                            <div style={{marginTop:'20px',fontSize:'12px',display:'flex', flexDirection:'row', width:'100%', justifyContent:'start', gap:'40px'}}>
+                            <div style={{marginTop:'20px',fontSize:'12px',display:'flex', flexDirection:'row', width:'100%', justifyContent:'end', gap:'40px'}}>
                                 <div className='d-flex' style={{gap:'8px'}}>
                                 <span>Reacts</span>
-                                {/* <span>0</span> */}
                                 </div>
                                 <div className='d-flex' style={{gap:'8px'}}>
                                 <span>Comments</span>
                                 <span>{post.commentCount}</span>
                                 </div>
                             </div>
+
+                            <div className='card-header-date d-flex flex-row align-items-center gap-1'>
+                                <AiFillClockCircle />
+                                <small>
+                                    {new Date (post.date_posted).toLocaleString()}
+                                </small>
+                            </div>
+
                             { post.image && (
                             <div style={{marginTop:'20px'}}>
                                 <Card className='image-card' style={{display:'flex', justifyContent:'center',width:'100%',border:'1px solid white', backgroundColor:'black', marginTop:'0.5rem', borderRadius:'1.25rem'}}>
@@ -269,22 +278,18 @@ function Post () {
                         </Card>
 
                         <Card style={{backgroundColor:'black'}}>
-                            <Card.Body>
-                                <Form onSubmit={addComment}>
-                                    <Form.Group>
-                                        
+                            <Card.Body style={{width:'100%'}}>
+                                <Form style={{width:'100%', backgroundColor:'white', borderRadius:'15px'}}onSubmit={addComment}>
+                                    
                                             <div className='comment-box-wrapper'>
                                                 <Form.Control className='comment-box'
+                                                as='textarea'
                                                 placeholder='Write Comment'
                                                 value={commentBody}
-                                                onChange={(e)=> setCommentBody(e.target.value)} required>
-                                                    
-                                                </Form.Control>
+                                                onChange={(e)=> setCommentBody(e.target.value)} required />                                                    
                                             </div>
 
-                                            
-                                    </Form.Group>
-                                    <Form.Group>
+                                    
                                         <div className='comment-button'>
                                                 <button type='submit' style={{border:'none', backgroundColor:'transparent'}}>
                                                 {
@@ -299,7 +304,7 @@ function Post () {
                                                 }
                                                 </button>
                                             </div>
-                                    </Form.Group>
+                                    
                                 </Form>
                             </Card.Body>
                         </Card>
