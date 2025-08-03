@@ -144,7 +144,7 @@
     .action-tabs{
     gap: 1rem !important;
     overflow-wrap: normal;
-    justify-content: center !important;
+    /* justify-content: center !important; */
 }
 .comment-box {
     height: 45px;

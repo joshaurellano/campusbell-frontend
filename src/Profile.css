@@ -123,11 +123,7 @@
       height: 30px !important;
       font-size: 9px;
     }
-    .action-tabs{
-    gap: 1rem !important;
-    overflow-wrap: normal;
-    justify-content: center !important;
-}
+
 .header-info-1{
     font-size: 1rem !important;
 

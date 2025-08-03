@@ -30,15 +30,10 @@ function TopicPosts () {
     // for post
     const [post, setPost] = useState([]);
     const [topicNo, setTopicNo] = useState('');
-    const [userData, setUserData] = useState([]);
-    const [alertData, setAlertData] = useState(null);
     
     const [pageLoading, setPageLoading] = useState(false);
 
     const [showSidebar, setShowSidebar] = useState(false);
-
-    const handleCloseSidebar = () => setShowSidebar(false);
-    const handleShowSidebar = () => setShowSidebar(true);
 
     const navigate = useNavigate();
     //Check if user has session
@@ -82,7 +77,6 @@ function TopicPosts () {
     },[])
     useEffect(() => {
         if (user?.user_id) {
-            fetchUserData();
         }
     }, [user]);
     
@@ -99,7 +93,6 @@ function TopicPosts () {
         const id = topicNo || topic_id
         await axios.get(`${API_ENDPOINT}post/topic/${id}`,{withCredentials: true}).then(({data})=>{
             setPost(data.result)
-            console.log(data.result)
         })
     }
     const viewPost = (postID) => {
@@ -111,12 +104,6 @@ function TopicPosts () {
     const handleSelected = (e) =>{
         topic_id = e.target.value
         setTopicNo(topic_id)
-    }
-    const fetchUserData = async () => {
-        const id = user.user_id;
-        await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
-        setUserData(data.result[0])
-        })
     }
     
     return (
@@ -243,14 +230,14 @@ function TopicPosts () {
                                 </div>
                             </div>
                             </div>
-                            <div>
+                            {/* <div>
                             <div id='oval' style={{color:'white'}}>
                                 <div className='d-flex h-100 align-items-center'>
                                 <TbShare3 />
                                 <span style={{marginLeft:'4px'}}>Share</span>
                                 </div>
                             </div>
-                            </div>
+                            </div> */}
                             </div>
                         </Card.Footer>
                     </Card>

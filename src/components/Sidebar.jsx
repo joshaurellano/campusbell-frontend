@@ -137,7 +137,7 @@ const Sidebar = ({ showSidebar, handleCloseSidebar }) => {
                             </div>
                     </Nav>
                 </Offcanvas.Title>
-                <button type="button" class="btn-close btn-close-white" aria-label="Close" onClick={handleCloseSidebar}></button>
+                <button type="button" className="btn-close btn-close-white" aria-label="Close" onClick={handleCloseSidebar}></button>
                 </Offcanvas.Header>
                 <hr style={{color:'white'}}/>
                 <Offcanvas.Body>

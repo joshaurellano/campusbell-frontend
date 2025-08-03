@@ -23,12 +23,7 @@ function CreatePost () {
     const [postImg, setPostImg] = useState();
     const [prev, setPrev] = useState();
     const [postButtonLoading, setpostButtonLoading] = useState(false);
-    const [userData, setUserData] = useState([]);
-    const [alertData, setAlertData] = useState(null);
     const [showSidebar, setShowSidebar] = useState(false);
-    
-    const handleCloseSidebar = () => setShowSidebar(false);
-    const handleShowSidebar = () => setShowSidebar(true);
 
     const navigate = useNavigate();
     //Check if user has session
@@ -48,7 +43,6 @@ function CreatePost () {
 
     useEffect(() => {
         if (user?.user_id) {
-            fetchUserData();
             getTopics();
         }
     }, [user]);
@@ -126,15 +120,9 @@ const handleTopicPosts = (topicId) =>{
             topicId
         }})
     }
-const fetchUserData = async () => {
-        const id = user.user_id;
-        await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
-        setUserData(data.result[0])
-        })
-}
+
     return (
-        <>
-        <div>
+        <div style={{height:'100vh', overflow:'hidden'}}>
             <Row>
             <TopNavbar handleToggleSidebar={toggleSidebar}/>
             </Row>
@@ -146,7 +134,7 @@ const fetchUserData = async () => {
                             handleCloseSidebar={() => setShowSidebar(false)}/>
                         </Col>
 
-                        <Col lg={8}>
+                        <Col lg={8} style={{height:'calc(100vh - 68px)',overflowY:'auto', overflowX:'hidden'}}>
                             <div>
                                 <div className='container' style={{color:'white'}}>
                                 <div className='head-msg'>
@@ -263,7 +251,6 @@ const fetchUserData = async () => {
                 </Container>
                 </Row>
                 </div>
-        </>
     )
 }
 
