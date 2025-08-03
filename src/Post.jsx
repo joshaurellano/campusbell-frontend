@@ -139,7 +139,7 @@ function Post () {
                         handleCloseSidebar={() => setShowSidebar(false)}/>
                         </Col>
 
-                    <Col lg={8} style={{height:'100vh', overflow:'scroll'}}>
+                    <Col lg={8} style={{height:'calc(100vh - 68px)', overflowY:'auto', overflowX:'hidden'}}>
                 <div className='container'>
                 <br />
                 {
@@ -265,14 +265,14 @@ function Post () {
                                         </div>
                                     </div>
                                     </div>
-                                    <div>
+                                    {/* <div>
                                     <div id='oval' style={{color:'white'}}>
                                         <div className='d-flex h-100 align-items-center'>
                                         <TbShare3 />
                                         <span style={{marginLeft:'4px'}}>Share</span>
                                         </div>
                                     </div>
-                                    </div>
+                                    </div> */}
                                     </div>
                                 </Card.Footer>
                         </Card>

@@ -137,7 +137,7 @@ position: relative;
     .action-tabs{
     gap: 1rem !important;
     overflow-wrap: normal;
-    justify-content: center !important;
+    /* justify-content: center !important; */
 }
 h3 {
     font-size: 1rem;

@@ -313,7 +313,6 @@ font-size:.9rem
 .action-tabs{
 gap: 1rem !important;
 overflow-wrap: normal;
-justify-content: center !important;
 }
 .navbar-nav {
     align-items: center;

@@ -69,6 +69,9 @@ const ViewProfile = () => {
         console.error(error)
       }
     }
+    const toggleSidebar = () => {
+        setShowSidebar(showSidebar => !showSidebar)
+    }
     const rejectedTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
       Please wait 48 hrs to be able to send a friend request again
@@ -82,7 +85,7 @@ return (
     <div style={{height:'100vh', overflow:'hidden'}}>
       <div>
       <Row>
-        <TopNavbar />
+        <TopNavbar handleToggleSidebar={toggleSidebar}/>
       </Row>
 
       <Row style={{paddingTop:'68px', backgroundColor:'black'}}>
