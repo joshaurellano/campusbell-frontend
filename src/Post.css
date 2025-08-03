@@ -63,9 +63,19 @@
     display:flex;
     justify-content: start;
 }
+/* .comment-box-wrapper {
+    width: 100%;
+} */
 .comment-box {
     border-radius: 15px ; 
-    height:60px;
+    height:auto;
+    min-height: 70px;
+    max-height: 250px;
+    resize: vertical;
+    width: 94%;
+    /* word-wrap: break-word;
+    overflow-y: auto !important;
+    overflow-x: hidden !important; */
 }
 .comment-button {
     display: flex;
@@ -73,9 +83,9 @@
     min-width: 40px;
     width:auto;
     color: white;
+    background-color: white;
     position: absolute;
-    /* translate:-28px -50px; */
-    /* translate:400px -50px; */
+
     right: 18px;
     top: 24px;
     z-index:1;

@@ -15,7 +15,6 @@ import { MdAdminPanelSettings } from "react-icons/md";
 import { MdAddModerator } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 
-
 // import ReactTimeAgo from 'react-time-ago'
 
 import {API_ENDPOINT} from './Api';
@@ -150,12 +149,6 @@ function Home () {
         getPosts()
     },[page])
 
-    useEffect(() => {
-        if(post) {
-            console.log(post)
-        }
-    },[post])
-
     const noOfCards = Array.from({length:3})
 
     return (
@@ -279,7 +272,6 @@ function Home () {
                                                     )
                                                 }
                                             </div>
-
                                             
                                             <div>
                                                 {
