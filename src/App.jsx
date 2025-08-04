@@ -13,26 +13,30 @@ import Freedomwall from './Freedomwall';
 import ForgotPassword from './ForgotPassword';
 import RequestNewOtp from './RequestNewOtp';
 import ViewProfile from './ViewProfile';
+import ProtectedRoutes from './ProtectedRoutes';
 
 function App() {
   return (
     <>
       <Router>
         <Routes>
-          <Route path='/' element={<Home />} />
+          <Route element={<ProtectedRoutes />}>
+            <Route path='/' element={<Home />} />
+            <Route path='/post' element={<CreatePost />} />
+            <Route path='/view' element={<Post />} />
+            <Route path='/topic' element={<TopicPosts />} />
+            <Route path='/profile' element={<Profile />} />
+            <Route path='/user' element={<ViewProfile />} />
+            <Route path='/chat' element={<Messages />} />
+            <Route path='/wall' element={<Freedomwall />} />
+          </Route>
+          
           <Route path='/login' element={<Login key="login"/>} />
           <Route path='/register' element={<Register key="register"/>} />
-          <Route path='/post' element={<CreatePost />} />
-          <Route path='/view' element={<Post />} />
-          <Route path='/topic' element={<TopicPosts />} />
-          <Route path='/profile' element={<Profile />} />
           <Route path='/verify' element={<EmailConfirmation />} />
-          <Route path='/chat' element={<Messages />} />
-          <Route path='/wall' element={<Freedomwall />} />
           <Route path='/password-reset/:token' element={<ForgotPassword />} />
           <Route path='/request-new-otp' element={<RequestNewOtp />} />
-          <Route path='/user' element={<ViewProfile />} />
-
+         
         </Routes>
       </Router>
     </>
