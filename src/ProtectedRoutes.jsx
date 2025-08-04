@@ -1,4 +1,4 @@
-import { useEffect, useState }from 'react'
+import { useEffect, useState, useRef }from 'react'
 import {Outlet, useNavigate, Navigate} from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
@@ -6,12 +6,14 @@ import axios from 'axios';
 
 import {API_ENDPOINT} from './Api';
 
+import socketIO from 'socket.io-client';
+
 const ProtectedRoutes = () => {
    
     const [user, setUser] = useState(null);
     const [pageLoading, setPageLoading] = useState(true);
-     const navigate = useNavigate ();
-
+    const navigate = useNavigate ();
+    const socket = useRef(null) 
       useEffect(() =>{
           const checkUserSession = async () => {
             setPageLoading(true);
@@ -19,6 +21,14 @@ const ProtectedRoutes = () => {
                   const {data} = await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true})
                 //   console.log(data.result)    
                   setUser(data.result);
+                  if(!socket.current){
+                    socket.current = socketIO(`${API_ENDPOINT}`,{withCredentials:true});
+
+                    socket.current.on('connect', () => {
+                    console.log('User Connected', socket.current.id)
+                  })
+                  }
+                 
               } catch(error) {
                 console.error(error)
                   //go back to login in case if error
@@ -28,11 +38,6 @@ const ProtectedRoutes = () => {
           };
           checkUserSession();
       }, []);
-    useEffect(()=>{
-        if(user){
-            console.log(user)
-        }
-    },[user])
     return (
     <div>
         {
