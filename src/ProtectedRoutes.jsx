@@ -6,14 +6,16 @@ import axios from 'axios';
 
 import {API_ENDPOINT} from './Api';
 
-import socketIO from 'socket.io-client';
+import { useSocket } from './WSconn';
+import { SocketProvider } from './WSconn';
 
 const ProtectedRoutes = () => {
    
     const [user, setUser] = useState(null);
     const [pageLoading, setPageLoading] = useState(true);
     const navigate = useNavigate ();
-    const socket = useRef(null) 
+    const socket = useSocket();
+
       useEffect(() =>{
           const checkUserSession = async () => {
             setPageLoading(true);
@@ -21,14 +23,11 @@ const ProtectedRoutes = () => {
                   const {data} = await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true})
                 //   console.log(data.result)    
                   setUser(data.result);
-                  if(!socket.current){
-                    socket.current = socketIO(`${API_ENDPOINT}`,{withCredentials:true});
+                  if(socket && socket.connected) {
+                    console.log('User connected', socket.id);
 
-                    socket.current.on('connect', () => {
-                    console.log('User Connected', socket.current.id)
-                  })
+                    socket.emit('user_connected', data.result.id)
                   }
-                 
               } catch(error) {
                 console.error(error)
                   //go back to login in case if error
@@ -37,7 +36,7 @@ const ProtectedRoutes = () => {
               }
           };
           checkUserSession();
-      }, []);
+      }, [socket]);
     return (
     <div>
         {
@@ -50,7 +49,13 @@ const ProtectedRoutes = () => {
             </div>
         </> : <div>
             {
-                user ? <Outlet /> : <Navigate to='/login'/>
+                user ? 
+                <SocketProvider>
+                  <Outlet /> 
+                </SocketProvider>   
+                
+                
+                : <Navigate to='/login'/>
             }
         </div>
         }

@@ -15,13 +15,13 @@ import ReactTimeAgo from 'react-time-ago'
 import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from '../Api';
+import { useSocket } from '../WSconn';
 
 import '../Home.css';
 
 axios.defaults.withCredentials = true;
 
-const TopNavbar = ({handleToggleSidebar}) => {
-    
+const TopNavbar = ({handleToggleSidebar}) => {    
   // const for user fetching
       const [user, setUser] = useState(null);
       // for topics
@@ -39,6 +39,7 @@ const TopNavbar = ({handleToggleSidebar}) => {
       const searchClose = () => setOpenSearch(false)
     
       const navigate = useNavigate();
+      const socket = useSocket();
       //Check if user has session
       useEffect(() =>{
           const checkUserSession = async () => {
@@ -62,7 +63,11 @@ const TopNavbar = ({handleToggleSidebar}) => {
               await axios.post(`${API_ENDPOINT}auth/logout`,{withCredentials:true}).then(({data})=>{
                   setUser(data.result);
               });
-              // make sure to go back to login page after removing the token 
+              // make sure to go back to login page after removing the token
+                if(socket) {
+                    socket.disconnect();
+                    console.log('User disconnect') 
+                }
               navigate('/login')
           } catch (error) {
               console.error('Logout failed',error)

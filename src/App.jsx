@@ -20,6 +20,7 @@ function App() {
     <>
       <Router>
         <Routes>
+          
           <Route element={<ProtectedRoutes />}>
             <Route path='/' element={<Home />} />
             <Route path='/post' element={<CreatePost />} />
@@ -30,6 +31,7 @@ function App() {
             <Route path='/chat' element={<Messages />} />
             <Route path='/wall' element={<Freedomwall />} />
           </Route>
+          
           
           <Route path='/login' element={<Login key="login"/>} />
           <Route path='/register' element={<Register key="register"/>} />
