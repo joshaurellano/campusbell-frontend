@@ -14,6 +14,7 @@ import ForgotPassword from './ForgotPassword';
 import RequestNewOtp from './RequestNewOtp';
 import ViewProfile from './ViewProfile';
 import ProtectedRoutes from './ProtectedRoutes';
+import TestChat from './TestChat';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path='/user' element={<ViewProfile />} />
             <Route path='/chat' element={<Messages />} />
             <Route path='/wall' element={<Freedomwall />} />
+            <Route path='/test' element={<TestChat />} />
           </Route>
           
           

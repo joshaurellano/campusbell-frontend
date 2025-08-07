@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef }from 'react'
-import {Outlet, useNavigate, Navigate} from 'react-router-dom';
+import {Outlet, Navigate} from 'react-router-dom';
 import { Spinner } from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import axios from 'axios';
@@ -8,12 +8,12 @@ import {API_ENDPOINT} from './Api';
 
 import { useSocket } from './WSconn';
 import { SocketProvider } from './WSconn';
+import { AuthContext } from './AuthContext';
 
 const ProtectedRoutes = () => {
    
     const [user, setUser] = useState(null);
     const [pageLoading, setPageLoading] = useState(true);
-    const navigate = useNavigate ();
     const socket = useSocket();
 
       useEffect(() =>{
@@ -51,7 +51,11 @@ const ProtectedRoutes = () => {
             {
                 user ? 
                 <SocketProvider>
-                  <Outlet /> 
+                  
+                  <AuthContext.Provider value={user}>
+                    <Outlet /> 
+                  </AuthContext.Provider>
+                  
                 </SocketProvider>   
                 
                 

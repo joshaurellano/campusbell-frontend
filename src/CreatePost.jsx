@@ -5,15 +5,17 @@ import axios from 'axios';
 import {Container,Button,Form,Row,Col,Card,Spinner} from 'react-bootstrap';
 
 import {API_ENDPOINT} from './Api';
+import { useAuth } from './AuthContext';
 
 import './CreatePost.css';
+
 import TopNavbar from './components/TopNavbar';
-import Sidebar from './components/Sidebar'
+import Sidebar from './components/Sidebar';
+
 axios.defaults.withCredentials = true;
 
 function CreatePost () {
-    // const for user fetching
-    const [user, setUser] = useState(null);
+    const user = useAuth();
     // for topics
     const [topics, setTopics] = useState([]);
     // for post
@@ -27,20 +29,6 @@ function CreatePost () {
 
     const navigate = useNavigate();
     //Check if user has session
-    useEffect(() =>{
-        const checkUserSession = async () => {
-            try {
-                await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
-                    setUser(data.result);
-                })
-            } catch(error) {
-                //go back to login in case if error
-                navigate ('/login');
-            }
-        };
-        checkUserSession();
-    }, []);
-
     useEffect(() => {
         if (user?.user_id) {
             getTopics();

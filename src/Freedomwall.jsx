@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
 import {Container,Button,Form,Row,Col,Card,Image} from 'react-bootstrap';
 
 import {API_ENDPOINT} from './Api';
+import { useAuth } from './AuthContext';
 
 import './Freedomwall.css';
 import TopNavbar from './components/TopNavbar';
@@ -15,8 +15,8 @@ import ReactTimeAgo from 'react-time-ago';
 axios.defaults.withCredentials = true;
 
 function freedomwall() {
- // const for user fetching
-    const [user, setUser] = useState(null);
+    const user = useAuth();
+    // const for user fetching
     const [notes, setNotes] = useState('');
     const [noteBody, setNoteBody] = useState('');
     const [anonymous, setAnonymous] = useState(false);
@@ -26,25 +26,7 @@ function freedomwall() {
     const toggleSidebar = () => {
         //console.log(showSidebar)
         setShowSidebar(showSidebar => !showSidebar)
-    }
-
-    const navigate = useNavigate();
-    //Check if user has session
-    useEffect(() =>{
-        const checkUserSession = async () => {
-            try {
-                const userInfo = await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
-                    setUser(data.result);
-                })
-            } catch(error) {
-                //go back to login in case if error
-                navigate ('/login');
-            }
-        };
-        checkUserSession();
-    }, []);
-
-    
+    }    
     useEffect(() =>{
         fetchNotes();
     },[])

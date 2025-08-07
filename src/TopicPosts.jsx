@@ -15,6 +15,7 @@ import { FaRegComment } from "react-icons/fa6";
 import ReactTimeAgo from 'react-time-ago'
 
 import {API_ENDPOINT} from './Api';
+import { useAuth } from './AuthContext';
 
 import './TopicPosts.css';
 import TopNavbar from './components/TopNavbar';
@@ -23,8 +24,7 @@ import Sidebar from './components/Sidebar';
 axios.defaults.withCredentials = true;
 
 function TopicPosts () {
-    // const for user fetching
-    const [user, setUser] = useState(null);
+    const user = useAuth();
     // for topics
     const [topics, setTopics] = useState([]);
     // for post
@@ -41,20 +41,6 @@ function TopicPosts () {
         //console.log(showSidebar)
         setShowSidebar(showSidebar => !showSidebar)
     }
-    useEffect(() =>{
-        const checkUserSession = async () => {
-            setPageLoading(true);
-            try {
-                await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
-                    setUser(data.result);
-                })
-            } catch(error) {
-                //go back to login in case if error
-                navigate ('/login');
-            }
-        };
-        checkUserSession();
-    }, []);
      useEffect(() => {
         function simulateNetworkRequest() {
         return new Promise(resolve => {

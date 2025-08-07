@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import axios from 'axios';
 
-import {Container,Form,Row,Col,Card,Spinner,Image,InputGroup} from 'react-bootstrap';
+import {Container,Form,Row,Col,Card,Spinner,Image} from 'react-bootstrap';
 import { FaBell } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
-import { TbShare3 } from "react-icons/tb";
 import { IoSendSharp } from "react-icons/io5";
 import { AiOutlineLike } from "react-icons/ai";
 //import { TbShare3 } from "react-icons/tb";
@@ -20,6 +19,7 @@ import { AiFillClockCircle } from "react-icons/ai";
 import ReactTimeAgo from 'react-time-ago'
 
 import {API_ENDPOINT} from './Api';
+import { useAuth } from './AuthContext';
 
 import './Post.css';
 import TopNavbar from './components/TopNavbar';
@@ -28,32 +28,13 @@ import Sidebar from './components/Sidebar'
 axios.defaults.withCredentials = true;
 
 function Post () {
-    // const for user fetching
-    const [user, setUser] = useState(null);
-    // for post
+    const user = useAuth();
     const [post, setPost] = useState([]);
     const [commentBody, setCommentBody] = useState('');
     const [pageLoading, setPageLoading] = useState(false);
     const [commentLoading, setCommentLoading] = useState(false);
 
     const [showSidebar, setShowSidebar] = useState(false);
-
-    const navigate = useNavigate();
-    //Check if user has session
-    useEffect(() =>{
-        const checkUserSession = async () => {
-            setPageLoading(true);
-            try {
-                await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
-                    setUser(data.result);
-                })
-            } catch(error) {
-                //go back to login in case if error
-                navigate ('/login');
-            }
-        };
-        checkUserSession();
-    }, []);
 
      useEffect(() => {
         function simulateNetworkRequest() {

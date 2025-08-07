@@ -16,7 +16,7 @@ import { MdAddModerator } from "react-icons/md";
 import { FaUsers } from "react-icons/fa";
 
 // import ReactTimeAgo from 'react-time-ago'
-
+import { useAuth } from './AuthContext';
 import {API_ENDPOINT} from './Api';
 
 import './Home.css';
@@ -27,9 +27,9 @@ axios.defaults.withCredentials = true;
 
 function Home () {
     const listInnerRef = useRef();
-    // const for user fetching
-    const [user, setUser] = useState(null);
-    // for post
+    const user = useAuth();
+    const navigate = useNavigate();
+    
     const [post, setPost] = useState([]);
 
     const [newPostLoad, setNewPostLoad] = useState(false);
@@ -53,33 +53,13 @@ function Home () {
         setAlert(false)
         sessionStorage.setItem('displayed', 'true')
     }
-    
     useEffect(() =>{
         const displayed = sessionStorage.getItem('displayed')
         if(displayed === 'true') {
             setAlert(false)
         }
     },[])
-    const navigate = useNavigate();
-    //Check if user has session
-    useEffect(() =>{
-        const checkUserSession = async () => {
-            setPageLoading(true);
-            try {
-                const userInfo = await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
-                    setUser(data.result);
-                })
-                // console.log(userInfo)
-            setPageLoading(false);
-
-            } catch(error) {
-                //go back to login in case if error
-                navigate ('/login');
-            }
-        };
-        checkUserSession();
-    }, []);
-  
+     
     const getPosts = async () => {
         if(newPostLoad) return;
         const limit = 10;

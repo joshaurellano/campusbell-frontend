@@ -11,6 +11,7 @@ import { CiClock2 } from "react-icons/ci";
 import ReactTimeAgo from 'react-time-ago'
 
 import {API_ENDPOINT} from './Api';
+import { useAuth } from './AuthContext';
 
 import './Profile.css';
 import TopNavbar from './components/TopNavbar';
@@ -19,8 +20,7 @@ import Sidebar from './components/Sidebar';
 axios.defaults.withCredentials = true;
 
 function Profile () {
-    // const for user fetching
-    const [user, setUser] = useState(null);
+    const user = useAuth();
     const [userData, setUserData] = useState([]);
     // for topics
     const [selected, setSelected] = useState('');
@@ -28,10 +28,8 @@ function Profile () {
     const [prevImg, setPrevImg] = useState('');
     const [showSidebar, setShowSidebar] = useState(false);
 
-    const handleCloseSidebar = () => setShowSidebar(false);
-    const handleShowSidebar = () => setShowSidebar(true);
-
     const [showProfileModal, setShowProfileModal] = useState(false);
+
     const toggleSidebar = () => {
         //console.log(showSidebar)
         setShowSidebar(showSidebar => !showSidebar)
@@ -49,23 +47,6 @@ function Profile () {
             setSelected('2')
         }
     }
-
-    const navigate = useNavigate();
-    //Check if user has session
-    useEffect(() =>{
-        const checkUserSession = async () => {
-            try {
-                await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
-                    setUser(data.result);
-                })
-            } catch(error) {
-                //go back to login in case if error
-                navigate ('/login');
-            }
-        };
-        checkUserSession();
-    }, []);
-
     useEffect(() =>{
         fetchUserData()
     },[])

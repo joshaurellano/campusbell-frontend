@@ -16,145 +16,129 @@ import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from '../Api';
 import { useSocket } from '../WSconn';
+import { useAuth } from '../AuthContext';
 
 import '../Home.css';
 
 axios.defaults.withCredentials = true;
 
 const TopNavbar = ({handleToggleSidebar}) => {    
-  // const for user fetching
-      const [user, setUser] = useState(null);
-      // for topics
-      const [userData, setUserData] = useState([]);
-      const [userSearch, setUserSearch] = useState([]);
-      const [postSearch, setPostSearch] = useState([]);
-      const [mobileSearch, setMobileSearch] = useState(false);
-      const [windowSize, setWindowSize] = useState(window.innerWidth)
-      const [search, setSearch] = useState('');
-      const [error, setError] = useState('');
-      const [alertData, setAlertData] = useState([]);
-      const [openSearch, setOpenSearch] = useState(false);
-
-      const searchOpen = () => setOpenSearch(true)
-      const searchClose = () => setOpenSearch(false)
+    const user = useAuth();
+    const navigate = useNavigate();
+    const socket = useSocket();
     
-      const navigate = useNavigate();
-      const socket = useSocket();
-      //Check if user has session
-      useEffect(() =>{
-          const checkUserSession = async () => {
-              try {
-                  const userInfo = await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
-                        setUser(data.result);
-                  })
-                  // console.log(userInfo)  
-              } catch(error) {
-                  //go back to login in case if error
-                  navigate ('/login');
-              }
-          };
-          checkUserSession();
-      }, []);
-  
-      //function to handle logout
-      const handleLogout = async () => {
-          try {
-              // remove token from cookies
-              await axios.post(`${API_ENDPOINT}auth/logout`,{withCredentials:true}).then(({data})=>{
-                  setUser(data.result);
-              });
-              // make sure to go back to login page after removing the token
-                if(socket) {
-                    socket.disconnect();
-                    console.log('User disconnect') 
-                }
-              navigate('/login')
-          } catch (error) {
-              console.error('Logout failed',error)
-          }
-      }
-    
-     useEffect(() => {
-      if (user?.user_id) {
-          fetchUserData();
-          fetchAlerts()
-      }
-  }, [user]);
-    useEffect(() => {
-        handleSearch();
-    },[search])
+    const [userData, setUserData] = useState([]);
+    const [userSearch, setUserSearch] = useState([]);
+    const [postSearch, setPostSearch] = useState([]);
+    const [mobileSearch, setMobileSearch] = useState(false);
+    const [windowSize, setWindowSize] = useState(window.innerWidth)
+    const [search, setSearch] = useState('');
+    const [error, setError] = useState('');
+    const [alertData, setAlertData] = useState([]);
+    const [openSearch, setOpenSearch] = useState(false);
 
-    useEffect(() => {
-        const handleResize = () =>
-            setWindowSize(window.innerWidth)
-            window.addEventListener('resize',handleResize)
-            return () => window.removeEventListener('resize',handleResize)
-    },[])
+    const searchOpen = () => setOpenSearch(true)
+    const searchClose = () => setOpenSearch(false)
 
-      const viewProfile = (userId) => {
-          navigate('/profile', {state: {
-              userId
-          }});
-      }
-    
-      const fetchUserData = async () => {
-          const id = user.user_id;
-          await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
-              setUserData(data.result[0])
-          })
-      }
-          
-      const fetchAlerts = async () => {
-          const id = user.user_id;
-          await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
-                setAlertData(data.result)
-              // console.log(data.result)
-          })
-          
-      }
-      const handleSearch = async () => {
-        searchOpen();
-        if(search){
-        try{
-            setUserSearch('')
-            setPostSearch('')
-            await axios.get(`${API_ENDPOINT}search/find?search=${search}`,{withCredentials:true}).then(({data})=> {
-                setUserSearch(data.userResult)
-                setPostSearch(data.postResult)
-            })
-        }   catch(error) {
-            setError(error.response.data.message)
-        }     
-      } else if(!search){
-        searchClose();
-        setMobileSearch(false)
-        setUserSearch('');
-        setPostSearch('');
-      }
-    }
-    const updateAlerts = async () => {
-        const id = user.user_id
-        const notif_data = alertData[0]?.postData
-        const postIds = notif_data?.flatMap(alert => {
-                const reactIds = alert.react?.map(postReact => postReact.notifID) || []
-                const commentIds = alert.comment?.map(postComment => postComment.notifID) || []
-                return [...reactIds, ...commentIds]
-            }
-        ) || []
-        
-        const friend_request = alertData[0]?.friendRequests?.map (req => req.notifID) || []
-
-        const accepted_request = alertData[0]?.acceptedFriendRequest?.map(acc => acc.notifID) || []
-
-        const ids = [...postIds, ...friend_request, ...accepted_request]
-        
+    //function to handle logout
+    const handleLogout = async () => {
         try {
-            await axios.put(`${API_ENDPOINT}alert/${id}`,{ids},{withCredentials:true})
-            fetchAlerts();
+            // remove token from cookies
+            await axios.post(`${API_ENDPOINT}auth/logout`,{withCredentials:true}).then(({data})=>{
+                setUser(data.result);
+            });
+            // make sure to go back to login page after removing the token
+            if(socket) {
+                socket.disconnect();
+                console.log('User disconnect') 
+            }
+            navigate('/login')
         } catch (error) {
-            console.error(error)   
+            console.error('Logout failed',error)
         }
     }
+
+    useEffect(() => {
+    if (user?.user_id) {
+        fetchUserData();
+        fetchAlerts()
+    }
+}, [user]);
+useEffect(() => {
+    handleSearch();
+},[search])
+
+useEffect(() => {
+    const handleResize = () =>
+        setWindowSize(window.innerWidth)
+        window.addEventListener('resize',handleResize)
+        return () => window.removeEventListener('resize',handleResize)
+},[])
+
+    const viewProfile = (userId) => {
+        navigate('/profile', {state: {
+            userId
+        }});
+    }
+
+    const fetchUserData = async () => {
+        const id = user.user_id;
+        await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
+            setUserData(data.result[0])
+        })
+    }
+        
+    const fetchAlerts = async () => {
+        const id = user.user_id;
+        await axios.get(`${API_ENDPOINT}alert/user/${id}`,{withCredentials: true}).then(({data})=>{
+            setAlertData(data.result)
+            // console.log(data.result)
+        })
+        
+    }
+    const handleSearch = async () => {
+    searchOpen();
+    if(search){
+    try{
+        setUserSearch('')
+        setPostSearch('')
+        await axios.get(`${API_ENDPOINT}search/find?search=${search}`,{withCredentials:true}).then(({data})=> {
+            setUserSearch(data.userResult)
+            setPostSearch(data.postResult)
+        })
+    }   catch(error) {
+        setError(error.response.data.message)
+    }     
+    } else if(!search){
+    searchClose();
+    setMobileSearch(false)
+    setUserSearch('');
+    setPostSearch('');
+    }
+}
+const updateAlerts = async () => {
+    const id = user.user_id
+    const notif_data = alertData[0]?.postData
+    const postIds = notif_data?.flatMap(alert => {
+            const reactIds = alert.react?.map(postReact => postReact.notifID) || []
+            const commentIds = alert.comment?.map(postComment => postComment.notifID) || []
+            return [...reactIds, ...commentIds]
+        }
+    ) || []
+    
+    const friend_request = alertData[0]?.friendRequests?.map (req => req.notifID) || []
+
+    const accepted_request = alertData[0]?.acceptedFriendRequest?.map(acc => acc.notifID) || []
+
+    const ids = [...postIds, ...friend_request, ...accepted_request]
+    
+    try {
+        await axios.put(`${API_ENDPOINT}alert/${id}`,{ids},{withCredentials:true})
+        fetchAlerts();
+    } catch (error) {
+        console.error(error)   
+    }
+}
   return (
     <div>
        <Navbar fixed="top" expand="lg" data-bs-theme='dark' style={{borderBottom:'solid', padding: 0, height:'60px', backgroundColor:'black', zIndex:1, display:'flex', alignItems:'center'}}>

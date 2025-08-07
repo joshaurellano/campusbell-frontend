@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
 import {Nav,Container,Image, Offcanvas} from 'react-bootstrap';
@@ -11,57 +10,43 @@ import { IoChatbubble } from "react-icons/io5";
 import {Link} from 'react-router-dom';
 
 import {API_ENDPOINT} from '../Api';
+import { useAuth } from '../AuthContext';
 
 import '../Home.css';
 
 axios.defaults.withCredentials = true;
 
 const Sidebar = ({ showSidebar, handleCloseSidebar }) => {
-  // const for user fetching
-      const [user, setUser] = useState(null);
-      // for topics
-      const [topics, setTopics] = useState([]);
+    const user = useAuth();
+    // for topics
+    const [topics, setTopics] = useState([]);
       // for post
-      const [userData, setUserData] = useState([]);
+    const [userData, setUserData] = useState([]);
+    
+    const fetchUserData = async () => {
+    const id = user.user_id;
+    await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
+        setUserData(data.result[0])
+    })
+}
+    useEffect(() =>{
+    if(user?.user_id){
+        getTopics()
+        fetchUserData()
+    }
+    },[user])
 
-      const navigate = useNavigate();
-         useEffect(() =>{
-          const checkUserSession = async () => {
-              try {
-                  const userInfo = await axios.get(`${API_ENDPOINT}auth`,{withCredentials:true}).then(({data})=>{
-                      setUser(data.result);
-                  })  
-              } catch(error) {
-                  navigate ('/login');
-              }
-          };
-          checkUserSession();
-      }, []);
-      
-      const fetchUserData = async () => {
-        const id = user.user_id;
-        await axios.get(`${API_ENDPOINT}user/${id}`,{withCredentials: true}).then(({data})=>{
-            setUserData(data.result[0])
+    const getTopics = async () => {
+            await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
+            setTopics(data.result)
         })
     }
-      useEffect(() =>{
-        if(user?.user_id){
-          getTopics()
-          fetchUserData()
-        }
-      },[user])
-  
-      const getTopics = async () => {
-              await axios.get(`${API_ENDPOINT}topic`,{withCredentials: true}).then(({data})=>{
-              setTopics(data.result)
-          })
-      }
-    
-      const handleTopicPosts = (topicId) =>{
-          navigate('/topic', {state: {
-              topicId
-          }})
-      }
+
+    const handleTopicPosts = (topicId) =>{
+        navigate('/topic', {state: {
+            topicId
+        }})
+    }
 
   return (
     <div>
