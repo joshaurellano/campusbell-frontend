@@ -14,6 +14,7 @@ const TestChat = () => {
     const [convoId, setConvoId] = useState('');
     const [message, setMessage] = useState('');
     const [chat, setChat] = useState([]);
+    const [history, setHistory] = useState([]);
     const fetchMembers = async () => {
         await axios.get(`${API_ENDPOINT}user`,{withCredentials:true}).then(({data})=>{
             setMember(data.result)
@@ -63,17 +64,32 @@ const TestChat = () => {
         
             socket.on("message",handleMessage)
         
-            // return () => {
-            //     socket.off("message",handleMessage)
-            // }
+            return () => {
+                socket.off("message",handleMessage)
+            }
+        
+    },[socket])
+        useEffect(() => {
+        if(!socket) return
+        
+        const handleHistory = (history) => {
+            console.log('Chat history',history)
+            setHistory(history)
+        }
+        
+            socket.on("history",handleHistory)
+        
+            return () => {
+                socket.off("history",handleHistory)
+            }
         
     },[socket])
     useEffect(() => {
-        if(chat){
-            console.log('Raw', chat);
-            console.log('Data type', typeof(chat))
+        if(history){
+            console.log('Raw', history);
+            console.log('Data type', typeof(history))
         }
-    },[chat])
+    },[history])
 
 return (
     <div className='w-100 h-100' style={{ height:'100vh',backgroundColor:'black', color:'white'}}>
@@ -104,6 +120,19 @@ return (
                         </Card.Header>
                         <Card.Body>
                             <div>
+                                {
+                                    history && (
+                                        history && history.map((data, key) => (
+                                            <div key={key} style={{
+                                                textAlign: data.sender_id === user.user_id ? 'right' : 'left'
+                                            }}>
+                                                <span>{data.message}</span>
+                                            </div>
+                                        ))   
+                                        
+                                               
+                                    )
+                                }
                                 {
                                     chat && (
                                         chat && chat.map((data, key) => (
