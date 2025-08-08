@@ -441,7 +441,7 @@ const updateAlerts = async () => {
                         className='top-menu-icons pfp-icon' 
                         roundedCircle /></>} id="basic-nav-dropdown">
                             <div>
-                            <NavDropdown.Item>Settings</NavDropdown.Item>
+                            <NavDropdown.Item onClick={()=>navigate('/unavailable')}>Settings</NavDropdown.Item>
                             <NavDropdown.Item onClick={()=>viewProfile(user.user_id)}>Profile</NavDropdown.Item>
                             <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
                             </div>
