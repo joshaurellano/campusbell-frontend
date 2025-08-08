@@ -44,9 +44,8 @@ const TopNavbar = ({handleToggleSidebar}) => {
     const handleLogout = async () => {
         try {
             // remove token from cookies
-            await axios.post(`${API_ENDPOINT}auth/logout`,{withCredentials:true}).then(({data})=>{
-                setUser(data.result);
-            });
+            await axios.post(`${API_ENDPOINT}auth/logout`,{withCredentials:true})
+
             // make sure to go back to login page after removing the token
             if(socket) {
                 socket.disconnect();

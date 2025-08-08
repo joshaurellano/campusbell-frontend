@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Form, Button, ListGroup, Card, Row, Col, Container } from 'react-bootstrap';
+import { Form, Button, ListGroup, Card, Row, Col, Container, Image } from 'react-bootstrap';
+import ReactTimeAgo from 'react-time-ago'
 
 import axios from 'axios';
 
@@ -27,8 +28,10 @@ const Messages = () => {
         //console.log(showSidebar)
         setShowSidebar(showSidebar => !showSidebar)
     }
-    const fetchMembers = async () => {
-        await axios.get(`${API_ENDPOINT}user`,{withCredentials:true}).then(({data})=>{
+    const fetchFriends = async () => {
+        const id = user.user_id;
+        await axios.get(`${API_ENDPOINT}friend/${id}`,{withCredentials:true}).then(({data})=>{
+            console.log(data.result)
             setMember(data.result)
         })
     }
@@ -51,7 +54,7 @@ const Messages = () => {
     }
  
     useEffect(() =>{
-        fetchMembers();
+        fetchFriends();
     },[])
 
     useEffect(() => {
@@ -96,6 +99,12 @@ const Messages = () => {
         
     },[socket])
 
+    useEffect(() =>{
+        if(chat){
+            console.log(chat)
+        }
+    },[chat])
+
 return (
     <div style={{height:'100vh', overflow:'hidden'}}>
         <Row>
@@ -125,9 +134,17 @@ return (
                                     (member && !selectedUser) && (
                                         
                                         member && member.map((data) =>(                                
-                                            <ListGroup.Item action key={data.user_id} onClick={() => setSelectedUser(data)}>
-                                                {data.username}
-                                            </ListGroup.Item>
+                                            data.friends ? (
+                                                data.friends && data.friends.map((friend) => (
+                                                    <ListGroup.Item action key={friend.user_id} onClick={() => setSelectedUser(friend)}>
+                                                        {friend.username}
+                                                    </ListGroup.Item>
+                                                ))
+                                            ) : (
+                                                <>
+                                                <ListGroup.Item> You don't have friends yet </ListGroup.Item>
+                                                </>
+                                            )
                                         ))
                                         
                                     )
@@ -146,23 +163,73 @@ return (
                                                     {
                                                         history && (
                                                             history && history.map((data, key) => (
+                                                                <div>
                                                                 <div key={key} style={{
-                                                                    textAlign: data.sender_id === user.user_id ? 'right' : 'left'
+                                                                    display:'flex',
+                                                                    justifyContent: data.sender_id === user.user_id ? 'end' : 'start',
+                                                                    marginBottom:'8px'
                                                                 }}>
-                                                                    <span>{data.message}</span>
+                                                                     <div className='d-flex flex-column'>
+                                                                        
+                                                                        <div className='d-flex flex-row align-items-center w-100 gap-1'>
+                                                                            <Image 
+                                                                                src={data.profile_img}
+                                                                                height={20}
+                                                                                width={20}
+                                                                            />
+                                                                            <span>{data.sender}</span>
+                                                                        </div>
+
+                                                                        <div className='d-flex flex-column'>
+                                                                            <span>{data.message}</span>
+                                                                            <small>{data?.created_at && (
+                                                                                <ReactTimeAgo 
+                                                                                    date={new Date(data.created_at)}
+                                                                                    locale="en-US" timeStyle="round"
+                                                                                />
+                                                                            )}</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <hr />
                                                                 </div>
                                                             ))   
                                                             
                                                                 
                                                         )
                                                     }
+                                                    
                                                     {
                                                         chat && (
                                                             chat && chat.map((data, key) => (
-                                                                <div key={key} style={{
-                                                                    textAlign: data.sender_id === user.user_id ? 'right' : 'left'
-                                                                }}>
-                                                                    <span>{data.message}</span>
+                                                                <div>
+                                                                    <div key={key} style={{
+                                                                        display:'flex',
+                                                                        justifyContent: data.sender_id === user.user_id ? 'end' : 'start'
+                                                                    }}>
+                                                                        <div className='d-flex flex-column'>
+                                                                            <div className='d-flex flex-row align-items-center'>
+                                                                                <Image 
+                                                                                    src={selectedUser.profile_img}
+                                                                                    height={20}
+                                                                                    width={20}
+                                                                                />
+                                                                                <span>{user.username}</span>
+                                                                            </div>
+                                                                            <div className='d-flex flex-column'>
+                                                                                <span>{data.message}</span>
+                                                                                 <small>{data?.created_at && (
+                                                                                <ReactTimeAgo 
+                                                                                    date={new Date(data.created_at)}
+                                                                                    locale="en-US" timeStyle="twitter"
+                                                                                />
+                                                                                )}</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    
+                                                                    </div>
+                                                                    <hr />
                                                                 </div>
                                                             ))   
                                                             
