@@ -69,27 +69,28 @@ const Messages = () => {
         }
     },[convoId])
 
-    useEffect(() => {
-        if(!socket) return
+    // useEffect(() => {
+    //     if(!socket) return
         
-        const handleMessage = (chat) => {
-            console.log('Chat details',chat)
-            setChat((prev) => [...prev, chat])
-        }
+    //     const handleMessage = (chat) => {
+    //         console.log('Chat details',chat)
+    //         setChat((prev) => [...prev, chat])
+    //     }
         
-            socket.on("message",handleMessage)
+    //         socket.on("message",handleMessage)
         
-            return () => {
-                socket.off("message",handleMessage)
-            }
+    //         return () => {
+    //             socket.off("message",handleMessage)
+    //         }
         
-    },[socket])
+    // },[socket])
     
     useEffect(() => {
         if(!socket) return
         
         const handleHistory = (history) => {
-            setHistory(history)
+            console.log(history)
+            setHistory((prev) => [...prev, history])
         }        
             socket.on("history",handleHistory)
         
@@ -99,11 +100,11 @@ const Messages = () => {
         
     },[socket])
 
-    useEffect(() =>{
-        if(chat){
-            console.log(chat)
-        }
-    },[chat])
+    // useEffect(() =>{
+    //     if(history){
+    //         console.log(history)
+    //     }
+    // },[history])
 
 return (
     <div style={{height:'100vh', overflow:'hidden'}}>
@@ -162,26 +163,30 @@ return (
                                                 <div>
                                                     {
                                                         history && (
-                                                            history && history.map((data, key) => (
-                                                                <div>
-                                                                <div key={key} style={{
+                                                            history && history.map((data) => (
+                                                                
+                                                                <div key={data.message_id} style={{
                                                                     display:'flex',
                                                                     justifyContent: data.sender_id === user.user_id ? 'end' : 'start',
                                                                     marginBottom:'8px'
                                                                 }}>
                                                                      <div className='d-flex flex-column'>
-                                                                        
+                                                                        <div className='d-flex justify-content-start'>
+                                                                            <small>{data.sender}</small>
+                                                                        </div>
                                                                         <div className='d-flex flex-row align-items-center w-100 gap-1'>
                                                                             <Image 
                                                                                 src={data.profile_img}
                                                                                 height={20}
                                                                                 width={20}
                                                                             />
-                                                                            <span>{data.sender}</span>
+                                                                            <div style={{border:'1px solid black', borderRadius:'50px', minWidth:'100px', maxWidth:'250px', display:'flex', justifyContent:'start', wordBreak:'break-word',padding:'6px'}}>
+                                                                                <small>{data.message}</small>
+                                                                            </div>
                                                                         </div>
 
                                                                         <div className='d-flex flex-column'>
-                                                                            <span>{data.message}</span>
+                                                                            
                                                                             <small>{data?.created_at && (
                                                                                 <ReactTimeAgo 
                                                                                     date={new Date(data.created_at)}
@@ -191,16 +196,13 @@ return (
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-                                                                <hr />
-                                                                </div>
                                                             ))   
                                                             
                                                                 
                                                         )
                                                     }
-                                                    
-                                                    {
+                                                    </div>
+                                                    {/* {
                                                         chat && (
                                                             chat && chat.map((data, key) => (
                                                                 <div>
@@ -235,8 +237,8 @@ return (
                                                             
                                                                 
                                                         )
-                                                    }
-                                                </div>
+                                                    } */}
+                                                
                                                 <div>
                                                     <Form onSubmit={handleChat}>
                                                         <Form.Group>
