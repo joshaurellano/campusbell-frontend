@@ -21,11 +21,9 @@ const Messages = () => {
     const [convoId, setConvoId] = useState('');
     const [message, setMessage] = useState('');
     const [chat, setChat] = useState([]);
-    const [history, setHistory] = useState([]);
     const [showSidebar, setShowSidebar] = useState(false);
 
     const toggleSidebar = () => {
-        //console.log(showSidebar)
         setShowSidebar(showSidebar => !showSidebar)
     }
     const fetchFriends = async () => {
@@ -38,7 +36,6 @@ const Messages = () => {
     const getConversationID = async () => {
         const id = selectedUser.user_id;
         await axios.get(`${API_ENDPOINT}chat/${id}`,{withCredentials:true}).then(({data})=> {
-            console.log(data.result)
             setConvoId(data.result);
         })
     }
@@ -47,9 +44,7 @@ const Messages = () => {
     }
     const handleChat = async (e) => {
         e.preventDefault();
-        console.log('ReceiverID', selectedUser.user_id, 'SenderID',user.user_id, 'Message',message)
         socket.emit('message',{"receiver_id":selectedUser.user_id,"sender_id":user.user_id,"message":message})
-
         setMessage('');
     }
  
@@ -68,43 +63,19 @@ const Messages = () => {
             joinUser();
         }
     },[convoId])
-
-    // useEffect(() => {
-    //     if(!socket) return
-        
-    //     const handleMessage = (chat) => {
-    //         console.log('Chat details',chat)
-    //         setChat((prev) => [...prev, chat])
-    //     }
-        
-    //         socket.on("message",handleMessage)
-        
-    //         return () => {
-    //             socket.off("message",handleMessage)
-    //         }
-        
-    // },[socket])
     
     useEffect(() => {
         if(!socket) return
         
-        const handleHistory = (history) => {
-            console.log(history)
-            setHistory((prev) => [...prev, history])
+        const handleMessage = (chat) => {
+            setChat(chat)
         }        
-            socket.on("history",handleHistory)
-        
+            socket.on("chat",handleMessage)
             return () => {
-                socket.off("history",handleHistory)
+                socket.off("chat",handleMessage)
             }
         
     },[socket])
-
-    // useEffect(() =>{
-    //     if(history){
-    //         console.log(history)
-    //     }
-    // },[history])
 
 return (
     <div style={{height:'100vh', overflow:'hidden'}}>
@@ -162,8 +133,8 @@ return (
                                             <Card.Body>
                                                 <div>
                                                     {
-                                                        history && (
-                                                            history && history.map((data) => (
+                                                        chat && (
+                                                            chat && chat.map((data) => (
                                                                 
                                                                 <div key={data.message_id} style={{
                                                                     display:'flex',
@@ -174,13 +145,15 @@ return (
                                                                         <div className='d-flex justify-content-start'>
                                                                             <small>{data.sender}</small>
                                                                         </div>
-                                                                        <div className='d-flex flex-row align-items-center w-100 gap-1'>
+                                                                        <div className='d-flex flex-row align-items-end w-100 gap-1'>
+                                                                            <div>
                                                                             <Image 
                                                                                 src={data.profile_img}
-                                                                                height={20}
-                                                                                width={20}
+                                                                                height={30}
+                                                                                width={30}
                                                                             />
-                                                                            <div style={{border:'1px solid black', borderRadius:'50px', minWidth:'100px', maxWidth:'250px', display:'flex', justifyContent:'start', wordBreak:'break-word',padding:'6px'}}>
+                                                                            </div>
+                                                                            <div style={{border:'1px solid black', borderRadius:'12px 12px', width:'max-content',maxWidth:'200px', display:'flex', justifyContent:'start', wordBreak:'break-word',paddingTop:'4px',paddingBottom:'4px',paddingLeft:'10px',paddingRight:'10px'}}>
                                                                                 <small>{data.message}</small>
                                                                             </div>
                                                                         </div>
