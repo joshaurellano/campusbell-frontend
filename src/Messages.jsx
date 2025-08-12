@@ -78,134 +78,130 @@ const Messages = () => {
     },[socket])
 
 return (
-    <div style={{height:'100vh', overflow:'hidden'}}>
+    <div style={{height:'100vh', width:'100vw', overflow:'auto'}}>
         <Row>
             <TopNavbar handleToggleSidebar={toggleSidebar}/>
         </Row>
 
-        <Row style={{paddingTop:'68px', backgroundColor:'black'}}> 
-            <Container fluid>
+        <Row style={{paddingTop:'68px', backgroundColor:'black',width:'100%'}}> 
+            <Container fluid style={{width:'100%'}}>
                 <Row>
                     <Col lg={2} className='topic-col'>
                         <Sidebar showSidebar={showSidebar} 
                             handleCloseSidebar={() => setShowSidebar(false)}/>
                     </Col>
 
-                    <Col lg={10} style={{height:'calc(100vh - 68px)', overflowY:'auto', overflowX:'hidden', color:'white'}}>
-                        <h2>Test Chat</h2>
-                        { user && (
-                        <span>Hi {user.username}</span>)
-                            }
-                            <br />
-                       
-                            <ListGroup>
+                    <Col lg={10} style={{height:'calc(100vh - 68px)', overflowY:'auto', overflowX:'hidden', color:'white', borderRadius:'5px'}}>
+                        <Container style={{height:'100%', width:'100%'}}>
+                        <Row style={{height:'100%'}}>
+                            <Col lg={3} style={{borderRight:'1px solid white', height:'100%', overflowY:'auto', overflowX:'hidden',}}>
+                                <div style={{height:'100%'}}>
                                 {
-                                    (member && !selectedUser) && (
-                                       <div>
+                                    (member) && (
+                                    <div style={{height:'100%'}}>
                                         <span>Select User</span>
 
-                                        <ListGroup>
+                                        <div style={{color:'white', backgroundColor:'black', height:'100%'}}>
                                             {
                                                 member && member.map((data) =>(
                                                     data.friends ? (
                                                         (data.friends).map((friend)=> (
-                                                            <ListGroup.Item action key={friend.user_id} onClick={() => setSelectedUser(friend)}>
+                                                            <div key={friend.user_id} style={{color:'white', backgroundColor:'black'}} onClick={() => setSelectedUser(friend)}>
                                                                 <div className='d-flex flex-row gap-2 align-items-center'>
                                                                 <Image src={friend.profile_img} height={20} width={20} />{friend.username}
                                                                 </div>
-                                                            </ListGroup.Item>
+                                                                <hr />
+                                                            </div>
                                                         ))
                                                     ) : (
-                                                        <ListGroup.Item>No friend yet</ListGroup.Item>
+                                                        <div>No friend yet</div>
                                                     )
                                                 ))
                                             }
-                                        </ListGroup>
-                                       </div>
+                                        </div>
+                                    </div>
                                         
                                     )
-                                 
+                                    
                                 }
-                            </ListGroup>
-                            {
-                                selectedUser && (
-                                    <div>
-                                        <Card>
-                                            <Card.Header>
-                                                <div className='d-flex flex-row align-items-center gap-2'>
-                                                <IoReturnDownBack onClick={()=> setSelectedUser('')} /> 
-                                                    <div className='d-flex flex-row align-items-center gap-2'>
-                                                        <Image src={selectedUser.profile_img}
-                                                        height={20}
-                                                        width={20} />
+                                </div>
+                            
+                            </Col>
+
+                            <Col lg={9} style={{height:'100%'}}> 
+                                <Card style={{height:'100%'}}>
+                                    <Card.Header>
+                                        <div>
+                                            <h4>{selectedUser ? (
+                                                    <div className='d-flex align-items-center flex-row gap-1'>
+                                                        <Image src={selectedUser.profile_img} height={25} width={25} />
                                                         <span>{selectedUser.username}</span>
                                                     </div>
-                                                </div>
-                                            </Card.Header>
-                                            <Card.Body>
-                                                <div>
-                                                    {
-                                                        chat && (
-                                                            chat && chat.map((data) => (
-                                                                
-                                                                <div key={data.message_id} style={{
-                                                                    display:'flex',
-                                                                    justifyContent: data.sender_id === user.user_id ? 'end' : 'start',
-                                                                    marginBottom:'8px'
-                                                                }}>
-                                                                     <div className='d-flex flex-column'>
-                                                                        <div className='d-flex justify-content-start'>
-                                                                            <small>{data.sender}</small>
-                                                                        </div>
-                                                                        <div className='d-flex flex-row align-items-end w-100 gap-1'>
-                                                                            <div>
-                                                                            <Image 
-                                                                                src={data.profile_img}
-                                                                                height={30}
-                                                                                width={30}
-                                                                            />
-                                                                            </div>
-                                                                            <div style={{border:'1px solid black', borderRadius:'12px 12px', width:'max-content',maxWidth:'200px', display:'flex', justifyContent:'start', wordBreak:'break-word',paddingTop:'4px',paddingBottom:'4px',paddingLeft:'10px',paddingRight:'10px'}}>
-                                                                                <small>{data.message}</small>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div className='d-flex flex-column'>
-                                                                            
-                                                                            <small>{data?.created_at && (
-                                                                                <ReactTimeAgo 
-                                                                                    date={new Date(data.created_at)}
-                                                                                    locale="en-US" timeStyle="round"
-                                                                                />
-                                                                            )}</small>
-                                                                        </div>
-                                                                    </div>
+                                                ): ('Select from your friend list')
+                                                }</h4>
+                                        </div>
+                                    </Card.Header>
+                                    <Card.Body style={{height:'100vh', overflowY:'auto', overflowX:'hidden',}}>
+                                        {
+                                            chat && (
+                                                chat && chat.map((data) => (
+                                                    
+                                                    <div key={data.message_id} style={{
+                                                        display:'flex',
+                                                        justifyContent: data.sender_id === user.user_id ? 'end' : 'start',
+                                                        marginBottom:'8px'
+                                                    }}>
+                                                            <div className='d-flex flex-column'>
+                                                            <div className='d-flex justify-content-start'>
+                                                                <small>{data.sender}</small>
+                                                            </div>
+                                                            <div className='d-flex flex-row align-items-end w-100 gap-1'>
+                                                                <div>
+                                                                <Image 
+                                                                    src={data.profile_img}
+                                                                    height={30}
+                                                                    width={30}
+                                                                />
                                                                 </div>
-                                                            ))   
-                                                            
+                                                                <div style={{border:'1px solid black', borderRadius:'12px 12px', width:'max-content',maxWidth:'200px', display:'flex', justifyContent:'start', wordBreak:'break-word',paddingTop:'4px',paddingBottom:'4px',paddingLeft:'10px',paddingRight:'10px'}}>
+                                                                    <small>{data.message}</small>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className='d-flex flex-column'>
                                                                 
-                                                        )
-                                                    }
-                                                    </div>                                            
-                                                <div>
-                                                    <Form onSubmit={handleChat}>
-                                                        <Form.Group>
-                                                            <Form.Control value={message}
-                                                            onChange={(e) => setMessage(e.target.value)}/>
-                                                        </Form.Group>
-                                                        <br />
-                                                        <Form.Group>
-                                                            <Button type='submit'>Send</Button>
-                                                        </Form.Group>
-                                                    </Form>
-                                                </div>
-                                            </Card.Body>
-                                        </Card>
-
-                                    </div>
-                                )
-                            }
-
+                                                                <small>{data?.created_at && (
+                                                                    <ReactTimeAgo 
+                                                                        date={new Date(data.created_at)}
+                                                                        locale="en-US" timeStyle="round"
+                                                                    />
+                                                                )}</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))   
+                                            )
+                                        }
+                                    </Card.Body>
+                                    <Card.Footer>
+                                        <div>
+                                            <Form onSubmit={handleChat}>
+                                                <Form.Group>
+                                                    <Form.Control value={message}
+                                                    onChange={(e) => setMessage(e.target.value)}/>
+                                                </Form.Group>
+                                                <br />
+                                                <Form.Group>
+                                                    <Button type='submit'>Send</Button>
+                                                </Form.Group>
+                                            </Form>
+                                        </div>
+                                    </Card.Footer>
+                                </Card>
+                            
+                            </Col>
+                        </Row>
+                        </Container>
                     </Col>
                 </Row>
 
