@@ -30,7 +30,9 @@ const Messages = () => {
     const fetchFriends = async () => {
         const id = user.user_id;
         await axios.get(`${API_ENDPOINT}friend/${id}`,{withCredentials:true}).then(({data})=>{
-            setMember(data.result)
+            setMember(data.result);
+            setSelectedUser(data.result[0].friends[0]);
+
         })
     }
     const getConversationID = async () => {
@@ -99,18 +101,23 @@ return (
                                 {
                                     (member) && (
                                     <div style={{height:'100%'}}>
-                                        <span>Select User</span>
-
                                         <div style={{color:'white', backgroundColor:'black', height:'100%'}}>
                                             {
                                                 member && member.map((data) =>(
                                                     data.friends ? (
                                                         (data.friends).map((friend)=> (
-                                                            <div key={friend.user_id} style={{color:'white', backgroundColor:'black'}} onClick={() => setSelectedUser(friend)}>
-                                                                <div className='d-flex flex-row gap-2 align-items-center'>
-                                                                <Image src={friend.profile_img} height={20} width={20} />{friend.username}
-                                                                </div>
-                                                                <hr />
+                                                            
+                                                            <div className='selected-user' key={friend.user_id} style={{
+                                                                color:'white', 
+                                                                backgroundColor:selectedUser.user_id === friend.user_id ? 'blue' : 'black', 
+                                                                borderRadius:'10px'}} onClick={() => setSelectedUser(friend)}>
+                                                                
+                                                                    <div className='d-flex flex-row gap-2 align-items-center' style={{padding:'8px'}}>
+                                                                        <Image src={friend.profile_img} height={20} width={20} />
+                                                                        {friend.username}
+                                                                    </div>
+                                                                    <hr />
+                                                                
                                                             </div>
                                                         ))
                                                     ) : (
@@ -143,7 +150,7 @@ return (
                                     </Card.Header>
                                     <Card.Body style={{height:'100vh', overflowY:'auto', overflowX:'hidden',}}>
                                         {
-                                            chat && (
+                                            chat && chat.length > 0 ? (
                                                 chat && chat.map((data) => (
                                                     
                                                     <div key={data.message_id} style={{
@@ -180,6 +187,10 @@ return (
                                                         </div>
                                                     </div>
                                                 ))   
+                                            ) : (
+                                                <div>
+                                                    <span>Start a Conversation</span>
+                                                </div>
                                             )
                                         }
                                     </Card.Body>
@@ -188,7 +199,8 @@ return (
                                             <Form onSubmit={handleChat}>
                                                 <Form.Group>
                                                     <Form.Control value={message}
-                                                    onChange={(e) => setMessage(e.target.value)}/>
+                                                    onChange={(e) => setMessage(e.target.value)} 
+                                                    placeholder='Write a Message' />
                                                 </Form.Group>
                                                 <br />
                                                 <Form.Group>

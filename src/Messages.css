@@ -48,6 +48,18 @@
 .chat-box{
     height: 80px;
 }
+.selected-user{
+    box-shadow: inset 0 0 0 0 #0282fa;
+    color: #0282fa;
+    padding: 0 .25rem;
+    margin: 0 -.25rem;
+    transition: color .3s ease-in-out, box-shadow .3s ease-in-out;
+}
+.selected-user:hover {
+    cursor: pointer;
+    color: #fff;
+    box-shadow: inset 280px 0 0 0 #0000ff;
+}
 @media (max-width: 600px) {
 .background {
 background-color: black;
