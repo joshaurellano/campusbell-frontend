@@ -49,7 +49,6 @@ const TopNavbar = ({handleToggleSidebar}) => {
             // make sure to go back to login page after removing the token
             if(socket) {
                 socket.disconnect();
-                console.log('User disconnect') 
             }
             navigate('/login')
         } catch (error) {

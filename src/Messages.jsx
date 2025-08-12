@@ -3,6 +3,7 @@ import { Form, Button, ListGroup, Card, Row, Col, Container, Image } from 'react
 import ReactTimeAgo from 'react-time-ago'
 
 import axios from 'axios';
+import { IoReturnDownBack } from "react-icons/io5";
 
 import { useSocket } from './WSconn';
 import { useAuth } from './AuthContext';
@@ -21,24 +22,20 @@ const Messages = () => {
     const [convoId, setConvoId] = useState('');
     const [message, setMessage] = useState('');
     const [chat, setChat] = useState([]);
-    const [history, setHistory] = useState([]);
     const [showSidebar, setShowSidebar] = useState(false);
 
     const toggleSidebar = () => {
-        //console.log(showSidebar)
         setShowSidebar(showSidebar => !showSidebar)
     }
     const fetchFriends = async () => {
         const id = user.user_id;
         await axios.get(`${API_ENDPOINT}friend/${id}`,{withCredentials:true}).then(({data})=>{
-            console.log(data.result)
             setMember(data.result)
         })
     }
     const getConversationID = async () => {
         const id = selectedUser.user_id;
         await axios.get(`${API_ENDPOINT}chat/${id}`,{withCredentials:true}).then(({data})=> {
-            console.log(data.result)
             setConvoId(data.result);
         })
     }
@@ -47,9 +44,7 @@ const Messages = () => {
     }
     const handleChat = async (e) => {
         e.preventDefault();
-        console.log('ReceiverID', selectedUser.user_id, 'SenderID',user.user_id, 'Message',message)
         socket.emit('message',{"receiver_id":selectedUser.user_id,"sender_id":user.user_id,"message":message})
-
         setMessage('');
     }
  
@@ -68,42 +63,19 @@ const Messages = () => {
             joinUser();
         }
     },[convoId])
-
-    useEffect(() => {
-        if(!socket) return
-        
-        const handleMessage = (chat) => {
-            console.log('Chat details',chat)
-            setChat((prev) => [...prev, chat])
-        }
-        
-            socket.on("message",handleMessage)
-        
-            return () => {
-                socket.off("message",handleMessage)
-            }
-        
-    },[socket])
     
     useEffect(() => {
-        if(!socket) return
+        if(!socket) return;
         
-        const handleHistory = (history) => {
-            setHistory(history)
+        const handleMessage = (chat) => {
+            setChat(chat)
         }        
-            socket.on("history",handleHistory)
-        
+            socket.on("chat",handleMessage)
             return () => {
-                socket.off("history",handleHistory)
+                socket.off("chat",handleMessage)
             }
         
     },[socket])
-
-    useEffect(() =>{
-        if(chat){
-            console.log(chat)
-        }
-    },[chat])
 
 return (
     <div style={{height:'100vh', overflow:'hidden'}}>
@@ -127,25 +99,29 @@ return (
                             <br />
                        
                             <ListGroup>
-                                <ListGroup.Item disabled>
-                                    Select User
-                                </ListGroup.Item>
                                 {
                                     (member && !selectedUser) && (
-                                        
-                                        member && member.map((data) =>(                                
-                                            data.friends ? (
-                                                data.friends && data.friends.map((friend) => (
-                                                    <ListGroup.Item action key={friend.user_id} onClick={() => setSelectedUser(friend)}>
-                                                        {friend.username}
-                                                    </ListGroup.Item>
+                                       <div>
+                                        <span>Select User</span>
+
+                                        <ListGroup>
+                                            {
+                                                member && member.map((data) =>(
+                                                    data.friends ? (
+                                                        (data.friends).map((friend)=> (
+                                                            <ListGroup.Item action key={friend.user_id} onClick={() => setSelectedUser(friend)}>
+                                                                <div className='d-flex flex-row gap-2 align-items-center'>
+                                                                <Image src={friend.profile_img} height={20} width={20} />{friend.username}
+                                                                </div>
+                                                            </ListGroup.Item>
+                                                        ))
+                                                    ) : (
+                                                        <ListGroup.Item>No friend yet</ListGroup.Item>
+                                                    )
                                                 ))
-                                            ) : (
-                                                <>
-                                                <ListGroup.Item> You don't have friends yet </ListGroup.Item>
-                                                </>
-                                            )
-                                        ))
+                                            }
+                                        </ListGroup>
+                                       </div>
                                         
                                     )
                                  
@@ -156,32 +132,46 @@ return (
                                     <div>
                                         <Card>
                                             <Card.Header>
-                                                {selectedUser.username}
+                                                <div className='d-flex flex-row align-items-center gap-2'>
+                                                <IoReturnDownBack onClick={()=> setSelectedUser('')} /> 
+                                                    <div className='d-flex flex-row align-items-center gap-2'>
+                                                        <Image src={selectedUser.profile_img}
+                                                        height={20}
+                                                        width={20} />
+                                                        <span>{selectedUser.username}</span>
+                                                    </div>
+                                                </div>
                                             </Card.Header>
                                             <Card.Body>
                                                 <div>
                                                     {
-                                                        history && (
-                                                            history && history.map((data, key) => (
-                                                                <div>
-                                                                <div key={key} style={{
+                                                        chat && (
+                                                            chat && chat.map((data) => (
+                                                                
+                                                                <div key={data.message_id} style={{
                                                                     display:'flex',
                                                                     justifyContent: data.sender_id === user.user_id ? 'end' : 'start',
                                                                     marginBottom:'8px'
                                                                 }}>
                                                                      <div className='d-flex flex-column'>
-                                                                        
-                                                                        <div className='d-flex flex-row align-items-center w-100 gap-1'>
+                                                                        <div className='d-flex justify-content-start'>
+                                                                            <small>{data.sender}</small>
+                                                                        </div>
+                                                                        <div className='d-flex flex-row align-items-end w-100 gap-1'>
+                                                                            <div>
                                                                             <Image 
                                                                                 src={data.profile_img}
-                                                                                height={20}
-                                                                                width={20}
+                                                                                height={30}
+                                                                                width={30}
                                                                             />
-                                                                            <span>{data.sender}</span>
+                                                                            </div>
+                                                                            <div style={{border:'1px solid black', borderRadius:'12px 12px', width:'max-content',maxWidth:'200px', display:'flex', justifyContent:'start', wordBreak:'break-word',paddingTop:'4px',paddingBottom:'4px',paddingLeft:'10px',paddingRight:'10px'}}>
+                                                                                <small>{data.message}</small>
+                                                                            </div>
                                                                         </div>
 
                                                                         <div className='d-flex flex-column'>
-                                                                            <span>{data.message}</span>
+                                                                            
                                                                             <small>{data?.created_at && (
                                                                                 <ReactTimeAgo 
                                                                                     date={new Date(data.created_at)}
@@ -191,52 +181,12 @@ return (
                                                                         </div>
                                                                     </div>
                                                                 </div>
-
-                                                                <hr />
-                                                                </div>
                                                             ))   
                                                             
                                                                 
                                                         )
                                                     }
-                                                    
-                                                    {
-                                                        chat && (
-                                                            chat && chat.map((data, key) => (
-                                                                <div>
-                                                                    <div key={key} style={{
-                                                                        display:'flex',
-                                                                        justifyContent: data.sender_id === user.user_id ? 'end' : 'start'
-                                                                    }}>
-                                                                        <div className='d-flex flex-column'>
-                                                                            <div className='d-flex flex-row align-items-center'>
-                                                                                <Image 
-                                                                                    src={selectedUser.profile_img}
-                                                                                    height={20}
-                                                                                    width={20}
-                                                                                />
-                                                                                <span>{user.username}</span>
-                                                                            </div>
-                                                                            <div className='d-flex flex-column'>
-                                                                                <span>{data.message}</span>
-                                                                                 <small>{data?.created_at && (
-                                                                                <ReactTimeAgo 
-                                                                                    date={new Date(data.created_at)}
-                                                                                    locale="en-US" timeStyle="twitter"
-                                                                                />
-                                                                                )}</small>
-                                                                            </div>
-                                                                        </div>
-                                                                    
-                                                                    </div>
-                                                                    <hr />
-                                                                </div>
-                                                            ))   
-                                                            
-                                                                
-                                                        )
-                                                    }
-                                                </div>
+                                                    </div>                                            
                                                 <div>
                                                     <Form onSubmit={handleChat}>
                                                         <Form.Group>
