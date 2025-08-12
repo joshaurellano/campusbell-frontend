@@ -1,5 +1,4 @@
 import { useEffect, createContext , useContext , useState, useRef }from 'react'
-import {Outlet, useNavigate, Navigate} from 'react-router-dom';
 import { io } from 'socket.io-client';
 import {API_ENDPOINT} from './Api';
 
@@ -16,10 +15,9 @@ export const SocketProvider = ({children}) => {
             socketRef.current = io(API_ENDPOINT, {withCredentials: true});
 
             socketRef.current.on('connect', () => {
-                console.log('Socket connected',socketRef.current.id);
+                //console.log('Socket connected',socketRef.current.id);
                 setConnected(true);
             })
-
             socketRef.current.on('disconnect', () => {
                 setConnected(false);
             })

@@ -3,6 +3,7 @@ import { Form, Button, ListGroup, Card, Row, Col, Container, Image } from 'react
 import ReactTimeAgo from 'react-time-ago'
 
 import axios from 'axios';
+import { IoReturnDownBack } from "react-icons/io5";
 
 import { useSocket } from './WSconn';
 import { useAuth } from './AuthContext';
@@ -29,7 +30,6 @@ const Messages = () => {
     const fetchFriends = async () => {
         const id = user.user_id;
         await axios.get(`${API_ENDPOINT}friend/${id}`,{withCredentials:true}).then(({data})=>{
-            console.log(data.result)
             setMember(data.result)
         })
     }
@@ -65,7 +65,7 @@ const Messages = () => {
     },[convoId])
     
     useEffect(() => {
-        if(!socket) return
+        if(!socket) return;
         
         const handleMessage = (chat) => {
             setChat(chat)
@@ -99,25 +99,29 @@ return (
                             <br />
                        
                             <ListGroup>
-                                <ListGroup.Item disabled>
-                                    Select User
-                                </ListGroup.Item>
                                 {
                                     (member && !selectedUser) && (
-                                        
-                                        member && member.map((data) =>(                                
-                                            data.friends ? (
-                                                data.friends && data.friends.map((friend) => (
-                                                    <ListGroup.Item action key={friend.user_id} onClick={() => setSelectedUser(friend)}>
-                                                        {friend.username}
-                                                    </ListGroup.Item>
+                                       <div>
+                                        <span>Select User</span>
+
+                                        <ListGroup>
+                                            {
+                                                member && member.map((data) =>(
+                                                    data.friends ? (
+                                                        (data.friends).map((friend)=> (
+                                                            <ListGroup.Item action key={friend.user_id} onClick={() => setSelectedUser(friend)}>
+                                                                <div className='d-flex flex-row gap-2 align-items-center'>
+                                                                <Image src={friend.profile_img} height={20} width={20} />{friend.username}
+                                                                </div>
+                                                            </ListGroup.Item>
+                                                        ))
+                                                    ) : (
+                                                        <ListGroup.Item>No friend yet</ListGroup.Item>
+                                                    )
                                                 ))
-                                            ) : (
-                                                <>
-                                                <ListGroup.Item> You don't have friends yet </ListGroup.Item>
-                                                </>
-                                            )
-                                        ))
+                                            }
+                                        </ListGroup>
+                                       </div>
                                         
                                     )
                                  
@@ -128,7 +132,15 @@ return (
                                     <div>
                                         <Card>
                                             <Card.Header>
-                                                {selectedUser.username}
+                                                <div className='d-flex flex-row align-items-center gap-2'>
+                                                <IoReturnDownBack onClick={()=> setSelectedUser('')} /> 
+                                                    <div className='d-flex flex-row align-items-center gap-2'>
+                                                        <Image src={selectedUser.profile_img}
+                                                        height={20}
+                                                        width={20} />
+                                                        <span>{selectedUser.username}</span>
+                                                    </div>
+                                                </div>
                                             </Card.Header>
                                             <Card.Body>
                                                 <div>
@@ -174,44 +186,7 @@ return (
                                                                 
                                                         )
                                                     }
-                                                    </div>
-                                                    {/* {
-                                                        chat && (
-                                                            chat && chat.map((data, key) => (
-                                                                <div>
-                                                                    <div key={key} style={{
-                                                                        display:'flex',
-                                                                        justifyContent: data.sender_id === user.user_id ? 'end' : 'start'
-                                                                    }}>
-                                                                        <div className='d-flex flex-column'>
-                                                                            <div className='d-flex flex-row align-items-center'>
-                                                                                <Image 
-                                                                                    src={selectedUser.profile_img}
-                                                                                    height={20}
-                                                                                    width={20}
-                                                                                />
-                                                                                <span>{user.username}</span>
-                                                                            </div>
-                                                                            <div className='d-flex flex-column'>
-                                                                                <span>{data.message}</span>
-                                                                                 <small>{data?.created_at && (
-                                                                                <ReactTimeAgo 
-                                                                                    date={new Date(data.created_at)}
-                                                                                    locale="en-US" timeStyle="twitter"
-                                                                                />
-                                                                                )}</small>
-                                                                            </div>
-                                                                        </div>
-                                                                    
-                                                                    </div>
-                                                                    <hr />
-                                                                </div>
-                                                            ))   
-                                                            
-                                                                
-                                                        )
-                                                    } */}
-                                                
+                                                    </div>                                            
                                                 <div>
                                                     <Form onSubmit={handleChat}>
                                                         <Form.Group>
