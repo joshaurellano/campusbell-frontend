@@ -23,6 +23,7 @@ const Messages = () => {
     const [message, setMessage] = useState('');
     const [chat, setChat] = useState([]);
     const [showSidebar, setShowSidebar] = useState(false);
+    const [showFriends, setShowFriends] = useState(true);
 
     const toggleSidebar = () => {
         setShowSidebar(showSidebar => !showSidebar)
@@ -96,7 +97,7 @@ return (
                     <Col lg={10} style={{height:'calc(100vh - 68px)', overflowY:'auto', overflowX:'hidden', color:'white', borderRadius:'5px'}}>
                         <Container style={{height:'100%', width:'100%'}}>
                         <Row style={{height:'100%'}}>
-                            <Col lg={3} style={{borderRight:'1px solid white', height:'100%', overflowY:'auto', overflowX:'hidden',}}>
+                            <Col lg={3} className= {`${showFriends ? 'd-block':'d-none'} d-lg-block`} style={{borderRight:'1px solid white', height:'100%', overflowY:'auto', overflowX:'hidden',}}>
                                 <div style={{height:'100%'}}>
                                 {
                                     (member) && (
@@ -109,8 +110,11 @@ return (
                                                             
                                                             <div className='selected-user' key={friend.user_id} style={{
                                                                 color:'white', 
-                                                                backgroundColor:selectedUser.user_id === friend.user_id ? 'blue' : 'black', 
-                                                                borderRadius:'10px'}} onClick={() => setSelectedUser(friend)}>
+                                                                backgroundColor: selectedUser.user_id === friend.user_id ? 'blue' : 'black',
+                                                                borderRadius:'10px'}} onClick={() => {
+                                                                    setSelectedUser(friend)
+                                                                    setShowFriends(false)
+                                                                }}>
                                                                 
                                                                     <div className='d-flex flex-row gap-2 align-items-center' style={{padding:'8px'}}>
                                                                         <Image src={friend.profile_img} height={20} width={20} />
@@ -135,12 +139,16 @@ return (
                             
                             </Col>
 
-                            <Col lg={9} style={{height:'100%'}}> 
+                            <Col lg={9} className={`${showFriends ? 'd-none':'d-block'} d-lg-block`} style={{height:'100%'}}> 
                                 <Card style={{height:'100%'}}>
                                     <Card.Header>
                                         <div>
                                             <h4>{selectedUser ? (
+                                                    
                                                     <div className='d-flex align-items-center flex-row gap-1'>
+                                                        
+                                                        <IoReturnDownBack className='d-lg-none' onClick={() => setShowFriends(true)} />
+                                                       
                                                         <Image src={selectedUser.profile_img} height={25} width={25} />
                                                         <span>{selectedUser.username}</span>
                                                     </div>
