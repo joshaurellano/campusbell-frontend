@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Form, Button, ListGroup, Card, Row, Col, Container, Image } from 'react-bootstrap';
 import ReactTimeAgo from 'react-time-ago'
 
@@ -17,6 +17,7 @@ import './Messages.css';
 const Messages = () => {
     const user = useAuth();
     const socket = useSocket();
+    const chatContainerRef = useRef(null);
     const [member, setMember] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [convoId, setConvoId] = useState('');
@@ -50,6 +51,12 @@ const Messages = () => {
         socket.emit('message',{"receiver_id":selectedUser.user_id,"sender_id":user.user_id,"message":message})
         setMessage('');
     }
+
+    const scrollToBottomChat = () => {
+        if(chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    }
  
     useEffect(() =>{
         fetchFriends();
@@ -71,14 +78,18 @@ const Messages = () => {
         if(!socket) return;
         
         const handleMessage = (chat) => {
-            setChat(chat)
-        }        
+            setChat(chat);
+        }   
             socket.on("chat",handleMessage)
             return () => {
                 socket.off("chat",handleMessage)
             }
         
     },[socket])
+
+    useEffect(() => {
+        scrollToBottomChat();
+    },[chat])
 
 return (
     <div style={{height:'100vh', width:'100vw', overflow:'auto'}}>
@@ -156,7 +167,7 @@ return (
                                                 }</h4>
                                         </div>
                                     </Card.Header>
-                                    <Card.Body style={{height:'100vh', overflowY:'auto', overflowX:'hidden',}}>
+                                    <Card.Body ref={chatContainerRef} style={{height:'100vh', overflowY:'auto', overflowX:'hidden',}}>
                                         {
                                             chat && chat.length > 0 ? (
                                                 chat && chat.map((data) => (
